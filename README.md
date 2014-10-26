@@ -3,4 +3,4 @@ ballin-octo-computing-machine
 
 Projet S3
 
-Acteurs : Cl�ment DUMAZY, Damien LEPELTIER, Camille RENIER, Ludovic LORTHIOS et Karen MIGAN.
+Acteurs : Clément DUMAZY, Damien LEPELTIER, Camille RÉGNIER, Ludovic LORTHIOS et Karen MIGAN.
