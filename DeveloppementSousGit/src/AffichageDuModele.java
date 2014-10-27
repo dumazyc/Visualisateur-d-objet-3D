@@ -82,8 +82,9 @@ public class AffichageDuModele extends JFrame {
 		parcoursDeLigne+=nbSegments;
 		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbFaces; i++) {
 			list_faces.add(new Face(list_segments.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
+			//System.out.println(list_segments.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1)+" | "+list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')))-1)+" | "+list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1))-1)+" | "+(i-parcoursDeLigne+1));
+			System.out.println(list_faces.get(i-parcoursDeLigne).getS1().getNumero() + " | "+list_faces.get(i-parcoursDeLigne).getS2().getNumero() + " | "+list_faces.get(i-parcoursDeLigne).getS3().getNumero());
 		}
-		System.out.println(list_faces.size());
 		return true;
 	}
 
@@ -116,9 +117,11 @@ public class AffichageDuModele extends JFrame {
 		g.fillRect(0, 0,3000, 3000);
 		Random r = new Random();
 		for (int i = 0; i < list_faces.size(); i++) {
-			g.setColor(new Color(r.nextInt(255)+1, r.nextInt(255)+1, r.nextInt(255)+1));
+			g.setColor(Color.BLACK);
+			//g.setColor(new Color(r.nextInt(255)+1, r.nextInt(255)+1, r.nextInt(255)+1));
 			g.fillPolygon(generatePolygon(list_faces.get(i),t.getCoeffXetY(),t.getDecalageX(),t.getDecalageY()));
 		}
+		System.out.println("_____________________________________________________");
 	}
 	
 	private class SliderListener implements ChangeListener{
@@ -135,7 +138,7 @@ public class AffichageDuModele extends JFrame {
 	}
 	
 	private Polygon generatePolygon(Face f,int cXY, int dX, int dY) {
-		int[] x = new int[3];
+		/*int[] x = new int[3];
 		x[0] = (int) (f.getS1().getP1().getX()*cXY+dX);
 		x[1] = (int) (f.getS1().getP2().getX()*cXY+dX);
 		if (f.getS1().getP1().getNumero() != f.getS2().getP1().getNumero()) {
@@ -150,7 +153,23 @@ public class AffichageDuModele extends JFrame {
 			y[2] = (int) (f.getS2().getP1().getY()*cXY+dY);
 		}else {
 			y[2] = (int) (f.getS2().getP2().getY()*cXY+dY);	
-		}
+		}*/
+		int[] x = new int[6];
+		x[0] = (int) (f.getS1().getP1().getX()*cXY+dX);
+		x[1] = (int) (f.getS1().getP2().getX()*cXY+dX);
+		x[2] = (int) (f.getS2().getP1().getX()*cXY+dX);
+		x[3] = (int) (f.getS2().getP2().getX()*cXY+dX);
+		x[4] = (int) (f.getS3().getP1().getX()*cXY+dX);
+		x[5] = (int) (f.getS3().getP2().getX()*cXY+dX);
+		int[] y = new int[6];
+		y[0] = (int) (f.getS1().getP1().getY()*cXY+dY);
+		y[1] = (int) (f.getS1().getP2().getY()*cXY+dY);
+		y[2] = (int) (f.getS2().getP1().getY()*cXY+dY);
+		y[3] = (int) (f.getS2().getP2().getY()*cXY+dY);
+		y[4] = (int) (f.getS3().getP1().getY()*cXY+dY);
+		y[5] = (int) (f.getS3().getP2().getY()*cXY+dY);
+		System.out.println(f.getS1().getNumero() + " | "+f.getS2().getNumero() + " | "+f.getS3().getNumero());
+
 		return new Polygon(x, y, 3);
 	}
 	public static void main(String[] args) {
