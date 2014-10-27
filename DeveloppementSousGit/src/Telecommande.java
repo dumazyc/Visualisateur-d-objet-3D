@@ -19,8 +19,8 @@ public class Telecommande extends JFrame {
 	private JSlider sZ1 = new JSlider(0, 400, coeffZ1.entier);
 	private JSlider sZ2 = new JSlider(0, 400, coeffZ2.entier);
 	private JSlider sXY = new JSlider(0, 100, coeffXetY.entier);
-	private JSlider sX = new JSlider(0, 400, decalageX.entier);
-	private JSlider sY = new JSlider(0, 400, decalageY.entier);
+	private JSlider sX = new JSlider(0, 4000, decalageX.entier);
+	private JSlider sY = new JSlider(0, 4000, decalageY.entier);
 	private JPanel panel1 = new JPanel();
 	AffichageDuModele affichageDuModele;
 
@@ -45,8 +45,8 @@ public class Telecommande extends JFrame {
 		panel1.add(sY);
 		panel1.add(sXY);
 		//panel1.add(sZ);
-		panel1.add(sZ1);
-		panel1.add(sZ2);
+		//panel1.add(sZ1);
+		//panel1.add(sZ2);
 		this.add(panel1);
 		this.setVisible(true);
 

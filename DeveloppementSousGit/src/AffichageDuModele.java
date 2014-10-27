@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Label;
@@ -107,10 +108,10 @@ public class AffichageDuModele extends JFrame {
 			this.add(panel1);
 			this.setVisible(true);			
 		}else{
-			this.setSize(500, 500);
+			this.setSize(1000, 1000);
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			this.setLocationRelativeTo(null);
-			this.setResizable(false);
+			this.setResizable(true);
 			this.setBackground(Color.WHITE);
 			/*panel1.setBackground(Color.RED);
 			sX.addChangeListener(new SliderListener(decalageX));
@@ -136,6 +137,9 @@ public class AffichageDuModele extends JFrame {
 			int y2 = (int) (list_points.get(list_segments.get(i).getP2()-1).getY()*t.getCoeffXetY() + list_points.get(list_segments.get(i).getP2()-1).getZ()*t.getCoeffZ2());
 			g.drawLine(t.getDecalageX()+x1, t.getDecalageY()+y1, t.getDecalageX()+x2, t.getDecalageY()+y2);
 			//System.out.println("draw line : "+x1 + " "+y1 + " "+x2 + " "+y2 + " ");
+		}
+		for (int i = 0; i < list_faces.size(); i++) {
+			
 		}
 	}
 	
