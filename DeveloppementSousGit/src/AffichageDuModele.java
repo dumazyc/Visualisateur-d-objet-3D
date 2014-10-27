@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -24,14 +25,6 @@ public class AffichageDuModele extends JFrame {
 	private List<Point> list_points = new ArrayList<Point>();
 	private List<Segment> list_segments = new ArrayList<Segment>();
 	private List<Face> list_faces = new ArrayList<Face>();
-	//private Integer coeffZ = 1;
-	//private Integer coeffXetY =1;
-	//private Integer decalageX = 1;
-	//private Integer decalageY = 1;
-	//private JSlider sZ = new JSlider(0, 1000, coeffZ);
-	//private JSlider sXY = new JSlider(0, 1000, coeffXetY);
-	//private JSlider sX = new JSlider(0, 1000, decalageX);
-	//private JSlider sY = new JSlider(0, 1000, decalageY);
 	Telecommande t = new Telecommande(this);
 	
 	private boolean RecupDonneeFichier(){
@@ -90,6 +83,7 @@ public class AffichageDuModele extends JFrame {
 		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbFaces; i++) {
 			list_faces.add(new Face(list_segments.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
 		}
+		System.out.println(list_faces.size());
 		return true;
 	}
 
@@ -109,42 +103,21 @@ public class AffichageDuModele extends JFrame {
 			this.add(panel1);
 			this.setVisible(true);			
 		}else{
-			this.setSize(1000, 1000);
+			this.setSize(700, 700);
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			this.setLocationRelativeTo(null);
 			this.setResizable(true);
 			this.setBackground(Color.WHITE);
-			/*panel1.setBackground(Color.RED);
-			sX.addChangeListener(new SliderListener(decalageX));
-			sZ.addChangeListener(new SliderListener(coeffZ));
-			sXY.addChangeListener(new SliderListener(coeffXetY));
-			sY.addChangeListener(new SliderListener(decalageY));
-			panel1.add(sX);
-			panel1.add(sZ);
-			panel1.add(sXY);
-			panel1.add(sY);
-			this.add(panel1);*/
 			this.setVisible(true);
 		}
 	}
 	public void paint (Graphics g){
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0,3000, 3000);
-		g.setColor(Color.BLACK);
-		for (int i = 0; i < list_segments.size(); i++) {
-			int x1 = (int) (list_segments.get(i).getP1().getX()*t.getCoeffXetY() + list_segments.get(i).getP1().getZ()*t.getCoeffZ1());
-			int y1 = (int) (list_segments.get(i).getP1().getY()*t.getCoeffXetY() + list_segments.get(i).getP1().getZ()*t.getCoeffZ2());
-			int x2 = (int) (list_segments.get(i).getP2().getX()*t.getCoeffXetY() + list_segments.get(i).getP2().getZ()*t.getCoeffZ1());
-			int y2 = (int) (list_segments.get(i).getP2().getY()*t.getCoeffXetY() + list_segments.get(i).getP2().getZ()*t.getCoeffZ2());
-			//int x1 = (int) (list_points.get(list_segments.get(i).getP1()-1).getX()*t.getCoeffXetY() + list_points.get(list_segments.get(i).getP1()-1).getZ()*t.getCoeffZ1());
-			//int y1 = (int) (list_points.get(list_segments.get(i).getP1()-1).getY()*t.getCoeffXetY() + list_points.get(list_segments.get(i).getP1()-1).getZ()*t.getCoeffZ2());
-			//int x2 = (int) (list_points.get(list_segments.get(i).getP2()-1).getX()*t.getCoeffXetY() + list_points.get(list_segments.get(i).getP2()-1).getZ()*t.getCoeffZ1());
-			//int y2 = (int) (list_points.get(list_segments.get(i).getP2()-1).getY()*t.getCoeffXetY() + list_points.get(list_segments.get(i).getP2()-1).getZ()*t.getCoeffZ2());
-			g.drawLine(t.getDecalageX()+x1, t.getDecalageY()+y1, t.getDecalageX()+x2, t.getDecalageY()+y2);
-			//System.out.println("draw line : "+x1 + " "+y1 + " "+x2 + " "+y2 + " ");
-		}
+		Random r = new Random();
 		for (int i = 0; i < list_faces.size(); i++) {
-			
+			g.setColor(new Color(r.nextInt(255)+1, r.nextInt(255)+1, r.nextInt(255)+1));
+			g.fillPolygon(generatePolygon(list_faces.get(i),t.getCoeffXetY(),t.getDecalageX(),t.getDecalageY()));
 		}
 	}
 	
@@ -161,10 +134,24 @@ public class AffichageDuModele extends JFrame {
 		
 	}
 	
-	private Polygon generatePolygon(Face f){
+	private Polygon generatePolygon(Face f,int cXY, int dX, int dY) {
 		int[] x = new int[3];
+		x[0] = (int) (f.getS1().getP1().getX()*cXY+dX);
+		x[1] = (int) (f.getS1().getP2().getX()*cXY+dX);
+		if (f.getS1().getP1().getNumero() != f.getS2().getP1().getNumero()) {
+			x[2] = (int) (f.getS2().getP1().getX()*cXY+dX);
+		}else {
+			x[2] = (int) (f.getS2().getP2().getX()*cXY+dX);	
+		}
 		int[] y = new int[3];
-		return new Polygon(x,y,3);	
+		y[0] = (int) (f.getS1().getP1().getY()*cXY+dY);
+		y[1] = (int) (f.getS1().getP2().getY()*cXY+dY);
+		if (f.getS1().getP1().getNumero() != f.getS2().getP1().getNumero()) {
+			y[2] = (int) (f.getS2().getP1().getY()*cXY+dY);
+		}else {
+			y[2] = (int) (f.getS2().getP2().getY()*cXY+dY);	
+		}
+		return new Polygon(x, y, 3);
 	}
 	public static void main(String[] args) {
 		new AffichageDuModele();
