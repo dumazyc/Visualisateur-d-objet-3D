@@ -3,6 +3,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Label;
+import java.awt.Polygon;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -83,11 +84,11 @@ public class AffichageDuModele extends JFrame {
 		}
 		parcoursDeLigne+=nbPoints;
 		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbSegments; i++) {
-			list_segments.add(new Segment(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' '))), Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1)),(i-parcoursDeLigne+1)));
+			list_segments.add(new Segment(list_points.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_points.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
 		}
 		parcoursDeLigne+=nbSegments;
 		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbFaces; i++) {
-			list_faces.add(new Face(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' '))), Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' '))), Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1)),(i-parcoursDeLigne+1)));
+			list_faces.add(new Face(list_segments.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
 		}
 		return true;
 	}
@@ -131,10 +132,14 @@ public class AffichageDuModele extends JFrame {
 		g.fillRect(0, 0,3000, 3000);
 		g.setColor(Color.BLACK);
 		for (int i = 0; i < list_segments.size(); i++) {
-			int x1 = (int) (list_points.get(list_segments.get(i).getP1()-1).getX()*t.getCoeffXetY() + list_points.get(list_segments.get(i).getP1()-1).getZ()*t.getCoeffZ1());
-			int y1 = (int) (list_points.get(list_segments.get(i).getP1()-1).getY()*t.getCoeffXetY() + list_points.get(list_segments.get(i).getP1()-1).getZ()*t.getCoeffZ2());
-			int x2 = (int) (list_points.get(list_segments.get(i).getP2()-1).getX()*t.getCoeffXetY() + list_points.get(list_segments.get(i).getP2()-1).getZ()*t.getCoeffZ1());
-			int y2 = (int) (list_points.get(list_segments.get(i).getP2()-1).getY()*t.getCoeffXetY() + list_points.get(list_segments.get(i).getP2()-1).getZ()*t.getCoeffZ2());
+			int x1 = (int) (list_segments.get(i).getP1().getX()*t.getCoeffXetY() + list_segments.get(i).getP1().getZ()*t.getCoeffZ1());
+			int y1 = (int) (list_segments.get(i).getP1().getY()*t.getCoeffXetY() + list_segments.get(i).getP1().getZ()*t.getCoeffZ2());
+			int x2 = (int) (list_segments.get(i).getP2().getX()*t.getCoeffXetY() + list_segments.get(i).getP2().getZ()*t.getCoeffZ1());
+			int y2 = (int) (list_segments.get(i).getP2().getY()*t.getCoeffXetY() + list_segments.get(i).getP2().getZ()*t.getCoeffZ2());
+			//int x1 = (int) (list_points.get(list_segments.get(i).getP1()-1).getX()*t.getCoeffXetY() + list_points.get(list_segments.get(i).getP1()-1).getZ()*t.getCoeffZ1());
+			//int y1 = (int) (list_points.get(list_segments.get(i).getP1()-1).getY()*t.getCoeffXetY() + list_points.get(list_segments.get(i).getP1()-1).getZ()*t.getCoeffZ2());
+			//int x2 = (int) (list_points.get(list_segments.get(i).getP2()-1).getX()*t.getCoeffXetY() + list_points.get(list_segments.get(i).getP2()-1).getZ()*t.getCoeffZ1());
+			//int y2 = (int) (list_points.get(list_segments.get(i).getP2()-1).getY()*t.getCoeffXetY() + list_points.get(list_segments.get(i).getP2()-1).getZ()*t.getCoeffZ2());
 			g.drawLine(t.getDecalageX()+x1, t.getDecalageY()+y1, t.getDecalageX()+x2, t.getDecalageY()+y2);
 			//System.out.println("draw line : "+x1 + " "+y1 + " "+x2 + " "+y2 + " ");
 		}
@@ -154,6 +159,12 @@ public class AffichageDuModele extends JFrame {
 			this.value =(int) source.getValue();
 		}
 		
+	}
+	
+	private Polygon generatePolygon(Face f){
+		int[] x = new int[3];
+		int[] y = new int[3];
+		return new Polygon(x,y,3);	
 	}
 	public static void main(String[] args) {
 		new AffichageDuModele();

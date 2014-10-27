@@ -1,9 +1,9 @@
 public class Segment {
-	private int p1;
-	private int p2;
+	private Point p1;
+	private Point p2;
 	private int numero;
 
-	public Segment(int p1, int p2, int numero) {
+	public Segment(Point p1, Point p2, int numero) {
 		this.p1 = p1;
 		this.p2 = p2;
 		this.numero = numero;
@@ -18,11 +18,11 @@ public class Segment {
 		return numero;
 	}
 
-	public int getP1() {
+	public Point getP1() {
 		return p1;
 	}
 
-	public int getP2() {
+	public Point getP2() {
 		return p2;
 	}
 }
