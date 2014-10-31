@@ -112,14 +112,115 @@ public class AffichageDuModele extends JFrame {
 		Graphics2D g = (Graphics2D)ga;
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0,3000, 3000);
+		/*List<Face> tmp = new ArrayList<Face>(); 
 		for (int i = 0; i < list_faces.size(); i++) {
-			
+			tmp.add(list_faces.get(i));
 		}
+		ArrayList<Face> tmp1 = new ArrayList<Face>();
+		int taille = tmp.size();
+		for (int i = 0; i < taille; i++) {
+			double max = trouverProfondeur(tmp.get(0),t.getCoeffXetY(),t.getDecalageX(),t.getDecalageY());
+			int indice = 0;
+			for (int j = 0; j < tmp.size(); j++) {
+				if (trouverProfondeur(tmp.get(j),t.getCoeffXetY(),t.getDecalageX(),t.getDecalageY())>max) {
+					max = trouverProfondeur(tmp.get(j),t.getCoeffXetY(),t.getDecalageX(),t.getDecalageY());
+					indice = j;			
+				}
+			}
+			tmp1.add (tmp.get(indice));
+			tmp.remove(indice);
+		}*/
+		//TestQuickSort
+		
+		Face tableau[] = new Face[list_faces.size()];
+		for (int i = 0; i < tableau.length; i++) {
+			tableau[i]=list_faces.get(i);
+		}
+		quickSort(tableau,0,tableau.length-1);
+		for (int i = tableau.length-1; i >-1; i--) {
+			g.setColor(tableau[i].getColor());
+			//g.setColor(new Color(r.nextInt(255)+1, r.nextInt(255)+1, r.nextInt(255)+1));
+			g.fill(generatePolygon(tableau[i],t.getCoeffXetY(),t.getDecalageX(),t.getDecalageY()));
+		}
+		//FINTest
+		
+		/*
 		for (int i = 0; i < list_faces.size(); i++) {
 			g.setColor(list_faces.get(i).getColor());
 			//g.setColor(new Color(r.nextInt(255)+1, r.nextInt(255)+1, r.nextInt(255)+1));
 			g.fill(generatePolygon(list_faces.get(i),t.getCoeffXetY(),t.getDecalageX(),t.getDecalageY()));
 		}
+		*/
+	}
+	
+	
+	
+	
+	int partition(Face tableau[], int gauche, int droite) {
+		int i = gauche;
+		int j = droite;
+		Face tmp;
+		double pivot = trouverProfondeur(tableau[(gauche + droite) / 2],
+				t.getCoeffXetY(), t.getDecalageX(), t.getDecalageY());
+		while (i <= j) {
+			while (trouverProfondeur(tableau[i], t.getCoeffXetY(),
+					t.getDecalageX(), t.getDecalageY()) < pivot) {
+				i++;
+			}
+			while (trouverProfondeur(tableau[j], t.getCoeffXetY(),
+					t.getDecalageX(), t.getDecalageY()) > pivot) {
+				j--;
+			}
+			if (i <= j) {
+				tmp = tableau[i];
+				tableau[i] = tableau[j];
+				tableau[j] = tmp;
+				i++;
+				j--;
+			}
+		}
+
+		return i;
+	}
+
+	void quickSort(Face tableau[], int gauche, int droite) {
+		int index = partition(tableau, gauche, droite);
+		if (gauche < index - 1) {
+			quickSort(tableau, gauche, index - 1);
+		}
+		if (index < droite) {
+			quickSort(tableau, index, droite);
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	private double trouverProfondeur(Face f,int cXY, int dX, int dY) {
+		double[] x = new double[3];
+		double[] y = new double[3];
+		double[] z = new double[3];
+		for (int i = 0; i < x.length; i++) {
+			//x[i] = f.getPoint(i + 1).getX() * cXY + dX;
+			x[i] = f.getPoint(i + 1).getX();
+			//y[i] = f.getPoint(i + 1).getY() * cXY + dY;
+			y[i] = f.getPoint(i + 1).getY();
+			//z[i] = f.getPoint(i + 1).getZ() * cXY;
+			z[i] = f.getPoint(i + 1).getZ();
+		}
+		Matrice m = new Matrice(x, y, z);
+		//System.out.println(m.rotateX(t.getRotationX()).rotateY(t.getRotationY()).rotateZ(t.getRotationZ()));
+		m = m.rotateX(t.getRotationX()).rotateY(t.getRotationY()).rotateZ(t.getRotationZ());
+		for (int i = 0; i < 3; i++) {
+			x[i]=m.getTabX()[i]* cXY + dX;
+			y[i]=m.getTabY()[i] * cXY + dY;
+			z[i]=m.getTabZ()[i]* cXY;
+		}
+		m = new Matrice(x, y, z);
+		return m.getProfondeur();
 	}
 	
 	private Polygon generatePolygon(Face f,int cXY, int dX, int dY) {

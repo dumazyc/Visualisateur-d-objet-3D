@@ -81,7 +81,9 @@ public class Matrice {
 		int[] y = new int[] { (int) m[1][0], (int) m[1][1], (int) m[1][2] };
 		return new Polygon(x, y, 3);
 	}
-
+	public double getProfondeur(){
+		return (m[2][0]+m[2][1]+m[2][2])/3;
+	}
 	@Override
 	public String toString() {
 		return "|" + m[0][0] + "|" + m[0][1] + "|" + m[0][2] + "|" + "\n" + "|"
