@@ -10,7 +10,9 @@ public class Face {
 		this.s3 = s3;
 		this.numero = numero;
 	}
-
+public int getNumero() {
+	return numero;
+}
 	public Segment getS1() {
 		return s1;
 	}

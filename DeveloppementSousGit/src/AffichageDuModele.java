@@ -1,8 +1,6 @@
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Label;
+import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,15 +11,10 @@ import java.util.Random;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 
 @SuppressWarnings("serial")
 public class AffichageDuModele extends JFrame {
-	private JPanel panel1 = new JPanel();
 	private List<Point> list_points = new ArrayList<Point>();
 	private List<Segment> list_segments = new ArrayList<Segment>();
 	private List<Face> list_faces = new ArrayList<Face>();
@@ -74,23 +67,25 @@ public class AffichageDuModele extends JFrame {
 		int parcoursDeLigne = 1;
 		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbPoints; i++) {
 			list_points.add(new Point(Double.parseDouble(fichier.get(i).substring(0,fichier.get(i).indexOf(' '))), Double.parseDouble(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' '))), Double.parseDouble(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1)),(i-parcoursDeLigne+1)));
+			//System.out.println(list_points.get(i-parcoursDeLigne));
 		}
 		parcoursDeLigne+=nbPoints;
 		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbSegments; i++) {
 			list_segments.add(new Segment(list_points.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_points.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
+			//System.out.println(list_segments.get(i-parcoursDeLigne).getP1().getNumero() + " | " +list_segments.get(i-parcoursDeLigne).getP2().getNumero());
 		}
 		parcoursDeLigne+=nbSegments;
 		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbFaces; i++) {
 			list_faces.add(new Face(list_segments.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
 			//System.out.println(list_segments.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1)+" | "+list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')))-1)+" | "+list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1))-1)+" | "+(i-parcoursDeLigne+1));
-			System.out.println(list_faces.get(i-parcoursDeLigne).getS1().getNumero() + " | "+list_faces.get(i-parcoursDeLigne).getS2().getNumero() + " | "+list_faces.get(i-parcoursDeLigne).getS3().getNumero());
+			//System.out.println(list_faces.get(i-parcoursDeLigne).getS1().getNumero() + " | "+list_faces.get(i-parcoursDeLigne).getS2().getNumero() + " | "+list_faces.get(i-parcoursDeLigne).getS3().getNumero());
 		}
 		return true;
 	}
 
 	
 	public AffichageDuModele() {
-		if(!RecupDonneeFichier()){
+		/*if(!RecupDonneeFichier()){
 			this.setTitle("ERROR");
 			this.setSize(700, 500);
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -103,74 +98,61 @@ public class AffichageDuModele extends JFrame {
 			panel1.add(error);
 			this.add(panel1);
 			this.setVisible(true);			
-		}else{
+		}else{*/
+			RecupDonneeFichier();
 			this.setSize(700, 700);
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			this.setLocationRelativeTo(null);
 			this.setResizable(true);
 			this.setBackground(Color.WHITE);
 			this.setVisible(true);
-		}
+		//}
 	}
-	public void paint (Graphics g){
+
+	public void paint (Graphics ga){
+		Graphics2D g = (Graphics2D)ga;
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0,3000, 3000);
 		Random r = new Random();
 		for (int i = 0; i < list_faces.size(); i++) {
 			g.setColor(Color.BLACK);
 			//g.setColor(new Color(r.nextInt(255)+1, r.nextInt(255)+1, r.nextInt(255)+1));
-			g.fillPolygon(generatePolygon(list_faces.get(i),t.getCoeffXetY(),t.getDecalageX(),t.getDecalageY()));
+			g.fill(generatePolygon(list_faces.get(i),t.getCoeffXetY(),t.getDecalageX(),t.getDecalageY()));
 		}
-		System.out.println("_____________________________________________________");
-	}
-	
-	private class SliderListener implements ChangeListener{
-		Integer value;
-		public SliderListener(Integer value) {
-			this.value = value;
-		}
-		@Override
-		public void stateChanged(ChangeEvent e) {
-			JSlider source = (JSlider)e.getSource();
-			this.value =(int) source.getValue();
-		}
-		
 	}
 	
 	private Polygon generatePolygon(Face f,int cXY, int dX, int dY) {
-		/*int[] x = new int[3];
-		x[0] = (int) (f.getS1().getP1().getX()*cXY+dX);
-		x[1] = (int) (f.getS1().getP2().getX()*cXY+dX);
-		if (f.getS1().getP1().getNumero() != f.getS2().getP1().getNumero()) {
-			x[2] = (int) (f.getS2().getP1().getX()*cXY+dX);
-		}else {
-			x[2] = (int) (f.getS2().getP2().getX()*cXY+dX);	
+		double[] x = new double[3];
+		boolean dernierPoint = f.getS1().getP1().getNumero() != f.getS2().getP1().getNumero()&&f.getS1().getP2().getNumero()!= f.getS2().getP1().getNumero();
+		x[0] = f.getS1().getP1().getX()*cXY+dX;
+		x[1] = f.getS1().getP2().getX()*cXY+dX;
+		if (dernierPoint) {
+			x[2] = f.getS2().getP1().getX()*cXY+dX;
+		}else{
+			x[2] = f.getS2().getP2().getX()*cXY+dX;	
 		}
-		int[] y = new int[3];
-		y[0] = (int) (f.getS1().getP1().getY()*cXY+dY);
-		y[1] = (int) (f.getS1().getP2().getY()*cXY+dY);
-		if (f.getS1().getP1().getNumero() != f.getS2().getP1().getNumero()) {
-			y[2] = (int) (f.getS2().getP1().getY()*cXY+dY);
+		double[] y = new double[3];
+		y[0] = f.getS1().getP1().getY()*cXY+dY;
+		y[1] = f.getS1().getP2().getY()*cXY+dY;
+		if (dernierPoint) {
+			y[2] = f.getS2().getP1().getY()*cXY+dY;
 		}else {
-			y[2] = (int) (f.getS2().getP2().getY()*cXY+dY);	
-		}*/
-		int[] x = new int[6];
-		x[0] = (int) (f.getS1().getP1().getX()*cXY+dX);
-		x[1] = (int) (f.getS1().getP2().getX()*cXY+dX);
-		x[2] = (int) (f.getS2().getP1().getX()*cXY+dX);
-		x[3] = (int) (f.getS2().getP2().getX()*cXY+dX);
-		x[4] = (int) (f.getS3().getP1().getX()*cXY+dX);
-		x[5] = (int) (f.getS3().getP2().getX()*cXY+dX);
-		int[] y = new int[6];
-		y[0] = (int) (f.getS1().getP1().getY()*cXY+dY);
-		y[1] = (int) (f.getS1().getP2().getY()*cXY+dY);
-		y[2] = (int) (f.getS2().getP1().getY()*cXY+dY);
-		y[3] = (int) (f.getS2().getP2().getY()*cXY+dY);
-		y[4] = (int) (f.getS3().getP1().getY()*cXY+dY);
-		y[5] = (int) (f.getS3().getP2().getY()*cXY+dY);
-		System.out.println(f.getS1().getNumero() + " | "+f.getS2().getNumero() + " | "+f.getS3().getNumero());
-
-		return new Polygon(x, y, 3);
+			y[2] = f.getS2().getP2().getY()*cXY+dY;	
+		}
+		
+		
+		double[] z = new double[3];
+		z[0] = f.getS1().getP1().getZ()*cXY;
+		z[1] = f.getS1().getP2().getZ()*cXY;
+		if (dernierPoint) {
+			z[2] = f.getS2().getP1().getZ()*cXY;
+		}else {
+			z[2] = f.getS2().getP2().getZ()*cXY;	
+		}
+		//System.out.println(f.getNumero()+"\n-----------------------------------------------\n"+x[0]+" "+x[1]+" "+x[2]+"\n"+y[0]+" "+y[1]+" "+y[2]+"\n");
+		Matrice m = new Matrice(x, y, z);
+		System.out.println(m.rotateX(t.getRotationX()).rotateY(t.getRotationY()).rotateZ(t.getRotationZ()));
+		return m.rotateX(t.getRotationX()).rotateY(t.getRotationY()).rotateZ(t.getRotationZ()).PolygonGeneratorFromMatrice();
 	}
 	public static void main(String[] args) {
 		new AffichageDuModele();

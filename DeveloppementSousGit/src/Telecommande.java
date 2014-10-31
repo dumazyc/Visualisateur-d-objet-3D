@@ -1,27 +1,35 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class Telecommande extends JFrame {
-	private EntierObjetTest coeffZ = new EntierObjetTest(1);
-	private EntierObjetTest coeffZ1 = new EntierObjetTest(1);
-	private EntierObjetTest coeffZ2 = new EntierObjetTest(1);
+	private EntierObjetTest coeffZ = new EntierObjetTest(0);
+	private EntierObjetTest rotationRX = new EntierObjetTest(0);
+	private EntierObjetTest rotationRY = new EntierObjetTest(0);
+	private EntierObjetTest rotationRZ = new EntierObjetTest(0);
 	private EntierObjetTest coeffXetY = new EntierObjetTest(1);
-	private EntierObjetTest decalageX = new EntierObjetTest(1);
-	private EntierObjetTest decalageY = new EntierObjetTest(1);
-	private JSlider sZ = new JSlider(0, 100, coeffZ.entier);
-	private JSlider sZ1 = new JSlider(0, 400, coeffZ1.entier);
-	private JSlider sZ2 = new JSlider(0, 400, coeffZ2.entier);
-	private JSlider sXY = new JSlider(0, 10000, coeffXetY.entier);
+	private EntierObjetTest decalageX = new EntierObjetTest(700/2);
+	private EntierObjetTest decalageY = new EntierObjetTest(700/2);
+	private JSlider sZ = new JSlider(0, 1000, coeffZ.entier);
+	private JSlider sXY = new JSlider(0, 1000, coeffXetY.entier);
 	private JSlider sX = new JSlider(0, 4000, decalageX.entier);
 	private JSlider sY = new JSlider(0, 4000, decalageY.entier);
-	private JPanel panel1 = new JPanel();
+	private JSlider sRX = new JSlider(0, 360, rotationRX.entier);
+	private JSlider sRY = new JSlider(0, 360, rotationRY.entier);
+	private JSlider sRZ = new JSlider(0, 360, rotationRZ.entier);
+	
+	private JPanel panel1 = new JPanel(new GridLayout(6*2, 1));
 	AffichageDuModele affichageDuModele;
 
 	public Telecommande(AffichageDuModele affichageDuModele) {
@@ -35,23 +43,32 @@ public class Telecommande extends JFrame {
 		sX.addChangeListener(new SliderListener(decalageX,
 				this.affichageDuModele));
 		sZ.addChangeListener(new SliderListener(coeffZ, this.affichageDuModele));
-		sZ1.addChangeListener(new SliderListener(coeffZ1, this.affichageDuModele));
-		sZ2.addChangeListener(new SliderListener(coeffZ2, this.affichageDuModele));
+		sRX.addChangeListener(new SliderListener(rotationRX, this.affichageDuModele));
+		sRY.addChangeListener(new SliderListener(rotationRY, this.affichageDuModele));
+		sRZ.addChangeListener(new SliderListener(rotationRZ, this.affichageDuModele));
 		sXY.addChangeListener(new SliderListener(coeffXetY,
 				this.affichageDuModele));
 		sY.addChangeListener(new SliderListener(decalageY,
 				this.affichageDuModele));
+		panel1.add(new JLabel("Décalage horizontal : "));
 		panel1.add(sX);
+		panel1.add(new JLabel("Décalage vertical : "));
 		panel1.add(sY);
+		panel1.add(new JLabel("Zoom : "));
 		panel1.add(sXY);
-		//panel1.add(sZ);
-		//panel1.add(sZ1);
-		//panel1.add(sZ2);
+		/*panel1.add(new JLabel(""));
+		panel1.add(sZ);*/
+		panel1.add(new JLabel("Rotation par rapport à l'axe des x : "));
+		panel1.add(sRX);
+		panel1.add(new JLabel("Rotation par rapport à l'axe des y : "));
+		panel1.add(sRY);
+		panel1.add(new JLabel("Rotation par rapport à l'axe des z : "));
+		panel1.add(sRZ);
+
 		this.add(panel1);
 		this.setVisible(true);
 
 	}
-
 	public int getCoeffXetY() {
 		return coeffXetY.entier;
 	}
@@ -59,12 +76,7 @@ public class Telecommande extends JFrame {
 	public int getCoeffZ() {
 		return coeffZ.entier;
 	}
-public int getCoeffZ1() {
-	return coeffZ1.entier;
-}
-public int getCoeffZ2() {
-	return coeffZ2.entier;
-}
+	
 	public int getDecalageX() {
 		return decalageX.entier;
 	}
@@ -72,7 +84,17 @@ public int getCoeffZ2() {
 	public int getDecalageY() {
 		return decalageY.entier;
 	}
-
+	public int getRotationX(){
+		return rotationRX.entier;
+	}
+	public int getRotationY(){
+		return rotationRY.entier;
+	}
+	public int getRotationZ(){
+		return rotationRZ.entier;
+	}
+	
+	
 	private class SliderListener implements ChangeListener {
 		EntierObjetTest value;
 		AffichageDuModele affichageDuModele;
