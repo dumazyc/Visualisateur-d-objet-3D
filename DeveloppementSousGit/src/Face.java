@@ -1,14 +1,28 @@
 public class Face {
-	private int s1;
-	private int s2;
-	private int s3;
+	private Segment s1;
+	private Segment s2;
+	private Segment s3;
 	private int numero;
 
-	public Face(int s1, int s2, int s3, int numero) {
+	public Face(Segment s1, Segment s2, Segment s3, int numero) {
 		this.s1 = s1;
 		this.s2 = s2;
 		this.s3 = s3;
 		this.numero = numero;
+	}
+public int getNumero() {
+	return numero;
+}
+	public Segment getS1() {
+		return s1;
+	}
+
+	public Segment getS2() {
+		return s2;
+	}
+
+	public Segment getS3() {
+		return s3;
 	}
 
 	@Override
