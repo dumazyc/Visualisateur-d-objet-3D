@@ -1,18 +1,27 @@
+import java.awt.Color;
+import java.util.Random;
+
 public class Face {
 	private Segment s1;
 	private Segment s2;
 	private Segment s3;
 	private int numero;
+	private Color color;
 
 	public Face(Segment s1, Segment s2, Segment s3, int numero) {
 		this.s1 = s1;
 		this.s2 = s2;
 		this.s3 = s3;
 		this.numero = numero;
+		Random r = new Random();
+		this.color = new Color(r.nextInt(255) + 1, r.nextInt(255) + 1,
+				r.nextInt(255) + 1);
 	}
-public int getNumero() {
-	return numero;
-}
+
+	public int getNumero() {
+		return numero;
+	}
+
 	public Segment getS1() {
 		return s1;
 	}
@@ -28,5 +37,24 @@ public int getNumero() {
 	@Override
 	public String toString() {
 		return s1 + " " + s2 + " " + s3;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+	public double getProfondeur(){
+		return (this.getPoint(1).getZ()+this.getPoint(2).getZ()+this.getPoint(3).getZ())/3;
+	}
+	public Point getPoint(int numero){
+		boolean dernierPoint = this.getS1().getP1().getNumero() != this.getS2().getP1().getNumero()&&this.getS1().getP2().getNumero()!= this.getS2().getP1().getNumero();
+		if (numero==1) {
+			return this.getS1().getP1();
+		}else if (numero==2) {
+			return this.getS1().getP2();
+		}else if (dernierPoint){
+			return this.getS2().getP1();
+		}else{
+			return this.getS2().getP2();
+		}
 	}
 }

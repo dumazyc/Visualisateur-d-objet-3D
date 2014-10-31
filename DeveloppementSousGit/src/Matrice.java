@@ -1,7 +1,5 @@
 import java.awt.Polygon;
 
-
-
 public class Matrice {
 	double[][] m;
 
@@ -10,6 +8,21 @@ public class Matrice {
 		m[0] = x;
 		m[1] = y;
 		m[2] = z;
+	}
+
+	public double[] getTabX() {
+		return m[0];
+
+	}
+
+	public double[] getTabY() {
+		return m[1];
+
+	}
+
+	public double[] getTabZ() {
+		return m[2];
+
 	}
 
 	public Matrice multiplicate(Matrice m) {
@@ -57,16 +70,18 @@ public class Matrice {
 	public Matrice rotateZ(double angle) {
 		// TODO
 		angle = Math.toRadians(angle);
-		Matrice mz = new Matrice(new double[] { Math.cos(angle), -Math.sin(angle),
-				0}, new double[] { Math.sin(angle), Math.cos(angle), 0 }, new double[] {
-				0, 0, 1 });
+		Matrice mz = new Matrice(new double[] { Math.cos(angle),
+				-Math.sin(angle), 0 }, new double[] { Math.sin(angle),
+				Math.cos(angle), 0 }, new double[] { 0, 0, 1 });
 		return mz.multiplicate(this);
 	}
-	public Polygon PolygonGeneratorFromMatrice(){
-		int[]x = new int[]{(int) m[0][0],(int) m[0][1],(int) m[0][2]};		
-		int[]y = new int[]{(int) m[1][0],(int) m[1][1],(int) m[1][2]};
-		return new Polygon(x,y,3);
+
+	public Polygon PolygonGeneratorFromMatrice() {
+		int[] x = new int[] { (int) m[0][0], (int) m[0][1], (int) m[0][2] };
+		int[] y = new int[] { (int) m[1][0], (int) m[1][1], (int) m[1][2] };
+		return new Polygon(x, y, 3);
 	}
+
 	@Override
 	public String toString() {
 		return "|" + m[0][0] + "|" + m[0][1] + "|" + m[0][2] + "|" + "\n" + "|"

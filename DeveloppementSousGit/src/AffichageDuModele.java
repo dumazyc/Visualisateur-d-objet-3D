@@ -108,14 +108,15 @@ public class AffichageDuModele extends JFrame {
 			this.setVisible(true);
 		//}
 	}
-
 	public void paint (Graphics ga){
 		Graphics2D g = (Graphics2D)ga;
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0,3000, 3000);
-		Random r = new Random();
 		for (int i = 0; i < list_faces.size(); i++) {
-			g.setColor(Color.BLACK);
+			
+		}
+		for (int i = 0; i < list_faces.size(); i++) {
+			g.setColor(list_faces.get(i).getColor());
 			//g.setColor(new Color(r.nextInt(255)+1, r.nextInt(255)+1, r.nextInt(255)+1));
 			g.fill(generatePolygon(list_faces.get(i),t.getCoeffXetY(),t.getDecalageX(),t.getDecalageY()));
 		}
@@ -123,36 +124,26 @@ public class AffichageDuModele extends JFrame {
 	
 	private Polygon generatePolygon(Face f,int cXY, int dX, int dY) {
 		double[] x = new double[3];
-		boolean dernierPoint = f.getS1().getP1().getNumero() != f.getS2().getP1().getNumero()&&f.getS1().getP2().getNumero()!= f.getS2().getP1().getNumero();
-		x[0] = f.getS1().getP1().getX()*cXY+dX;
-		x[1] = f.getS1().getP2().getX()*cXY+dX;
-		if (dernierPoint) {
-			x[2] = f.getS2().getP1().getX()*cXY+dX;
-		}else{
-			x[2] = f.getS2().getP2().getX()*cXY+dX;	
-		}
 		double[] y = new double[3];
-		y[0] = f.getS1().getP1().getY()*cXY+dY;
-		y[1] = f.getS1().getP2().getY()*cXY+dY;
-		if (dernierPoint) {
-			y[2] = f.getS2().getP1().getY()*cXY+dY;
-		}else {
-			y[2] = f.getS2().getP2().getY()*cXY+dY;	
-		}
-		
-		
 		double[] z = new double[3];
-		z[0] = f.getS1().getP1().getZ()*cXY;
-		z[1] = f.getS1().getP2().getZ()*cXY;
-		if (dernierPoint) {
-			z[2] = f.getS2().getP1().getZ()*cXY;
-		}else {
-			z[2] = f.getS2().getP2().getZ()*cXY;	
+		for (int i = 0; i < x.length; i++) {
+			//x[i] = f.getPoint(i + 1).getX() * cXY + dX;
+			x[i] = f.getPoint(i + 1).getX();
+			//y[i] = f.getPoint(i + 1).getY() * cXY + dY;
+			y[i] = f.getPoint(i + 1).getY();
+			//z[i] = f.getPoint(i + 1).getZ() * cXY;
+			z[i] = f.getPoint(i + 1).getZ();
 		}
-		//System.out.println(f.getNumero()+"\n-----------------------------------------------\n"+x[0]+" "+x[1]+" "+x[2]+"\n"+y[0]+" "+y[1]+" "+y[2]+"\n");
 		Matrice m = new Matrice(x, y, z);
-		System.out.println(m.rotateX(t.getRotationX()).rotateY(t.getRotationY()).rotateZ(t.getRotationZ()));
-		return m.rotateX(t.getRotationX()).rotateY(t.getRotationY()).rotateZ(t.getRotationZ()).PolygonGeneratorFromMatrice();
+		//System.out.println(m.rotateX(t.getRotationX()).rotateY(t.getRotationY()).rotateZ(t.getRotationZ()));
+		m = m.rotateX(t.getRotationX()).rotateY(t.getRotationY()).rotateZ(t.getRotationZ());
+		for (int i = 0; i < 3; i++) {
+			x[i]=m.getTabX()[i]* cXY + dX;
+			y[i]=m.getTabY()[i] * cXY + dY;
+			z[i]=m.getTabZ()[i]* cXY;
+		}
+		m = new Matrice(x, y, z);
+		return m.PolygonGeneratorFromMatrice();
 	}
 	public static void main(String[] args) {
 		new AffichageDuModele();
