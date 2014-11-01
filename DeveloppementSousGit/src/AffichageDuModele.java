@@ -138,7 +138,8 @@ public class AffichageDuModele extends JFrame {
 		}
 		quickSort(tableau,0,tableau.length-1);
 		for (int i = tableau.length-1; i >-1; i--) {
-			g.setColor(tableau[i].getColor());
+			g.setColor(new Color(255-(i*255)/tableau.length,255-(i*255)/tableau.length,0));
+			//g.setColor(tableau[i].getColor());
 			//g.setColor(new Color(r.nextInt(255)+1, r.nextInt(255)+1, r.nextInt(255)+1));
 			g.fill(generatePolygon(tableau[i],t.getCoeffXetY(),t.getDecalageX(),t.getDecalageY()));
 		}
