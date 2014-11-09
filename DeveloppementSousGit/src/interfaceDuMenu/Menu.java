@@ -1,4 +1,7 @@
+package interfaceDuMenu;
 
+
+import gestionDeLAffichage3D.AffichageDuModele;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

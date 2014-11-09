@@ -1,3 +1,4 @@
+package interfaceDuMenu;
 
 
 import java.awt.event.*;

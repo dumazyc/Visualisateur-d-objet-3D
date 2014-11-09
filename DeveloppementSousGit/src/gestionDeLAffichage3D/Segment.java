@@ -1,3 +1,4 @@
+package gestionDeLAffichage3D;
 public class Segment {
 	private Point p1;
 	private Point p2;

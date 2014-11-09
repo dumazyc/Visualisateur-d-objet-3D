@@ -1,3 +1,4 @@
+package gestionDeLAffichage3D;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -231,8 +232,5 @@ public class AffichageDuModele extends JFrame {
 		}
 		m = new Matrice(x, y, z);
 		return m.PolygonGeneratorFromMatrice();
-	}
-	public static void main(String[] args) {
-		new AffichageDuModele();
 	}
 }

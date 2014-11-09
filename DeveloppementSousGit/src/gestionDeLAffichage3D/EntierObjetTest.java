@@ -1,3 +1,4 @@
+package gestionDeLAffichage3D;
 
 public class EntierObjetTest {
 	int entier;

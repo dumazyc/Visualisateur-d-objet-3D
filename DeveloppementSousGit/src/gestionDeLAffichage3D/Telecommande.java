@@ -1,3 +1,4 @@
+package gestionDeLAffichage3D;
 import java.awt.Color;
 import java.awt.GridLayout;
 import javax.swing.JFrame;
