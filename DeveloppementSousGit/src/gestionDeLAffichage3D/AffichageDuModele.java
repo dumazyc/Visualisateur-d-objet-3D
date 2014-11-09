@@ -22,7 +22,7 @@ public class AffichageDuModele extends JFrame {
 	
 	private boolean RecupDonneeFichier(){
 		List<String> fichier = new ArrayList<String>();
-		JFileChooser fc = new JFileChooser("modeles/");
+		JFileChooser fc = new JFileChooser("ressources/modeles/");
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.addChoosableFileFilter(new FileFilter() {
 			@Override

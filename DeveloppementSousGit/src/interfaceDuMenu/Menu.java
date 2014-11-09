@@ -18,7 +18,7 @@ public class Menu extends JFrame implements ActionListener{
 		final JFrame f=new JFrame();
 		Container c=f.getContentPane();
 		c.setLayout(new BorderLayout());
-		Image wall=f.getToolkit().getImage("menu.gif/");
+		Image wall=f.getToolkit().getImage("ressources/imageMenu/menu.gif/");
 		Icon ic=new ImageIcon(wall);
 		JLabel jl=new JLabel(ic);
 		c.add(jl,BorderLayout.NORTH);

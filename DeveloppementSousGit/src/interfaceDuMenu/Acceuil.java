@@ -17,11 +17,11 @@ public class Acceuil extends JFrame implements ActionListener {
 		c.setLayout(new BorderLayout());
 
 
-		Image wall=f.getToolkit().getImage("ruban.gif/");
+		Image wall=f.getToolkit().getImage("ressources/imageMenu/ruban.gif/");
 		Icon ic=new ImageIcon(wall);
 		JLabel jl=new JLabel(ic);
 		c.add(jl,BorderLayout.CENTER);
-		Image wallpi=f.getToolkit().getImage("acceuil.png/");
+		Image wallpi=f.getToolkit().getImage("ressources/imageMenu/acceuil.png/");
 		Icon ico=new ImageIcon(wallpi);
 		JLabel jla=new JLabel(ico);
 		c.add(jla,BorderLayout.NORTH);
