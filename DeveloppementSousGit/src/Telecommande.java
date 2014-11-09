@@ -1,18 +1,13 @@
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Label;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+@SuppressWarnings("serial")
 public class Telecommande extends JFrame {
 	private EntierObjetTest coeffZ = new EntierObjetTest(0);
 	private EntierObjetTest rotationRX = new EntierObjetTest(0);
@@ -32,8 +27,10 @@ public class Telecommande extends JFrame {
 	private JPanel panel1 = new JPanel(new GridLayout(6*2, 1));
 	AffichageDuModele affichageDuModele;
 
-	public Telecommande(AffichageDuModele affichageDuModele) {
+	public Telecommande(AffichageDuModele affichageDuModele,double max) {
 		this.affichageDuModele = affichageDuModele;
+		coeffXetY = new EntierObjetTest((int) max);
+		sXY = new JSlider(0,coeffXetY.entier*2, coeffXetY.entier);
 		this.setSize(300, 300);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
@@ -50,19 +47,19 @@ public class Telecommande extends JFrame {
 				this.affichageDuModele));
 		sY.addChangeListener(new SliderListener(decalageY,
 				this.affichageDuModele));
-		panel1.add(new JLabel("Décalage horizontal : "));
+		panel1.add(new JLabel("Decalage horizontal : "));
 		panel1.add(sX);
-		panel1.add(new JLabel("Décalage vertical : "));
+		panel1.add(new JLabel("Decalage vertical : "));
 		panel1.add(sY);
 		panel1.add(new JLabel("Zoom : "));
 		panel1.add(sXY);
 		/*panel1.add(new JLabel(""));
 		panel1.add(sZ);*/
-		panel1.add(new JLabel("Rotation par rapport à l'axe des x : "));
+		panel1.add(new JLabel("Rotation par rapport a l'axe des x : "));
 		panel1.add(sRX);
-		panel1.add(new JLabel("Rotation par rapport à l'axe des y : "));
+		panel1.add(new JLabel("Rotation par rapport a�l'axe des y : "));
 		panel1.add(sRY);
-		panel1.add(new JLabel("Rotation par rapport à l'axe des z : "));
+		panel1.add(new JLabel("Rotation par rapport a�l'axe des z : "));
 		panel1.add(sRZ);
 
 		this.add(panel1);
@@ -108,6 +105,7 @@ public class Telecommande extends JFrame {
 		public void stateChanged(ChangeEvent e) {
 			JSlider source = (JSlider) e.getSource();
 			this.value.entier = (int) source.getValue();
+			//this.affichageDuModele.update(this.affichageDuModele.getGraphics());
 			this.affichageDuModele.repaint();
 		}
 
