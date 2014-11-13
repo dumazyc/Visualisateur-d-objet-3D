@@ -1,3 +1,4 @@
+package gestionDeLAffichage3D;
 public class Point {
 	private Double x;
 	private Double y;
