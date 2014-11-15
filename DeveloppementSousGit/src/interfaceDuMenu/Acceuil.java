@@ -3,6 +3,7 @@ package interfaceDuMenu;
 
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 @SuppressWarnings("serial")
@@ -12,7 +13,7 @@ public class Acceuil extends JFrame implements ActionListener {
 	protected static Container c=f.getContentPane();
 
 	public Acceuil(){
-		JFrame f=new JFrame();
+		final JFrame f=new JFrame();
 		Container c=f.getContentPane();
 		c.setLayout(new BorderLayout());
 
@@ -26,8 +27,17 @@ public class Acceuil extends JFrame implements ActionListener {
 		JLabel jla=new JLabel(ico);
 		c.add(jla,BorderLayout.NORTH);
 		JButton bu=(new JButton(" Cliquer ici pour accéder au menu "));
-		ActionListener listener=new BoutonAcceuil();
-		bu.addActionListener(listener);
+
+		bu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				Menu.creation();
+				f.setVisible(false);
+
+			}
+		});
+
+
 		JPanel toto=new JPanel();
 		Dimension d1=new Dimension(10,30);
 		toto.setPreferredSize(d1);
@@ -43,9 +53,12 @@ public class Acceuil extends JFrame implements ActionListener {
 	}
 
 
+
 	public static void main(String [] args){
 		new Acceuil();
 	}
+
+
 
 
 	@Override
@@ -53,5 +66,4 @@ public class Acceuil extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 
 	}
-
 }

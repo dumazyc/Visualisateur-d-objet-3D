@@ -1,8 +1,6 @@
 package interfaceDuMenu;
 
 
-import gestionDeLAffichage3D.AffichageDuModele;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,11 +9,11 @@ import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class Menu extends JFrame implements ActionListener{
+	 static JFrame f=new JFrame();
 
-	
 	public static void creation(){
 
-		final JFrame f=new JFrame();
+		
 		Container c=f.getContentPane();
 		c.setLayout(new BorderLayout());
 		Image wall=f.getToolkit().getImage("ressources/imageMenu/menu.gif/");
@@ -29,31 +27,37 @@ public class Menu extends JFrame implements ActionListener{
 		JPanel pa1=new JPanel();
 		JPanel pa2=new JPanel();
 		JPanel pa3=new JPanel();
-		
-		
+
+
 		JButton b=new JButton("Ajout d'objets");
 		b.setPreferredSize(d);
 		JButton e=new JButton("Recherche d'objets");
 		e.setPreferredSize(d);
 		JButton g=new JButton("Retour");
 		g.setPreferredSize(d);
-		
+
 		pa1.add(b);
 		pa2.add(e);
 		pa3.add(g);
+		
+		c.add(c1,BorderLayout.CENTER);
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setSize(640,480);
+		f.setResizable(false);
+		f.setVisible(true);
 
-        
-		/*a.addActionListener(new ActionListener() {
+
+		e.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new();
+				new Recherche();
 				f.setVisible(false);
 			}
-		});*/
+		});
 
 		c1.add(pa1);
 		b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new AffichageDuModele();
+				new Ajout();
 				f.setVisible(false);
 			}
 		});
@@ -68,23 +72,21 @@ public class Menu extends JFrame implements ActionListener{
 		g.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new Acceuil();
-				f.setVisible(false);
+				f.dispose();;
 			}
 		});
+
+
+
 		
-
-
-		c.add(c1,BorderLayout.CENTER);
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		f.setSize(640,480);
-		f.setResizable(false);
-		f.setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
-
+		
 	}
+
+	
 
 }
