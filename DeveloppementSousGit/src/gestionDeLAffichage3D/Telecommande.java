@@ -1,6 +1,7 @@
 package gestionDeLAffichage3D;
 import java.awt.Color;
 import java.awt.GridLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,9 +27,9 @@ public class Telecommande extends JFrame {
 	private JSlider sRZ = new JSlider(0, 360, rotationRZ.entier);
 	
 	private JPanel panel1 = new JPanel(new GridLayout(6*2, 1));
-	AffichageDuModele affichageDuModele;
+	PanelAffichage affichageDuModele;
 
-	public Telecommande(AffichageDuModele affichageDuModele,double max) {
+	public Telecommande(PanelAffichage affichageDuModele,double max) {
 		this.affichageDuModele = affichageDuModele;
 		coeffXetY = new EntierObjetTest((int) max);
 		sXY = new JSlider(0,coeffXetY.entier*2, coeffXetY.entier);
@@ -95,9 +96,9 @@ public class Telecommande extends JFrame {
 	
 	private class SliderListener implements ChangeListener {
 		EntierObjetTest value;
-		AffichageDuModele affichageDuModele;
+		PanelAffichage affichageDuModele;
 
-		public SliderListener(EntierObjetTest value, AffichageDuModele affichageDuModele) {
+		public SliderListener(EntierObjetTest value, PanelAffichage affichageDuModele) {
 			this.value = value;
 			this.affichageDuModele = affichageDuModele;
 		}
