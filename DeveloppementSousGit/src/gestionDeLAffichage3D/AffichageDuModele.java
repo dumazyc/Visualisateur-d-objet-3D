@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 @SuppressWarnings("serial")
@@ -32,6 +33,7 @@ public class AffichageDuModele extends JFrame {
 		JMenuItem recherche = new JMenuItem("Rechercher un objet");
 		JMenuItem enregistre = new JMenuItem("Enregistrer sous..");
 		JMenuItem fermer = new JMenuItem("Fermer");
+		JMenuItem aide = new JMenuItem("?");
 		
 		// raccourci clavier
 		ajout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK));
@@ -42,6 +44,7 @@ public class AffichageDuModele extends JFrame {
 		j1.add(recherche);
 		j1.add(enregistre);
 		j1.add(fermer);
+		j2.add(aide);
 		jmenubar.add(j1);
 		jmenubar.add(j2);
 		this.setJMenuBar(jmenubar);
@@ -59,6 +62,18 @@ public class AffichageDuModele extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}        
+		});
+		
+		//Ajout de l'aide
+		aide.addActionListener(new ActionListener(){
+			@SuppressWarnings("static-access")
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane jop = new JOptionPane();      
+				String mess = "Ctrl+A -> Ajouter objet\n";
+				mess += "Ctrl+F -> Recherche objet\n";
+				mess += "Alt+F4 -> Ferme l'application";
+				jop.showMessageDialog(null, mess, "À propos", JOptionPane.INFORMATION_MESSAGE);        
+			}            
 		});
 		
 		
