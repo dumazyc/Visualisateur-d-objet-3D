@@ -1,6 +1,5 @@
 package interfaceDuMenu;
 
-
 import java.awt.*;
 import java.awt.event.*;
 
@@ -26,7 +25,7 @@ public class Acceuil extends JFrame implements ActionListener {
 		Icon ico=new ImageIcon(wallpi);
 		JLabel jla=new JLabel(ico);
 		c.add(jla,BorderLayout.NORTH);
-		JButton bu=(new JButton(" Cliquer ici pour accéder au menu "));
+		JButton bu=(new JButton(" Cliquer ici pour accï¿½der au menu "));
 
 		bu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -67,3 +66,4 @@ public class Acceuil extends JFrame implements ActionListener {
 
 	}
 }
+//teste egit damien
