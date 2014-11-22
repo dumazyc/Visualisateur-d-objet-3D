@@ -1,20 +1,9 @@
 package gestionDeLAffichage3D;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Polygon;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.filechooser.FileFilter;
 
 @SuppressWarnings("serial")
 public class AffichageDuModele extends JFrame {

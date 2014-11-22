@@ -3,6 +3,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Polygon;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -11,6 +15,7 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
 @SuppressWarnings("serial")
@@ -18,8 +23,15 @@ public class PanelAffichage extends JPanel {
 	private List<Point> list_points = new ArrayList<Point>();
 	private List<Segment> list_segments = new ArrayList<Segment>();
 	private List<Face> list_faces = new ArrayList<Face>();
-	Telecommande t;
 	String nomDeLObjet;
+	int decalageX =700/2;
+	int decalageY=700/2;
+	int rotationX =0;
+	int rotationY=0;
+	int rotationZ =0;
+	int mouseX = 0;
+	int mouseY = 0;
+	int zoom = 1;
 	
 	private boolean RecupDonneeFichier(){
 		List<String> fichier = new ArrayList<String>();
@@ -90,9 +102,6 @@ public class PanelAffichage extends JPanel {
 				max = -list_points.get(i).getY();
 			}
 		}
-		System.out.println(max);
-		System.out.println(300/max);
-		t = new Telecommande(this,300/max );//max / (700 / 2)
 		
 		return true;
 	}
@@ -103,6 +112,8 @@ public class PanelAffichage extends JPanel {
 			this.setSize(700, 700);
 			this.setBackground(Color.WHITE);
 			this.setVisible(true);
+			this.addMouseMotionListener(new MouseListenerMaison(this));
+			this.addMouseWheelListener(new MouseWheelListenerMaison(this));
 	}
 	
 	
@@ -124,7 +135,7 @@ public class PanelAffichage extends JPanel {
 				buffer.setColor(new Color(255-(i*255)/tableau.length,255-(i*255)/tableau.length,255-(i*255)/tableau.length));
 				//g.setColor(tableau[i].getColor());
 				//g.setColor(new Color(r.nextInt(255)+1, r.nextInt(255)+1, r.nextInt(255)+1));
-				buffer.fillPolygon(generatePolygon(tableau[i],t.getCoeffXetY(),t.getDecalageX(),t.getDecalageY()));
+				buffer.fillPolygon(generatePolygon(tableau[i],zoom,decalageX,decalageY));
 			}
 
 	      g.drawImage(image, 0, 0, this);
@@ -159,14 +170,14 @@ public class PanelAffichage extends JPanel {
 		int j = droite;
 		Face tmp;
 		double pivot = trouverProfondeur(tableau[(gauche + droite) / 2],
-				t.getCoeffXetY(), t.getDecalageX(), t.getDecalageY());
+				zoom,decalageX, decalageY);
 		while (i <= j) {
-			while (trouverProfondeur(tableau[i], t.getCoeffXetY(),
-					t.getDecalageX(), t.getDecalageY()) < pivot) {
+			while (trouverProfondeur(tableau[i], zoom,
+					decalageX, decalageY) < pivot) {
 				i++;
 			}
-			while (trouverProfondeur(tableau[j], t.getCoeffXetY(),
-					t.getDecalageX(), t.getDecalageY()) > pivot) {
+			while (trouverProfondeur(tableau[j], zoom,
+					decalageX, decalageY) > pivot) {
 				j--;
 			}
 			if (i <= j) {
@@ -201,7 +212,7 @@ public class PanelAffichage extends JPanel {
 			z[i] = f.getPoint(i + 1).getZ();
 		}
 		Matrice m = new Matrice(x, y, z);
-		m = m.rotateX(t.getRotationX()).rotateY(t.getRotationY()).rotateZ(t.getRotationZ());
+		m = m.rotateX(rotationX).rotateY(rotationY).rotateZ(rotationZ);
 		for (int i = 0; i < 3; i++) {
 			x[i]=m.getTabX()[i]* cXY + dX;
 			y[i]=m.getTabY()[i] * cXY + dY;
@@ -221,7 +232,7 @@ public class PanelAffichage extends JPanel {
 			z[i] = f.getPoint(i + 1).getZ();
 		}
 		Matrice m = new Matrice(x, y, z);
-		m = m.rotateX(t.getRotationX()).rotateY(t.getRotationY()).rotateZ(t.getRotationZ());
+		m = m.rotateX(rotationX).rotateY(rotationY).rotateZ(rotationZ);
 		for (int i = 0; i < 3; i++) {
 			x[i]=m.getTabX()[i]* cXY + dX;
 			y[i]=m.getTabY()[i] * cXY + dY;
@@ -229,5 +240,54 @@ public class PanelAffichage extends JPanel {
 		}
 		m = new Matrice(x, y, z);
 		return m.PolygonGeneratorFromMatrice();
+	}
+
+	public class MouseWheelListenerMaison implements MouseWheelListener {
+		private PanelAffichage p;
+
+		public MouseWheelListenerMaison(PanelAffichage p) {
+			this.p = p;
+		}
+
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent e) {
+			
+			zoom += e.getWheelRotation();
+			if (zoom<=0) {
+				zoom -= e.getWheelRotation();
+			}
+			p.repaint();
+		}
+
+	}
+	public class MouseListenerMaison implements MouseMotionListener {
+		private PanelAffichage p;
+		
+		public MouseListenerMaison(PanelAffichage p) {
+			this.p = p;
+			
+
+		}
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			if (SwingUtilities.isLeftMouseButton (e)) {
+				decalageX += e.getX() - mouseX;
+				decalageY += e.getY() - mouseY;
+				
+			}else if (SwingUtilities.isRightMouseButton (e)) {
+					rotationY -= e.getX() - mouseX ;
+					rotationX -=   e.getY() - mouseY ;
+			}
+			mouseX = e.getX();
+			mouseY = e.getY();
+			p.repaint();
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			mouseX = e.getX();
+			mouseY = e.getY();
+		}
+		
 	}
 }
