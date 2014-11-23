@@ -277,6 +277,7 @@ public class PanelAffichage extends JPanel {
 			}else if (SwingUtilities.isRightMouseButton (e)) {
 					rotationY -= e.getX() - mouseX ;
 					rotationX -=   e.getY() - mouseY ;
+					
 			}
 			mouseX = e.getX();
 			mouseY = e.getY();
