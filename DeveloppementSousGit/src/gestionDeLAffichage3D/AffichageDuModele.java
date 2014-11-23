@@ -25,6 +25,7 @@ public class AffichageDuModele extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setResizable(true);
 		this.setBackground(Color.WHITE);
+		
 		this.setTitle(p.nomDeLObjet);
 		JMenu j1 = new JMenu("Fichier");
 		JMenu j2 = new JMenu("Aide");
@@ -59,7 +60,7 @@ public class AffichageDuModele extends JFrame {
 		// ferme l'application  
 		fermer.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
+				System.exit(0);
 			}        
 		});
 		
@@ -76,7 +77,6 @@ public class AffichageDuModele extends JFrame {
 		});
 		
 		this.setVisible(true);
-
 	}
 
 	public static void main(String[] args) {

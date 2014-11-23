@@ -11,6 +11,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JFileChooser;
@@ -102,7 +104,7 @@ public class PanelAffichage extends JPanel {
 				max = -list_points.get(i).getY();
 			}
 		}
-		
+		zoom = (int) (250/max);
 		return true;
 	}
 
@@ -125,84 +127,35 @@ public class PanelAffichage extends JPanel {
 	        buffer = image.getGraphics();
 	      }
 	     buffer.setColor(Color.BLACK);
-	     buffer.fillRect(0, 0,3000, 3000);		
-			Face tableau[] = new Face[list_faces.size()];
-			for (int i = 0; i < tableau.length; i++) {
-				tableau[i]=list_faces.get(i);
-			}
-			quickSort(tableau,0,tableau.length-1);
-			for (int i = tableau.length-1; i >-1; i--) {
-				buffer.setColor(new Color(255-(i*255)/tableau.length,255-(i*255)/tableau.length,255-(i*255)/tableau.length));
+	     buffer.fillRect(0, 0,3000, 3000);
+	     for (int i = 0; i <  list_faces.size(); i++) {
+	    	 rotation(list_faces.get(i));
+		}
+	
+			
+			
+			Collections.sort(list_faces);
+			
+			
+	     rotationX=0;
+			rotationY =0;
+			rotationZ=0;
+			for (int i = list_faces.size()-1; i >-1; i--) {
+				buffer.setColor(new Color(255-(i*255)/list_faces.size(),255-(i*255)/list_faces.size(),255-(i*255)/list_faces.size()));
 				//g.setColor(tableau[i].getColor());
 				//g.setColor(new Color(r.nextInt(255)+1, r.nextInt(255)+1, r.nextInt(255)+1));
-				buffer.fillPolygon(generatePolygon(tableau[i],zoom,decalageX,decalageY));
+				buffer.fillPolygon(generatePolygon(list_faces.get(i),zoom,decalageX,decalageY));
+				
 			}
 
 	      g.drawImage(image, 0, 0, this);
 	   }
 	
-	/*
-	public void paint (Graphics ga){
-		Graphics2D g = (Graphics2D)ga;
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0,3000, 3000);		
-		Face tableau[] = new Face[list_faces.size()];
-		for (int i = 0; i < tableau.length; i++) {
-			tableau[i]=list_faces.get(i);
-		}
-		quickSort(tableau,0,tableau.length-1);
-		for (int i = tableau.length-1; i >-1; i--) {
-			g.setColor(new Color(255-(i*255)/tableau.length,255-(i*255)/tableau.length,255-(i*255)/tableau.length));
-			//g.setColor(tableau[i].getColor());
-			//g.setColor(new Color(r.nextInt(255)+1, r.nextInt(255)+1, r.nextInt(255)+1));
-			g.fill(generatePolygon(tableau[i],t.getCoeffXetY(),t.getDecalageX(),t.getDecalageY()));
-		}
-		System.out.println("Zoom = "+t.getCoeffXetY());
-	}
-	*/
-	
 	public void update(Graphics g) {
 		paint(getGraphics());
 	}
 	
-	int partition(Face tableau[], int gauche, int droite) {
-		int i = gauche;
-		int j = droite;
-		Face tmp;
-		double pivot = trouverProfondeur(tableau[(gauche + droite) / 2],
-				zoom,decalageX, decalageY);
-		while (i <= j) {
-			while (trouverProfondeur(tableau[i], zoom,
-					decalageX, decalageY) < pivot) {
-				i++;
-			}
-			while (trouverProfondeur(tableau[j], zoom,
-					decalageX, decalageY) > pivot) {
-				j--;
-			}
-			if (i <= j) {
-				tmp = tableau[i];
-				tableau[i] = tableau[j];
-				tableau[j] = tmp;
-				i++;
-				j--;
-			}
-		}
-
-		return i;
-	}
-
-	void quickSort(Face tableau[], int gauche, int droite) {
-		int index = partition(tableau, gauche, droite);
-		if (gauche < index - 1) {
-			quickSort(tableau, gauche, index - 1);
-		}
-		if (index < droite) {
-			quickSort(tableau, index, droite);
-		}
-	}
-	
-	private double trouverProfondeur(Face f,int cXY, int dX, int dY) {
+	private void rotation(Face f){
 		double[] x = new double[3];
 		double[] y = new double[3];
 		double[] z = new double[3];
@@ -213,13 +166,13 @@ public class PanelAffichage extends JPanel {
 		}
 		Matrice m = new Matrice(x, y, z);
 		m = m.rotateX(rotationX).rotateY(rotationY).rotateZ(rotationZ);
-		for (int i = 0; i < 3; i++) {
-			x[i]=m.getTabX()[i]* cXY + dX;
-			y[i]=m.getTabY()[i] * cXY + dY;
-			z[i]=m.getTabZ()[i]* cXY;
-		}
-		m = new Matrice(x, y, z);
-		return m.getProfondeur();
+		Point a = new Point(m.getTabX()[0], m.getTabY()[0], m.getTabZ()[0], f.getPoint(1).getNumero());
+		Point b = new Point(m.getTabX()[1], m.getTabY()[1], m.getTabZ()[1], f.getPoint(2).getNumero());
+		Point c = new Point(m.getTabX()[2], m.getTabY()[2], m.getTabZ()[2], f.getPoint(3).getNumero());
+		f.setPoint(1, a);
+		f.setPoint(2, b);
+		f.setPoint(3, c);
+		
 	}
 	
 	private Polygon generatePolygon(Face f,int cXY, int dX, int dY) {
@@ -232,7 +185,10 @@ public class PanelAffichage extends JPanel {
 			z[i] = f.getPoint(i + 1).getZ();
 		}
 		Matrice m = new Matrice(x, y, z);
-		m = m.rotateX(rotationX).rotateY(rotationY).rotateZ(rotationZ);
+		
+		
+		
+		
 		for (int i = 0; i < 3; i++) {
 			x[i]=m.getTabX()[i]* cXY + dX;
 			y[i]=m.getTabY()[i] * cXY + dY;
@@ -275,8 +231,8 @@ public class PanelAffichage extends JPanel {
 				decalageY += e.getY() - mouseY;
 				
 			}else if (SwingUtilities.isRightMouseButton (e)) {
-					rotationY -= e.getX() - mouseX ;
-					rotationX -=   e.getY() - mouseY ;
+					rotationY -=  e.getX() - mouseX ;
+					rotationX +=  e.getY() - mouseY ;
 					
 			}
 			mouseX = e.getX();
