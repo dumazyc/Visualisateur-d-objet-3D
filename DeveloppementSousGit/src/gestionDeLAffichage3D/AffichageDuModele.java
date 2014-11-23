@@ -60,7 +60,7 @@ public class AffichageDuModele extends JFrame {
 		// ferme l'application  
 		fermer.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
+				setVisible(false);
 			}        
 		});
 		
