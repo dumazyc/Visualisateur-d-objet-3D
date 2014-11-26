@@ -17,8 +17,8 @@ public class AffichageDuModele extends JFrame {
 	PanelAffichage p;
 	JMenuBar jmenubar;
 
-	public AffichageDuModele() {
-		p = new PanelAffichage();
+	public AffichageDuModele(boolean b) {
+		p = new PanelAffichage(b);
 		jmenubar = new JMenuBar();
 		this.setSize(700, 700);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,7 +53,7 @@ public class AffichageDuModele extends JFrame {
 		// ouvre l'ajout d'objet
 		ajout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new AffichageDuModele();
+				new AffichageDuModele(false);
 			}
 		});
 		
@@ -80,6 +80,6 @@ public class AffichageDuModele extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new AffichageDuModele();
+		new AffichageDuModele(true);
 	}
 }
