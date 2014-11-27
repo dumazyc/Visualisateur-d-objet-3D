@@ -26,7 +26,7 @@ public class PanelAffichage extends JPanel {
 	private List<Segment> list_segments = new ArrayList<Segment>();
 	private List<Face> list_faces = new ArrayList<Face>();
 	String nomDeLObjet;
-	int decalageX =700/2;
+	int decalageX =700;
 	int decalageY=700/2;
 	int rotationX =0;
 	int rotationY=0;
@@ -176,7 +176,7 @@ public class PanelAffichage extends JPanel {
 	Image image; 
 	 public void paint( Graphics g ){
 	     if(buffer==null){
-	        image = createImage(700,700);
+	        image = createImage(getWidth(),getHeight());
 	        buffer = image.getGraphics();
 	      }
 	     buffer.setColor(Color.BLACK);

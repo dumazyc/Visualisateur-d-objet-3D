@@ -20,7 +20,8 @@ public class AffichageDuModele extends JFrame {
 	public AffichageDuModele(boolean b) {
 		p = new PanelAffichage(b);
 		jmenubar = new JMenuBar();
-		this.setSize(700, 700);
+		this.setExtendedState(this.MAXIMIZED_BOTH);
+		//this.setSize(700, 700);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setResizable(true);
@@ -60,7 +61,7 @@ public class AffichageDuModele extends JFrame {
 		// ferme l'application  
 		fermer.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				setVisible(false);
+				dispose();
 			}        
 		});
 		
