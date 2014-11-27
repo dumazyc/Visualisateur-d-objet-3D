@@ -95,6 +95,8 @@ public class Windows extends JFrame {
 	public static void main(String[] args) {
 		JFrame f = new Windows();
 		f.setVisible(true);
+		JFrame p = new PopUp();
+		p.setVisible(true);
 	}
 
 }
