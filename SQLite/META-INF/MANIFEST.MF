@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SQLite
+Bundle-SymbolicName: SQLite
+Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: SQLite.jar,
+ skytech/Documents/IUT/s3/sqlite-jdbc-3.7.2.jar
+Export-Package: .
