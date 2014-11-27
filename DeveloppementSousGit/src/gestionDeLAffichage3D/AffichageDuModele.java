@@ -78,6 +78,7 @@ public class AffichageDuModele extends JFrame {
 		});
 		
 		this.setVisible(true);
+		
 	}
 
 	public static void main(String[] args) {

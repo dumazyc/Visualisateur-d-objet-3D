@@ -1,5 +1,6 @@
 package gestionDeLAffichage3D;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Polygon;
@@ -164,11 +165,13 @@ public class PanelAffichage extends JPanel {
 	
 	public PanelAffichage(boolean b) {
 			RecupDonneeFichier(b);
-			this.setSize(700, 700);
 			this.setBackground(Color.WHITE);
 			this.setVisible(true);
 			this.addMouseMotionListener(new MouseListenerMaison(this));
 			this.addMouseWheelListener(new MouseWheelListenerMaison(this));
+			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+			decalageY = (int)tailleEcran.getHeight()/2;
+			decalageX = (int)tailleEcran.getWidth()/2;
 	}
 	
 	
