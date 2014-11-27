@@ -1,5 +1,6 @@
 package gestionDeLAffichage3D;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Polygon;
@@ -26,8 +27,8 @@ public class PanelAffichage extends JPanel {
 	private List<Segment> list_segments = new ArrayList<Segment>();
 	private List<Face> list_faces = new ArrayList<Face>();
 	String nomDeLObjet;
-	int decalageX =700/2;
-	int decalageY=700/2;
+	int decalageX =0;
+	int decalageY=0;
 	int rotationX =0;
 	int rotationY=0;
 	int rotationZ =0;
@@ -35,7 +36,59 @@ public class PanelAffichage extends JPanel {
 	int mouseY = 0;
 	int zoom = 1;
 	
-	private boolean RecupDonneeFichier(){
+	private boolean RecupDonneeFichier(boolean firstLaunch){
+		if (firstLaunch) {
+			List<String> fichier = new ArrayList<String>();
+			try {
+				String ligne;
+				FileReader flux;
+				BufferedReader entree;
+				flux = new FileReader("ressources/modeles/icosa.gts");
+				entree = new BufferedReader(flux);
+				while ((ligne = entree.readLine()) != null) {
+					fichier.add(ligne);
+				}
+				entree.close();
+			} catch (Exception e) {
+				System.err.println(e.toString());
+				return false;
+			}
+			nomDeLObjet = "icosa.gts";
+			String first = fichier.get(0);
+			int nbPoints = Integer.parseInt(first.substring(0,first.indexOf(' ')));
+			int nbSegments = Integer.parseInt(first.substring(first.indexOf(' ')+1,first.indexOf(' ')+1+first.substring(first.indexOf(' ')+1).indexOf(' ')));
+			int nbFaces = Integer.parseInt(first.substring(first.indexOf(' ')+1+first.substring(first.indexOf(' ')+1).indexOf(' ')+1));
+			int parcoursDeLigne = 1;
+			for (int i = parcoursDeLigne; i < parcoursDeLigne+nbPoints; i++) {
+				list_points.add(new Point(Double.parseDouble(fichier.get(i).substring(0,fichier.get(i).indexOf(' '))), Double.parseDouble(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' '))), Double.parseDouble(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1)),(i-parcoursDeLigne+1)));
+			}
+			parcoursDeLigne+=nbPoints;
+			for (int i = parcoursDeLigne; i < parcoursDeLigne+nbSegments; i++) {
+				list_segments.add(new Segment(list_points.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_points.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
+			}
+			parcoursDeLigne+=nbSegments;
+			for (int i = parcoursDeLigne; i < parcoursDeLigne+nbFaces; i++) {
+				list_faces.add(new Face(list_segments.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
+			}
+			Double max = list_points.get(0).getX();
+			for (int i = 0; i < list_points.size(); i++) {
+				if (list_points.get(i).getX() > max) {
+					max = list_points.get(i).getX();
+				} else if (list_points.get(i).getX() < -max) {
+					max = -list_points.get(i).getX();
+				}
+				if (list_points.get(i).getY() > max) {
+					max = list_points.get(i).getY();
+				} else if (list_points.get(i).getY() < -max) {
+					max = -list_points.get(i).getY();
+				}
+			}
+			zoom = (int) (250/max);
+			firstLaunch = false;
+			return true;
+			
+			
+		}else{
 		List<String> fichier = new ArrayList<String>();
 		JFileChooser fc = new JFileChooser("ressources/modeles/");
 		fc.setAcceptAllFileFilterUsed(false);
@@ -106,16 +159,19 @@ public class PanelAffichage extends JPanel {
 		}
 		zoom = (int) (250/max);
 		return true;
+		}
 	}
 
 	
-	public PanelAffichage() {
-			RecupDonneeFichier();
-			this.setSize(700, 700);
+	public PanelAffichage(boolean b) {
+			RecupDonneeFichier(b);
 			this.setBackground(Color.WHITE);
 			this.setVisible(true);
 			this.addMouseMotionListener(new MouseListenerMaison(this));
 			this.addMouseWheelListener(new MouseWheelListenerMaison(this));
+			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+			decalageY = (int)tailleEcran.getHeight()/2;
+			decalageX = (int)tailleEcran.getWidth()/2;
 	}
 	
 	
@@ -123,7 +179,7 @@ public class PanelAffichage extends JPanel {
 	Image image; 
 	 public void paint( Graphics g ){
 	     if(buffer==null){
-	        image = createImage(700,700);
+	        image = createImage(getWidth(),getHeight());
 	        buffer = image.getGraphics();
 	      }
 	     buffer.setColor(Color.BLACK);
@@ -208,7 +264,7 @@ public class PanelAffichage extends JPanel {
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			
-			zoom += e.getWheelRotation();
+			zoom -= e.getWheelRotation();
 			if (zoom<=0) {
 				zoom -= e.getWheelRotation();
 			}
