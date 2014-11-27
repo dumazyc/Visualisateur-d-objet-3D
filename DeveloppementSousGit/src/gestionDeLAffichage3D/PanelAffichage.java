@@ -27,8 +27,8 @@ public class PanelAffichage extends JPanel {
 	private List<Segment> list_segments = new ArrayList<Segment>();
 	private List<Face> list_faces = new ArrayList<Face>();
 	String nomDeLObjet;
-	int decalageX =700;
-	int decalageY=700/2;
+	int decalageX =0;
+	int decalageY=0;
 	int rotationX =0;
 	int rotationY=0;
 	int rotationZ =0;

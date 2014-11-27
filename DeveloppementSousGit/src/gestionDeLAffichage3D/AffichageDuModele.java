@@ -1,6 +1,7 @@
 package gestionDeLAffichage3D;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -11,6 +12,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import java.awt.Toolkit;
 
 @SuppressWarnings("serial")
 public class AffichageDuModele extends JFrame {
@@ -20,11 +22,16 @@ public class AffichageDuModele extends JFrame {
 	public AffichageDuModele(boolean b) {
 		p = new PanelAffichage(b);
 		jmenubar = new JMenuBar();
+		
+		Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
+		int Y = (int)tailleEcran.getHeight();
+		int X = (int)tailleEcran.getWidth();
+
 		this.setExtendedState(this.MAXIMIZED_BOTH);
-		//this.setSize(700, 700);
+		this.setSize(X, Y);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
-		this.setResizable(true);
+		this.setResizable(false);
 		this.setBackground(Color.WHITE);
 		
 		this.setTitle(p.nomDeLObjet);
