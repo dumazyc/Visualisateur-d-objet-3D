@@ -2,22 +2,18 @@ package gestionDeLAffichage3D;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
-
 import java.awt.Toolkit;
-import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class AffichageDuModele extends JFrame {
@@ -32,13 +28,12 @@ public class AffichageDuModele extends JFrame {
 		int Y = (int)tailleEcran.getHeight();
 		int X = (int)tailleEcran.getWidth();
 
-		this.setExtendedState(Frame.MAXIMIZED_BOTH);
+		this.setExtendedState(this.MAXIMIZED_BOTH);
 		this.setSize(X, Y);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setBackground(Color.WHITE);
-		
 		
 		this.setTitle(p.nomDeLObjet);
 		JMenu j1 = new JMenu("Fichier");
@@ -48,27 +43,12 @@ public class AffichageDuModele extends JFrame {
 		JMenuItem enregistre = new JMenuItem("Enregistrer sous..");
 		JMenuItem fermer = new JMenuItem("Fermer");
 		JMenuItem aide = new JMenuItem("?");
+		JMenu resolution = new JMenu("Resolution");
+		JCheckBoxMenuItem full= new JCheckBoxMenuItem("Plein ecran");
+		JCheckBoxMenuItem full2 = new JCheckBoxMenuItem("1240*640");
+		JCheckBoxMenuItem full3 = new JCheckBoxMenuItem("xxx*xxx");
 		
-		//ouvre l'ajout du mod�le
-		ajout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try {
-					Ajout.createAndDisplayGUI();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
-		});
-		recherche.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				//Recherche1.createAndDisplayGUI();
-				new AffichageDuModele(false);
-			}
-		});
-		
-		// raccourci clavier
+		// raccourci claviera
 		ajout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK));
 		recherche.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_MASK));
 		fermer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_DOWN_MASK));
@@ -78,12 +58,22 @@ public class AffichageDuModele extends JFrame {
 		j1.add(enregistre);
 		j1.add(fermer);
 		j2.add(aide);
+		j2.add(resolution);
+		resolution.add(full);
+		resolution.add(full2);
+		resolution.add(full3);
 		jmenubar.add(j1);
 		jmenubar.add(j2);
 		this.setJMenuBar(jmenubar);
 		this.add(p);
 		
-	
+		// ouvre l'ajout d'objet
+		ajout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new AffichageDuModele(false);
+			}
+		});
+		
 		// ferme l'application  
 		fermer.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -99,7 +89,7 @@ public class AffichageDuModele extends JFrame {
 				String mess = "Ctrl+A -> Ajouter objet\n";
 				mess += "Ctrl+F -> Recherche objet\n";
 				mess += "Alt+F4 -> Ferme l'application";
-				jop.showMessageDialog(null, mess, "� propos", JOptionPane.INFORMATION_MESSAGE);        
+				jop.showMessageDialog(null, mess, "��� propos", JOptionPane.INFORMATION_MESSAGE);        
 			}            
 		});
 		
