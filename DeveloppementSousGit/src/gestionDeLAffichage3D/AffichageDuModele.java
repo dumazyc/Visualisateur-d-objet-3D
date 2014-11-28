@@ -8,12 +8,15 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 import java.awt.Toolkit;
 
@@ -25,6 +28,7 @@ public class AffichageDuModele extends JFrame {
 	public AffichageDuModele(boolean b) {
 		p = new PanelAffichage(b);
 		jmenubar = new JMenuBar();
+		
 		
 		Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
 		int Y = (int)tailleEcran.getHeight();
@@ -46,10 +50,15 @@ public class AffichageDuModele extends JFrame {
 		JMenuItem fermer = new JMenuItem("Fermer");
 		JMenuItem aide = new JMenuItem("?");
 		JMenu resolution = new JMenu("Resolution");
-		JCheckBoxMenuItem full= new JCheckBoxMenuItem("Plein ecran", true);
-		JCheckBoxMenuItem full2 = new JCheckBoxMenuItem("1240*640");
-		JCheckBoxMenuItem full3 = new JCheckBoxMenuItem("xxx*xxx");
-		
+		JRadioButtonMenuItem full= new JRadioButtonMenuItem("Plein ecran", true);
+		JRadioButtonMenuItem full2= new JRadioButtonMenuItem("1240*640");
+		JRadioButtonMenuItem full3= new JRadioButtonMenuItem("xxx*xxx");
+		ButtonGroup bg = new ButtonGroup();
+	    bg.add(full);
+	    bg.add(full2);
+	    bg.add(full3);
+
+	    
 		// raccourci clavier
 		ajout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK));
 		recherche.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_MASK));
@@ -68,6 +77,9 @@ public class AffichageDuModele extends JFrame {
 		jmenubar.add(j2);
 		this.setJMenuBar(jmenubar);
 		this.add(p);
+		
+		
+		
 		
 		// ouvre l'ajout d'objet
 		ajout.addActionListener(new ActionListener() {
@@ -131,5 +143,6 @@ public class AffichageDuModele extends JFrame {
 
 	public static void main(String[] args) {
 		new AffichageDuModele(true);
+		
 	}
 }
