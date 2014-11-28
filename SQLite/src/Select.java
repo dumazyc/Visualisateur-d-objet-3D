@@ -20,7 +20,7 @@ public class Select
          String forme  = rs.getString("forme");
          String utilisation  = rs.getString("utilisation");
          String volume  = rs.getString("volume");
-         Date datecreation  = rs.getDate("datecreation");
+         String datecreation  = rs.getString("datecreation");
          String complexite  = rs.getString("complexite");
          String lien  = rs.getString("lien");
          System.out.println( "ID = " + id );
