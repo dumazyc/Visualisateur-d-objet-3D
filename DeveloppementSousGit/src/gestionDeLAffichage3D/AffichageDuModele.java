@@ -49,7 +49,7 @@ public class AffichageDuModele extends JFrame {
 		JMenuItem fermer = new JMenuItem("Fermer");
 		JMenuItem aide = new JMenuItem("?");
 		
-		//ouvre l'ajout du modèle
+		//ouvre l'ajout du modï¿½le
 		ajout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -63,8 +63,8 @@ public class AffichageDuModele extends JFrame {
 		});
 		recherche.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Recherche1.createAndDisplayGUI();
-				
+				//Recherche1.createAndDisplayGUI();
+				new AffichageDuModele(false);
 			}
 		});
 		
@@ -99,7 +99,7 @@ public class AffichageDuModele extends JFrame {
 				String mess = "Ctrl+A -> Ajouter objet\n";
 				mess += "Ctrl+F -> Recherche objet\n";
 				mess += "Alt+F4 -> Ferme l'application";
-				jop.showMessageDialog(null, mess, "À propos", JOptionPane.INFORMATION_MESSAGE);        
+				jop.showMessageDialog(null, mess, "ï¿½ propos", JOptionPane.INFORMATION_MESSAGE);        
 			}            
 		});
 		
