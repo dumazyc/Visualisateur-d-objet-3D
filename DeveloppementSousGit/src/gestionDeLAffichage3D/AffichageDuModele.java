@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -44,11 +46,11 @@ public class AffichageDuModele extends JFrame {
 		JMenuItem fermer = new JMenuItem("Fermer");
 		JMenuItem aide = new JMenuItem("?");
 		JMenu resolution = new JMenu("Resolution");
-		JCheckBoxMenuItem full= new JCheckBoxMenuItem("Plein ecran");
+		JCheckBoxMenuItem full= new JCheckBoxMenuItem("Plein ecran", true);
 		JCheckBoxMenuItem full2 = new JCheckBoxMenuItem("1240*640");
 		JCheckBoxMenuItem full3 = new JCheckBoxMenuItem("xxx*xxx");
 		
-		// raccourci claviera
+		// raccourci clavier
 		ajout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK));
 		recherche.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_MASK));
 		fermer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_DOWN_MASK));
@@ -91,6 +93,36 @@ public class AffichageDuModele extends JFrame {
 				mess += "Alt+F4 -> Ferme l'application";
 				jop.showMessageDialog(null, mess, "��� propos", JOptionPane.INFORMATION_MESSAGE);        
 			}            
+		});
+		
+			
+		
+		// si case cocher alors plein ecran
+		full.addActionListener(new ActionListener() {		
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
+				int Y = (int)tailleEcran.getHeight();
+				int X = (int)tailleEcran.getWidth();
+				AffichageDuModele.this.setSize(X, Y);
+			}
+		});
+			
+		// si case cocher alors taille fenetre = xxx
+		full2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AffichageDuModele.this.setSize(1240, 720);
+				
+			}
+		});
+		// si case cocher alors taille fenetre = xxx
+		full3.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AffichageDuModele.this.setSize(1240, 720);
+			}
 		});
 		
 		this.setVisible(true);
