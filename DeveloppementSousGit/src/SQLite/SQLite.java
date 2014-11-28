@@ -1,3 +1,4 @@
+package SQLite;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -20,7 +21,7 @@ public class SQLite
                    " FORME          TEXT    NOT NULL, " + 
                    " UTILISATION    TEXT    NOT NULL, " + 
                    " VOLUME         TEXT    NOT NULL, " + 
-                   " DATECREATION   DATETIME    NOT NULL, " + 
+                   " DATECREATION   DATE    NOT NULL, " + 
                    " COMPLEXITE     INT    	NOT NULL," +
                    " LIEN 			TEXT 	NOT NULL)"; 
       stmt.executeUpdate(sql);

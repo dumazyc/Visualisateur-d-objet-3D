@@ -1,3 +1,4 @@
+package SQLite;
 import java.sql.*;
 
 public class Insert
@@ -14,7 +15,7 @@ public class Insert
 
       stmt = c.createStatement();
       String sql = "INSERT INTO OBJETS3D (ID,NAME,FORME,UTILISATION,VOLUME,DATECREATION,COMPLEXITE,LIEN) " +
-               "VALUES (8, 'Bunny', 'Lapin', 'Mode', 'En attente', '2014-11-27', 'Simple', 'En attente' );"; 
+               "VALUES (1, 'Bunny', 'Lapin', 'Mode', 'En attente', '2014-11-28', 'Simple', 'En attente' );"; 
       stmt.executeUpdate(sql);
 
       stmt.close();
