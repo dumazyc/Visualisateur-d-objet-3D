@@ -2,8 +2,11 @@ package gestionDeLAffichage3D;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
@@ -12,7 +15,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+
 import java.awt.Toolkit;
+import java.io.IOException;
 
 @SuppressWarnings("serial")
 public class AffichageDuModele extends JFrame {
@@ -27,12 +32,13 @@ public class AffichageDuModele extends JFrame {
 		int Y = (int)tailleEcran.getHeight();
 		int X = (int)tailleEcran.getWidth();
 
-		this.setExtendedState(this.MAXIMIZED_BOTH);
+		this.setExtendedState(Frame.MAXIMIZED_BOTH);
 		this.setSize(X, Y);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.setResizable(false);
 		this.setBackground(Color.WHITE);
+		
 		
 		this.setTitle(p.nomDeLObjet);
 		JMenu j1 = new JMenu("Fichier");
@@ -42,6 +48,25 @@ public class AffichageDuModele extends JFrame {
 		JMenuItem enregistre = new JMenuItem("Enregistrer sous..");
 		JMenuItem fermer = new JMenuItem("Fermer");
 		JMenuItem aide = new JMenuItem("?");
+		
+		//ouvre l'ajout du modèle
+		ajout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					Ajout.createAndDisplayGUI();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		recherche.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Recherche1.createAndDisplayGUI();
+				
+			}
+		});
 		
 		// raccourci clavier
 		ajout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK));
@@ -58,13 +83,7 @@ public class AffichageDuModele extends JFrame {
 		this.setJMenuBar(jmenubar);
 		this.add(p);
 		
-		// ouvre l'ajout d'objet
-		ajout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				new AffichageDuModele(false);
-			}
-		});
-		
+	
 		// ferme l'application  
 		fermer.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
