@@ -14,6 +14,7 @@ public class RechercheVaine extends JFrame implements ActionListener{
 		
 		Container c=f.getContentPane();
 		c.setLayout(new GridLayout(5,1,1,1));
+		//changer le smiley apres
 		Image wall=f.getToolkit().getImage("ressources/imageMenu/imageIhm/confus.gif/");
 		Icon ic=new ImageIcon(wall);
 		JLabel jl=new JLabel(ic);
@@ -22,7 +23,7 @@ public class RechercheVaine extends JFrame implements ActionListener{
 		JPanel pa1=new JPanel();
 		JPanel pa2=new JPanel();
 		
-		JButton b=new JButton(" Modifier vos critères de recherche ");
+		JButton b=new JButton(" Modifier vos criteres de recherche ");
 		
 		JButton e=new JButton(" Avoir des suggestions ");
 	
@@ -43,13 +44,6 @@ public class RechercheVaine extends JFrame implements ActionListener{
 				f.setVisible(false);
 			}
 		});
-		Image wall3=f.getToolkit().getImage("ressources/imageMenu/imageIhm/or.png/");
-		Icon ic3=new ImageIcon(wall3);
-		JLabel j3=new JLabel(ic3);
-		c.add(j3);
-		
-		
-		
 	
 		c.add(pa2);
 		e.addActionListener(new ActionListener() {

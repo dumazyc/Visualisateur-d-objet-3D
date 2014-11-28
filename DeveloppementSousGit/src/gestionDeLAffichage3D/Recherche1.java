@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public class Recherche1 
 {
-	static JFrame frame = new JFrame("Veuillez entrer vos critères de recherche :   ");
+	static JFrame frame = new JFrame("Veuillez entrer vos criteres de recherche :   ");
 	public static void createAndDisplayGUI()
 	{ 
 		Dimension d=new Dimension(100,27);
@@ -106,11 +106,11 @@ public class Recherche1
 			public void actionPerformed(ActionEvent e) {
 				if((cbox1.isSelected()&&tfield1.getText().isEmpty())||(cbox.isSelected()&&tfield.getText().isEmpty())){
 					JOptionPane.showMessageDialog(frame,
-							"Un champ coché ne peut être vide.",
+							"Un champ coche ne peut etre vide.",
 							"Attention",
 							JOptionPane.WARNING_MESSAGE);
 				}
-				//else insertion dans la base
+				//else recherche dans la base
 
 
 			}
