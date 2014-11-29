@@ -32,8 +32,7 @@ public class AffichageDuModele extends JFrame {
 		
 		int X =700;
 		int Y = 700;
-
-		this.setExtendedState(this.MAXIMIZED_BOTH);
+		//this.setExtendedState(this.MAXIMIZED_BOTH);
 		this.setSize(X, Y);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
@@ -49,8 +48,8 @@ public class AffichageDuModele extends JFrame {
 		JMenuItem fermer = new JMenuItem("Fermer");
 		JMenuItem aide = new JMenuItem("?");
 		JMenu resolution = new JMenu("Resolution");
-		JRadioButtonMenuItem full= new JRadioButtonMenuItem("Plein ecran", true);
-		JRadioButtonMenuItem full2= new JRadioButtonMenuItem("1240*640");
+		JRadioButtonMenuItem full= new JRadioButtonMenuItem("Plein ecran");
+		JRadioButtonMenuItem full2= new JRadioButtonMenuItem("700*700", true);
 		JRadioButtonMenuItem full3= new JRadioButtonMenuItem("xxx*xxx");
 		ButtonGroup bg = new ButtonGroup();
 	    bg.add(full);
@@ -120,7 +119,7 @@ public class AffichageDuModele extends JFrame {
 			}
 		});
 			
-		// si case cocher alors taille fenetre = xxx
+		// si case cocher alors taille fenetre = 700/700
 		full2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

@@ -170,8 +170,8 @@ public class PanelAffichage extends JPanel {
 			this.addMouseMotionListener(new MouseListenerMaison(this));
 			this.addMouseWheelListener(new MouseWheelListenerMaison(this));
 			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-			decalageY = (int)tailleEcran.getHeight()/2;
-			decalageX = (int)tailleEcran.getWidth()/2;
+			decalageY = 350;
+			decalageX = 350;
 	}
 	
 	
