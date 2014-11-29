@@ -30,9 +30,8 @@ public class AffichageDuModele extends JFrame {
 		jmenubar = new JMenuBar();
 		
 		
-		Dimension tailleEcran = Toolkit.getDefaultToolkit().getScreenSize();
-		int Y = (int)tailleEcran.getHeight();
-		int X = (int)tailleEcran.getWidth();
+		int X =700;
+		int Y = 700;
 
 		this.setExtendedState(this.MAXIMIZED_BOTH);
 		this.setSize(X, Y);
@@ -117,6 +116,7 @@ public class AffichageDuModele extends JFrame {
 				int Y = (int)tailleEcran.getHeight();
 				int X = (int)tailleEcran.getWidth();
 				AffichageDuModele.this.setSize(X, Y);
+				AffichageDuModele.this.setLocationRelativeTo(null);
 			}
 		});
 			
@@ -124,7 +124,7 @@ public class AffichageDuModele extends JFrame {
 		full2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AffichageDuModele.this.setSize(1240, 720);
+				AffichageDuModele.this.setSize(700, 700);
 				
 			}
 		});
