@@ -183,7 +183,7 @@ public class PanelAffichage extends JPanel {
 	        buffer = image.getGraphics();
 	      }
 	     buffer.setColor(Color.BLACK);
-	     buffer.fillRect(0, 0,3000, 3000);
+	     buffer.fillRect(0,0,8000, 8000);
 	     for (int i = 0; i <  list_faces.size(); i++) {
 	    	 rotation(list_faces.get(i));
 		}
@@ -264,7 +264,7 @@ public class PanelAffichage extends JPanel {
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			
-			zoom -= e.getWheelRotation();
+			zoom -= (e.getWheelRotation())*4;
 			if (zoom<=0) {
 				zoom -= e.getWheelRotation();
 			}
@@ -300,6 +300,12 @@ public class PanelAffichage extends JPanel {
 		public void mouseMoved(MouseEvent e) {
 			mouseX = e.getX();
 			mouseY = e.getY();
+		}
+		public void setTaille(Graphics buffer ){
+			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+			int Y = (int)tailleEcran.getHeight();
+			int X = (int)tailleEcran.getWidth();
+			buffer.clipRect(0, 0, X, Y);
 		}
 		
 	}
