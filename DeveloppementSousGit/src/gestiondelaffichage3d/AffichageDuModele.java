@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -80,7 +81,8 @@ public class AffichageDuModele extends JFrame {
 			jmenubar.add(j1);
 			jmenubar.add(j2);
 			this.setJMenuBar(jmenubar);
-			j.add(p.nomDeLObjet, p);
+			j.addTab(p.nomDeLObjet, p);
+			
 			this.add(j);
 
 			// ouvre l'ajout d'objet
@@ -146,6 +148,9 @@ public class AffichageDuModele extends JFrame {
 	public void nouvelOnglet(){
 		p = new PanelAffichage(false);
 		j.add(p.nomDeLObjet, p);
+		int index = j.getTabCount() -1;
+		j.setSelectedIndex(index);
+		
 	}
 	public static void main(String[] args) {
 		new AffichageDuModele(true);
