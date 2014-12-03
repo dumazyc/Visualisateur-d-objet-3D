@@ -1,4 +1,4 @@
-package gestionDeLAffichage3D;
+package menuetoptions;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;

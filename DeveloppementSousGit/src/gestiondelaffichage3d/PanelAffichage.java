@@ -1,4 +1,4 @@
-package gestionDeLAffichage3D;
+package gestiondelaffichage3d;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -170,8 +170,8 @@ public class PanelAffichage extends JPanel {
 			this.addMouseMotionListener(new MouseListenerMaison(this));
 			this.addMouseWheelListener(new MouseWheelListenerMaison(this));
 			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-			decalageY = (int)tailleEcran.getHeight()/2;
-			decalageX = (int)tailleEcran.getWidth()/2;
+			decalageY = 350;
+			decalageX = 350;
 	}
 	
 	
@@ -183,7 +183,7 @@ public class PanelAffichage extends JPanel {
 	        buffer = image.getGraphics();
 	      }
 	     buffer.setColor(Color.BLACK);
-	     buffer.fillRect(0, 0,3000, 3000);
+	     buffer.fillRect(0,0,8000, 8000);
 	     for (int i = 0; i <  list_faces.size(); i++) {
 	    	 rotation(list_faces.get(i));
 		}
@@ -266,7 +266,7 @@ public class PanelAffichage extends JPanel {
 			
 			zoom -= e.getWheelRotation();
 			if (zoom<=0) {
-				zoom -= e.getWheelRotation();
+				zoom += e.getWheelRotation();
 			}
 			p.repaint();
 		}
@@ -282,7 +282,12 @@ public class PanelAffichage extends JPanel {
 		}
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			if (SwingUtilities.isLeftMouseButton (e)) {
+			if (SwingUtilities.isLeftMouseButton (e)&&SwingUtilities.isRightMouseButton (e)) {
+				decalageX += e.getX() - mouseX;
+				decalageY += e.getY() - mouseY;
+				rotationY -=  e.getX() - mouseX ;
+				rotationX +=  e.getY() - mouseY ;
+			}else if (SwingUtilities.isLeftMouseButton (e)) {
 				decalageX += e.getX() - mouseX;
 				decalageY += e.getY() - mouseY;
 				
@@ -300,6 +305,12 @@ public class PanelAffichage extends JPanel {
 		public void mouseMoved(MouseEvent e) {
 			mouseX = e.getX();
 			mouseY = e.getY();
+		}
+		public void setTaille(Graphics buffer ){
+			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+			int Y = (int)tailleEcran.getHeight();
+			int X = (int)tailleEcran.getWidth();
+			buffer.clipRect(0, 0, X, Y);
 		}
 		
 	}

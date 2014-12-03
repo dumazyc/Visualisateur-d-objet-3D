@@ -1,4 +1,6 @@
-/*package gestionDeLAffichage3D;
+package menuetoptions;
+/*package menuEtOptions;
+
 
 import java.awt.BorderLayout;
 import java.awt.Color;

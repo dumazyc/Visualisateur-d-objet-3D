@@ -1,4 +1,4 @@
-package gestionDeLAffichage3D;
+package menuetoptions;
 
 public class Enregistrer {
 
