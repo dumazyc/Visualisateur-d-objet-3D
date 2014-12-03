@@ -84,7 +84,6 @@ public class PanelAffichage extends JPanel {
 				}
 			}
 			zoom = (int) (250/max);
-			System.out.println(zoom);
 			firstLaunch = false;
 			return true;
 			
