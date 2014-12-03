@@ -1,4 +1,4 @@
-package SQLite;
+package sqlite;
 import java.sql.*;
 
 public class Insert

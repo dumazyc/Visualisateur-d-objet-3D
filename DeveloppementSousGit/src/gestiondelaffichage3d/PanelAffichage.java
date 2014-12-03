@@ -1,4 +1,4 @@
-package gestionDeLAffichage3D;
+package gestiondelaffichage3d;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -84,6 +84,7 @@ public class PanelAffichage extends JPanel {
 				}
 			}
 			zoom = (int) (250/max);
+			System.out.println(zoom);
 			firstLaunch = false;
 			return true;
 			
@@ -264,9 +265,9 @@ public class PanelAffichage extends JPanel {
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
 			
-			zoom -= (e.getWheelRotation())*4;
+			zoom -= e.getWheelRotation();
 			if (zoom<=0) {
-				zoom -= e.getWheelRotation();
+				zoom += e.getWheelRotation();
 			}
 			p.repaint();
 		}
@@ -282,7 +283,12 @@ public class PanelAffichage extends JPanel {
 		}
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			if (SwingUtilities.isLeftMouseButton (e)) {
+			if (SwingUtilities.isLeftMouseButton (e)&&SwingUtilities.isRightMouseButton (e)) {
+				decalageX += e.getX() - mouseX;
+				decalageY += e.getY() - mouseY;
+				rotationY -=  e.getX() - mouseX ;
+				rotationX +=  e.getY() - mouseY ;
+			}else if (SwingUtilities.isLeftMouseButton (e)) {
 				decalageX += e.getX() - mouseX;
 				decalageY += e.getY() - mouseY;
 				

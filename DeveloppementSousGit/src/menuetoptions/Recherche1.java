@@ -1,4 +1,4 @@
-package gestionDeLAffichage3D;
+package menuetoptions;
 
 import java.awt.Container;
 import java.awt.Dimension;

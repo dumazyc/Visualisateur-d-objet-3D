@@ -1,4 +1,4 @@
-package gestionDeLAffichage3D;
+package gestiondelaffichage3d;
 import java.awt.Polygon;
 
 public class Matrice {
