@@ -18,6 +18,7 @@ public class Select
       while ( rs.next() ) {
          int id = rs.getInt("id");
          String  name = rs.getString("name");
+         String  auteur = rs.getString("auteur");
          String forme  = rs.getString("forme");
          String utilisation  = rs.getString("utilisation");
          String volume  = rs.getString("volume");
@@ -26,6 +27,7 @@ public class Select
          String lien  = rs.getString("lien");
          System.out.println( "ID = " + id );
          System.out.println( "NAME = " + name );
+         System.out.println( "AUTEUR = " + auteur );
          System.out.println( "FORME = " + forme );
          System.out.println( "UTILISATION = " + utilisation );
          System.out.println( "VOLUME = " + volume );

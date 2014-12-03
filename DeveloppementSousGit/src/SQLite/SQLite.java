@@ -18,6 +18,7 @@ public class SQLite
       String sql = "CREATE TABLE OBJETS3D " +
                    "(ID serial PRIMARY KEY     NOT NULL," +
                    " NAME           TEXT    NOT NULL, " + 
+                   " AUTEUR           TEXT    NOT NULL, " + 
                    " FORME          TEXT    NOT NULL, " + 
                    " UTILISATION    TEXT    NOT NULL, " + 
                    " VOLUME         TEXT    NOT NULL, " + 

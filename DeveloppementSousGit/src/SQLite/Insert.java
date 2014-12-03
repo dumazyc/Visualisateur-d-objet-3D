@@ -14,11 +14,11 @@ public class Insert
       System.out.println("Opened database successfully");
 
       stmt = c.createStatement();
-      String sql = "INSERT INTO OBJETS3D (ID,NAME,FORME,UTILISATION,VOLUME,DATECREATION,COMPLEXITE,LIEN) " +
-               "VALUES (1, 'Bunny', 'Lapin', 'Mode', 'En attente', '2014-11-28', 'Simple', 'En attente' );"; 
+      String sql = "INSERT INTO OBJETS3D (ID,NAME,AUTEUR,FORME,UTILISATION,VOLUME,DATECREATION,COMPLEXITE,LIEN) " +
+               "VALUES (16, 'tie', 'Clement', 'tie', 'Mode', 'En attente', '2014-11-28', 'Simple', 'En attente' );"; 
       stmt.executeUpdate(sql);
 
-      stmt.close();
+      stmt.close(); 
       c.commit();
       c.close();
     } catch ( Exception e ) {

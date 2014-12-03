@@ -4,6 +4,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.*;
+import java.sql.*;
+import java.util.Vector;
 
 import javax.swing.*;
 
@@ -109,11 +111,59 @@ public class Recherche1
 							"Un champ coche ne peut etre vide.",
 							"Attention",
 							JOptionPane.WARNING_MESSAGE);
+				} else { 
+					    Connection c = null;
+					    Statement stmt = null;
+					    try {
+					      Class.forName("org.sqlite.JDBC");
+					      c = DriverManager.getConnection("jdbc:sqlite:Database.db");
+					      c.setAutoCommit(false);
+
+					      stmt = c.createStatement();
+					      ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D;" );
+					      String  name = rs.getString("name");
+					      String  auteur = rs.getString("auteur");
+					      
+					    	 while (!name.equals(tfield.getText()) && rs.next()) {
+					    		 name = rs.getString("name");
+					    	 }
+					    	 while (!auteur.equals(tfield1.getText()) && rs.next()) {
+					    		 auteur = rs.getString("auteur");
+					    	 }
+						    	 if (cbox.isSelected()&&name.equals(tfield.getText())) {
+						    		 JOptionPane.showMessageDialog(frame,
+											"L'objet existe.",
+											"Attention",
+											JOptionPane.WARNING_MESSAGE);
+					         		} 
+						    	else if (cbox.isSelected()){ 
+					        	 JOptionPane.showMessageDialog(frame,
+											"L'objet n'existe pas.",
+											"Attention",
+											JOptionPane.WARNING_MESSAGE);
+					        }
+					         if (cbox1.isSelected()&&auteur.equals(tfield1.getText())) {
+					        	 JOptionPane.showMessageDialog(frame,
+											"Clement est l'auteur des objets ...",
+											"Attention",
+											JOptionPane.WARNING_MESSAGE);
+					        } else if (cbox1.isSelected()){ 
+					        	 JOptionPane.showMessageDialog(frame,
+											"L'auteur n'existe pas.",
+											"Attention",
+											JOptionPane.WARNING_MESSAGE);
+					         }
+					      rs.close();
+					      stmt.close();
+					      c.close();
+					    } catch ( Exception e1 ) {
+					      System.err.println( e1.getClass().getName() + ": " + e1.getMessage() );
+					      System.exit(0);
+					    }
+					  }
 				}
-				//else recherche dans la base
 
 
-			}
 		});
 
 		bu.setPreferredSize(d);
