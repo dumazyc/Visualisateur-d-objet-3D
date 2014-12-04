@@ -1,5 +1,6 @@
 package gestiondelaffichage3d;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -29,11 +30,12 @@ public class AffichageDuModele extends JFrame {
 	PanelAffichage p;
 	JMenuBar jmenubar;
 	JTabbedPane j;
+	private int tabCounter = 0;
 	public AffichageDuModele(boolean b) {
 			p = new PanelAffichage(b);
 			jmenubar = new JMenuBar();
 			j = new JTabbedPane(JTabbedPane.TOP);
-
+			j.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 			int X = 700;
 			int Y = 700;
 			// this.setExtendedState(this.MAXIMIZED_BOTH);
@@ -83,7 +85,7 @@ public class AffichageDuModele extends JFrame {
 			this.setJMenuBar(jmenubar);
 			j.addTab(p.nomDeLObjet, p);
 			
-			this.add(j);
+			this.add(j,BorderLayout.CENTER);
 
 			// ouvre l'ajout d'objet
 			ajout.addActionListener(new ActionListener() {
@@ -107,7 +109,7 @@ public class AffichageDuModele extends JFrame {
 					String mess = "Ctrl+A -> Ajouter objet\n";
 					mess += "Ctrl+F -> Recherche objet\n";
 					mess += "Alt+F4 -> Ferme l'application";
-					jop.showMessageDialog(null, mess, "��� propos",
+					jop.showMessageDialog(null, mess, "A propos",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 			});
@@ -147,9 +149,37 @@ public class AffichageDuModele extends JFrame {
 	}
 	public void nouvelOnglet(){
 		p = new PanelAffichage(false);
-		j.add(p.nomDeLObjet, p);
+		j.addTab(p.nomDeLObjet, p);
 		int index = j.getTabCount() -1;
 		j.setSelectedIndex(index);
+		JButton tabCloseButton = new JButton("Close");
+	    tabCloseButton.setActionCommand("" + tabCounter );
+
+	    ActionListener al;
+	    al = new ActionListener() {
+	      public void actionPerformed(ActionEvent ae) {
+	        JButton btn = (JButton) ae.getSource();
+	        String s1 = btn.getActionCommand();
+	        for (int i = 1; i < j.getTabCount(); i++) {
+	          JPanel pnl = (JPanel) j.getTabComponentAt(i);
+	          btn = (JButton) pnl.getComponent(0);
+	          String s2 = btn.getActionCommand();
+	          if (s1.equals(s2)) {
+	            j.removeTabAt(i);
+	            break;
+	          }
+	        }
+	      }
+	    };
+	    tabCloseButton.addActionListener(al);
+
+	    if (tabCounter != 0) {
+	      JPanel pnl = new JPanel();
+	      pnl.setOpaque(false);
+	      pnl.add(tabCloseButton);
+	      j.setTabComponentAt(j.getTabCount() - 1, pnl);
+	      j.setSelectedIndex(j.getTabCount() - 1);
+	    }
 		
 	}
 	public static void main(String[] args) {
