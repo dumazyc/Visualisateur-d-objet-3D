@@ -16,9 +16,9 @@ public class SQLite
 
       stmt = c.createStatement();
       String sql = "CREATE TABLE OBJETS3D " +
-                   "(ID serial PRIMARY KEY     NOT NULL," +
+                   "(ID INTEGER PRIMARY KEY   AUTOINCREMENT," +
                    " NAME           TEXT    NOT NULL, " + 
-                   " AUTEUR           TEXT    NOT NULL, " + 
+                   " AUTEUR         TEXT    NOT NULL, " + 
                    " FORME          TEXT    NOT NULL, " + 
                    " UTILISATION    TEXT    NOT NULL, " + 
                    " VOLUME         TEXT    NOT NULL, " + 
