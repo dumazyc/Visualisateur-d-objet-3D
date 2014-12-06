@@ -36,9 +36,62 @@ public class PanelAffichage extends JPanel {
 	int mouseY = 0;
 	int zoom = 1;
 	
-	private boolean RecupDonneeFichier(boolean firstLaunch){
-		if (firstLaunch) {
-			List<String> fichier = new ArrayList<String>();
+	private boolean RecupDonneeFichier(String name){
+		if (name==null) {
+			name = "icosa";
+		}
+		List<String> fichier = new ArrayList<String>();
+
+		try {
+			String ligne;
+			FileReader flux;
+			BufferedReader entree;
+			flux = new FileReader("./ressources/modeles/"+name+".gts");
+			entree = new BufferedReader(flux);
+			while ((ligne = entree.readLine()) != null) {
+				fichier.add(ligne);
+			}
+			entree.close();
+		} catch (Exception e) {
+			System.err.println(e.toString());
+			return false;
+		}
+		nomDeLObjet = name;
+		String first = fichier.get(0);
+		int nbPoints = Integer.parseInt(first.substring(0,first.indexOf(' ')));
+		int nbSegments = Integer.parseInt(first.substring(first.indexOf(' ')+1,first.indexOf(' ')+1+first.substring(first.indexOf(' ')+1).indexOf(' ')));
+		int nbFaces = Integer.parseInt(first.substring(first.indexOf(' ')+1+first.substring(first.indexOf(' ')+1).indexOf(' ')+1));
+		int parcoursDeLigne = 1;
+		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbPoints; i++) {
+			list_points.add(new Point(Double.parseDouble(fichier.get(i).substring(0,fichier.get(i).indexOf(' '))), Double.parseDouble(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' '))), Double.parseDouble(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1)),(i-parcoursDeLigne+1)));
+		}
+		parcoursDeLigne+=nbPoints;
+		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbSegments; i++) {
+			list_segments.add(new Segment(list_points.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_points.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
+		}
+		parcoursDeLigne+=nbSegments;
+		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbFaces; i++) {
+			list_faces.add(new Face(list_segments.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
+		}
+		Double max = list_points.get(0).getX();
+		for (int i = 0; i < list_points.size(); i++) {
+			if (list_points.get(i).getX() > max) {
+				max = list_points.get(i).getX();
+			} else if (list_points.get(i).getX() < -max) {
+				max = -list_points.get(i).getX();
+			}
+			if (list_points.get(i).getY() > max) {
+				max = list_points.get(i).getY();
+			} else if (list_points.get(i).getY() < -max) {
+				max = -list_points.get(i).getY();
+			}
+		}
+		zoom = (int) (250/max);
+		return true;
+		
+	}
+	
+			/*List<String> fichier = new ArrayList<String>();
 			try {
 				String ligne;
 				FileReader flux;
@@ -84,7 +137,7 @@ public class PanelAffichage extends JPanel {
 				}
 			}
 			zoom = (int) (250/max);
-			firstLaunch = false;
+			name! = false;
 			return true;
 			
 			
@@ -160,11 +213,11 @@ public class PanelAffichage extends JPanel {
 		zoom = (int) (250/max);
 		return true;
 		}
-	}
+	}*/
 
 	
-	public PanelAffichage(boolean b) {
-			RecupDonneeFichier(b);
+	public PanelAffichage(String name) {
+			RecupDonneeFichier(name);
 			this.setBackground(Color.WHITE);
 			this.setVisible(true);
 			this.addMouseMotionListener(new MouseListenerMaison(this));
