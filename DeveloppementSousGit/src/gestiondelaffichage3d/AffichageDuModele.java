@@ -5,15 +5,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -23,22 +21,24 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
-import menuetoptions.Ajout;
 import menuetoptions.Recherche;
 
 import java.awt.Toolkit;
 
 @SuppressWarnings("serial")
 public class AffichageDuModele extends JFrame {
-	PanelAffichage p;
+	
 	JMenuBar jmenubar;
-	JTabbedPane j;
-	private int tabCounter = 0;
+	JTabbedPane j = new JTabbedPane(JTabbedPane.TOP);
+	private ImageIcon closeXIcon = new ImageIcon(
+			"C:/Users/Clément/Desktop/bite.png");
 
+	private Dimension closeButtonSize = new Dimension(closeXIcon.getIconWidth() + 2,
+			closeXIcon.getIconHeight() + 2);
+	
 	public AffichageDuModele() {
-		p = new PanelAffichage("icosa");
+		
 		jmenubar = new JMenuBar();
-		j = new JTabbedPane(JTabbedPane.TOP);
 		j.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		int X = 700;
 		int Y = 700;
@@ -86,15 +86,15 @@ public class AffichageDuModele extends JFrame {
 		jmenubar.add(j1);
 		jmenubar.add(j2);
 		this.setJMenuBar(jmenubar);
-		j.addTab(p.nomDeLObjet, p);
+		
 
 		this.add(j, BorderLayout.CENTER);
-
+		nouvelOnglet("icosa");
 		// ouvre l'ajout d'objet
 		ajout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//nouvelOnglet();
-				new Ajout();
+				nouvelOnglet("cube");
+				//new Ajout();
 			}
 		});
 
@@ -155,11 +155,27 @@ public class AffichageDuModele extends JFrame {
 	}
 
 	public void nouvelOnglet(String name) {
-		p = new PanelAffichage(name);
-		j.addTab(p.nomDeLObjet, p);
-		int index = j.getTabCount() - 1;
-		j.setSelectedIndex(index);
+		final PanelAffichage p = new PanelAffichage(name);
+		JPanel tab = new JPanel();
+		tab.setOpaque(false);
 
+		JLabel tabLabel = new JLabel(name);
+
+		JButton tabCloseButton = new JButton(closeXIcon);
+		tabCloseButton.setPreferredSize(closeButtonSize);
+		tabCloseButton.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				int closeTabNumber = j.indexOfComponent(p);
+				j.removeTabAt(closeTabNumber);
+			}
+		});
+
+		tab.add(tabLabel, BorderLayout.WEST);
+		tab.add(tabCloseButton, BorderLayout.EAST);
+
+		j.addTab(p.nomDeLObjet, p);
+		j.setTabComponentAt(j.getTabCount() - 1, tab);
 	}
 
 	public class tmpListener implements ActionListener{
