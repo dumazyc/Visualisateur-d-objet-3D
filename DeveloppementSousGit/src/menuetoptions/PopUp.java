@@ -3,8 +3,10 @@ package menuetoptions;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+@SuppressWarnings("serial")
 public class PopUp extends JFrame {
 
+	@SuppressWarnings("static-access")
 	public PopUp() {
 	JOptionPane jop3;
 	jop3 = new JOptionPane();

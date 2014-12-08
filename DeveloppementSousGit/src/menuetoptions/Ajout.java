@@ -5,6 +5,10 @@ import java.awt.GridLayout;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import javax.swing.*;
 
@@ -14,7 +18,7 @@ public class Ajout extends JFrame
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	static JFrame frame = new JFrame("Veuillez charger le fichier et ajouter les infos nécéssaires :   ");
+	static JFrame frame = new JFrame("Veuillez charger le fichier et ajouter les infos nï¿½cï¿½ssaires :   ");
 	
 	public static void createAndDisplayGUI()throws IOException
 	{ 
@@ -78,33 +82,6 @@ public class Ajout extends JFrame
 
 		final JPanel contentPane2  = new JPanel();
 
-		final JComboBox<String>  perso = new JComboBox<String>();
-		perso.setEnabled(false);
-		perso.setBounds(100,120,100,25);
-
-
-		perso.addItem("0" );
-		perso.addItem("1" );
-		perso.addItem("2" );
-		perso.addItem("3" );
-		perso.addItem("4" );
-		perso.addItem("5" );
-
-
-		final JCheckBox cbox2 = new JCheckBox("Nombre de trinangles:    ", false);
-
-
-		ItemListener itemListener2 = new ItemListener()
-		{
-			public void itemStateChanged(ItemEvent ie)
-			{
-				perso.setEnabled(ie.getStateChange() == ItemEvent.SELECTED);
-			}
-		};
-		cbox2.addItemListener(itemListener2);
-
-		contentPane2.add(cbox2);
-		contentPane2 .add(perso);
 		contentPane.setPreferredSize(d);
 		contentPane1.setPreferredSize(d);
 		contentPane1.setPreferredSize(d);
@@ -115,13 +92,57 @@ public class Ajout extends JFrame
 			public void actionPerformed(ActionEvent e) {
 				if((cbox1.isSelected()&&tfield1.getText().isEmpty())||(cbox.isSelected()&&tfield.getText().isEmpty())){
 					JOptionPane.showMessageDialog(frame,
-							"Un champ coché ne peut être vide.",
+							"Un champ coche ne peut etre vide.",
 							"Attention",
 							JOptionPane.WARNING_MESSAGE);
 				}
 				//else insertion dans la base
 				// String ac = perso.getSelectedItem().toString()
-				// la date de l'objet sera ajoutée directement à la base avec une fonction qui renvoie la date du jour
+				// la date de l'objet sera ajoutï¿½e directement ï¿½ la base avec une fonction qui renvoie la date du jour
+				else { 
+				    Connection c = null;
+				    Statement stmt = null;
+				    try {
+				    	Class.forName("org.sqlite.JDBC");
+				        c = DriverManager.getConnection("jdbc:sqlite:Database.db");
+				        c.setAutoCommit(false);
+				        stmt = c.createStatement();
+				        String sql;
+				        String  name;
+				        String  auteur;
+				      
+					    	 if (cbox.isSelected()&&!tfield.getText().equals(null)&&!tfield1.getText().equals(null)) {
+					    		 name = tfield.getText();
+					    		 auteur = tfield1.getText();
+					    		 sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,FORME,UTILISATION,VOLUME,DATECREATION,COMPLEXITE,LIEN) " +
+							               "VALUES ('"+name+"', '"+auteur+"', '"+name+"', 'Mode', 'En attente', '2014-11-28', 0, 'En attente' );";
+					    		 stmt.executeUpdate(sql);
+					    		 JOptionPane.showMessageDialog(frame,
+											"L'objet a bien Ã©tÃ© intÃ©grÃ©.",
+											"Attention",
+											JOptionPane.WARNING_MESSAGE);
+					    		 
+					   //triangle, complexitÃ© Ã  ajouter automatiquement  !!!!!!!!!!!!!
+				         	} 
+					    	else if (cbox.isSelected()){ 
+				        	 JOptionPane.showMessageDialog(frame,
+										"Le nom n'est pas complÃ©tÃ©.",
+										"Attention",
+										JOptionPane.WARNING_MESSAGE);
+				        } else if (cbox1.isSelected()){ 
+				        	 JOptionPane.showMessageDialog(frame,
+										"L'auteur n'est pas complÃ©tÃ©.",
+										"Attention",
+										JOptionPane.WARNING_MESSAGE);
+				         }
+					  stmt.close(); 
+					  c.commit();
+					  c.close();
+				    } catch ( Exception e1 ) {
+				      System.err.println( e1.getClass().getName() + ": " + e1.getMessage() );
+				      System.exit(0);
+				    }
+				  }
 
 
 
@@ -138,6 +159,13 @@ public class Ajout extends JFrame
 		e.setPreferredSize(d);
 		pa2.add(e);
 		c.add(pa2);
+		
+		// ferme l'application
+		e.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(640,480);
