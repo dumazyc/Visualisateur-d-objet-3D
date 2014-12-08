@@ -77,6 +77,7 @@ public class AffichageDuModele extends JFrame {
 				KeyEvent.CTRL_MASK));
 		fermer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4,
 				KeyEvent.ALT_DOWN_MASK));
+		aide.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1,0));
 
 		j1.add(ajout);
 		j1.add(recherche);
@@ -99,6 +100,7 @@ public class AffichageDuModele extends JFrame {
 		sp.add(j,JSplitPane.RIGHT);
 		sp.setVisible(true);
 		this.add(sp);
+		
 		// ouvre l'ajout d'objet
 		ajout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -178,13 +180,19 @@ public class AffichageDuModele extends JFrame {
 				j.removeTabAt(closeTabNumber);
 			}
 		});
-
+		
+	    
 		tab.add(tabLabel, BorderLayout.WEST);
 		tab.add(tabCloseButton, BorderLayout.EAST);
 
 		j.addTab(p.nomDeLObjet, p);
 		j.setTabComponentAt(j.getTabCount() - 1, tab);
 		j.setSelectedIndex(j.getTabCount() - 1);
+
+		/*tabCloseButton.setMnemonic( 'N' );
+		
+		tabCloseButton.getActionMap().put( "clickButton", tabCloseButton.getAction() );
+		tabCloseButton.getInputMap().put(KeyStroke.getKeyStroke( "control N" ), "clickButton" );*/
 	}
 
 	public class tmpListener implements ActionListener{
