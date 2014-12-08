@@ -124,8 +124,9 @@ public class Recherche extends JPanel{
 							//frame.dispose();
 						} else if (cbox.isSelected()) {
 							JOptionPane.showMessageDialog(frame,
-									"L'objet n'existe pas.", "Attention",
+									"L'auteur n'existe pas.", "Attention",
 									JOptionPane.WARNING_MESSAGE);
+	
 						}
 						if (cbox1.isSelected()
 								&& auteur.equals(tfield1.getText())) {

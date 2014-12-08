@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 
 public class Ajout extends JFrame
 {
@@ -22,15 +23,52 @@ public class Ajout extends JFrame
 	
 	public static void createAndDisplayGUI()throws IOException
 	{ 
-		 
-				JFileChooser dialogue = new JFileChooser(new File("."));
-				
-				
-				
 		Dimension d=new Dimension(100,27);
+		JButton charger=new JButton("Charger fichier");
+		JPanel pannelCharger=new JPanel();
+		charger.setPreferredSize(new Dimension(150,27) );
+		final JTextField fichier=new JTextField("Veuiller chosir un fichier");
+		fichier.setPreferredSize(new Dimension(350,27));
+		pannelCharger.add(fichier);
+		pannelCharger.add(charger);
+		charger.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fc = new JFileChooser(".");
+				fc.addChoosableFileFilter(new FileFilter() {
+					@Override
+					public boolean accept(File f) {
+						 return f.getName().endsWith(".gts");
+					}
+					@Override
+					public String getDescription() {
+						return "Fichier GNU Triangulated Surface Library (.gts)";
+					}
+				});
+				fc.addChoosableFileFilter(new FileFilter() {
+					@Override
+					public boolean accept(File f) {
+						 return f.getName().endsWith(".txt");
+					}
+					@Override
+					public String getDescription() {
+						return "Fichier texte (.txt)";
+					}
+				});
+				fc.showOpenDialog(frame);
+				try{
+				fichier.setText(fc.getSelectedFile().getAbsolutePath());
+				}catch(NullPointerException ex){
+					if(fichier.getText().isEmpty()){
+					fichier.setText("Veuiller chosir un fichier");
+					}
+				}
+			}
+		});
+
+		 
 		Container c=frame.getContentPane();
 		c.setLayout(new GridLayout(8,1,7,7));
-		c.add(dialogue);
+		c.add( pannelCharger);
 		
 		
 		c.add(new JLabel("  VEUILLEZ ENTRER LES INFORMATIONS RELATIVES A VOTRE OBJET:     "));
@@ -97,6 +135,9 @@ public class Ajout extends JFrame
 							JOptionPane.WARNING_MESSAGE);
 				}
 				//else insertion dans la base
+				/*clement devra s'occcuper du reste de l'ajout dans les ressources ert de la verification du fichier charge
+				 * en se servant de fiochier.getText();
+				*/
 				// String ac = perso.getSelectedItem().toString()
 				// la date de l'objet sera ajout�e directement � la base avec une fonction qui renvoie la date du jour
 				else { 
@@ -110,15 +151,16 @@ public class Ajout extends JFrame
 				        String sql;
 				        String  name;
 				        String  auteur;
-				      
+				      //verifier aussi que le test de corruption que fera clement passe avnt de faire l'insertion la date sera gen�r�e comme celle du jour 
+				        //commentaire laisser dans SQLITE.java et le nombre de triangles(complexite) sera ajoute � partir de la fonction dont a parle clemtn
 					    	 if (cbox.isSelected()&&!tfield.getText().equals(null)&&!tfield1.getText().equals(null)) {
 					    		 name = tfield.getText();
 					    		 auteur = tfield1.getText();
 					    		 sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,FORME,UTILISATION,VOLUME,DATECREATION,COMPLEXITE,LIEN) " +
-							               "VALUES ('"+name+"', '"+auteur+"', '"+name+"', 'Mode', 'En attente', '2014-11-28', 0, 'En attente' );";
+							               "VALUES ('"+name+"', '"+auteur+"', '"+name+"', 'Mode', 'En attente', '2014-11-28', 0, '"+fichier.getText()+"' );";
 					    		 stmt.executeUpdate(sql);
 					    		 JOptionPane.showMessageDialog(frame,
-											"L'objet a bien été intégré.",
+											"L'objet a bien ete integre.",
 											"Attention",
 											JOptionPane.WARNING_MESSAGE);
 					    		 
@@ -126,12 +168,12 @@ public class Ajout extends JFrame
 				         	} 
 					    	else if (cbox.isSelected()){ 
 				        	 JOptionPane.showMessageDialog(frame,
-										"Le nom n'est pas complété.",
+										"Le nom n'est pas complete.",
 										"Attention",
 										JOptionPane.WARNING_MESSAGE);
 				        } else if (cbox1.isSelected()){ 
 				        	 JOptionPane.showMessageDialog(frame,
-										"L'auteur n'est pas complété.",
+										"L'auteur n'est pas complete.",
 										"Attention",
 										JOptionPane.WARNING_MESSAGE);
 				         }
