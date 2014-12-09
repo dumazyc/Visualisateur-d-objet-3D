@@ -19,10 +19,9 @@ public class Ajout extends JFrame
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	static JFrame frame = new JFrame("Veuillez charger le fichier et ajouter les infos nï¿½cï¿½ssaires :   ");
+	static JFrame frame = new JFrame("Veuillez charger le fichier et ajouter les infos necessaires :   ");
 	
-	public static void createAndDisplayGUI()throws IOException
-	{ 
+	public Ajout(){
 		Dimension d=new Dimension(100,27);
 		JButton charger=new JButton("Charger fichier");
 		JPanel pannelCharger=new JPanel();
@@ -151,19 +150,15 @@ public class Ajout extends JFrame
 				        String sql;
 				        String  name;
 				        String  auteur;
-				      //verifier aussi que le test de corruption que fera clement passe avnt de faire l'insertion la date sera genérée comme celle du jour 
-				        //commentaire laisser dans SQLITE.java et le nombre de triangles(complexite) sera ajoute à partir de la fonction dont a parle clemtn
+				      //verifier aussi que le test de corruption que fera clement passe avnt de faire l'insertion la date sera genï¿½rï¿½e comme celle du jour 
+				        //commentaire laisser dans SQLITE.java et le nombre de triangles(complexite) sera ajoute ï¿½ partir de la fonction dont a parle clemtn
 					    	 if (cbox.isSelected()&&!tfield.getText().equals(null)&&!tfield1.getText().equals(null)) {
 					    		 name = tfield.getText();
 					    		 auteur = tfield1.getText();
 					    		 sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,FORME,UTILISATION,VOLUME,DATECREATION,COMPLEXITE,LIEN) " +
 							               "VALUES ('"+name+"', '"+auteur+"', '"+name+"', 'Mode', 'En attente', '2014-11-28', 0, '"+fichier.getText()+"' );";
 					    		 stmt.executeUpdate(sql);
-					    		 JOptionPane.showMessageDialog(frame,
-											"L'objet a bien ete integre.",
-											"Attention",
-											JOptionPane.WARNING_MESSAGE);
-					    		 
+					    		 JOptionPane.showMessageDialog(frame,"L'objet a bien ete integre.","Attention",JOptionPane.WARNING_MESSAGE);
 					   //triangle, complexitÃ© Ã  ajouter automatiquement  !!!!!!!!!!!!!
 				         	} 
 					    	else if (cbox.isSelected()){ 
@@ -217,21 +212,4 @@ public class Ajout extends JFrame
 
 
 	}
-	public static void main(String... args)
-	{
-		SwingUtilities.invokeLater(new Runnable()
-		{
-			public void run()
-			{
-				try {
-					createAndDisplayGUI();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-
 }

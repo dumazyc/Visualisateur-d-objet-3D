@@ -22,6 +22,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
+import menuetoptions.Ajout;
 import menuetoptions.Recherche;
 
 import java.awt.Toolkit;
@@ -95,7 +96,7 @@ public class AffichageDuModele extends JFrame {
 		
 
 		this.add(j, BorderLayout.CENTER);
-		nouvelOnglet("icosa");
+		nouvelOnglet("space_station");
 		
 		sp.add(j,JSplitPane.RIGHT);
 		sp.setVisible(true);
@@ -104,8 +105,8 @@ public class AffichageDuModele extends JFrame {
 		// ouvre l'ajout d'objet
 		ajout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				nouvelOnglet("cube");
-				//new Ajout();
+				//nouvelOnglet("cube");
+				new Ajout();
 			}
 		});
 

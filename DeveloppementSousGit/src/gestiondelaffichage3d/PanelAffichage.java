@@ -34,7 +34,7 @@ public class PanelAffichage extends JPanel {
 	
 	private boolean RecupDonneeFichier(String name){
 		if (name==null) {
-			name = "icosa";
+			name = "space_station";
 		}
 		List<String> fichier = new ArrayList<String>();
 
@@ -239,7 +239,7 @@ public class PanelAffichage extends JPanel {
 			image = createImage((int)a.getLargeur(),(int)a.getHauteur());
 			buffer = image.getGraphics();
 		//}
-		buffer.setColor(Color.BLACK);
+		buffer.setColor(Color.WHITE);
 		buffer.fillRect(0, 0, 10000, 10000);
 		for (int i = 0; i < list_faces.size(); i++) {
 			rotation(list_faces.get(i));
@@ -250,16 +250,16 @@ public class PanelAffichage extends JPanel {
 		rotationX = 0;
 		rotationY = 0;
 		rotationZ = 0;
-		int couleur1 = 125;
-		int couleur2 = 135;
-		int couleur3 = 155;
-		int coeffLuminosite;
-		for (int i = list_faces.size() - 1; i > -1; i--) {
+		int couleur1 = 255;
+		int couleur2 = 112;
+		int couleur3 = 0;
+		
+		for (int i = 0; i < list_faces.size(); i++) {
 			
-			coeffLuminosite = 255 - (i * 255) / list_faces.size();
-			int coeffLuminosite2 = 255 - (i * 255) / list_faces.size();
-			System.out.println(coeffLuminosite2);
-			buffer.setColor(new Color(coeffLuminosite2, coeffLuminosite, coeffLuminosite));
+			// Coeef blanc : coeffLuminosite = 255 - (i * 255) / list_faces.size();
+			// coeef couleur -> blanc  255 - (i * (255-couleur1)) / list_faces.size()
+
+			buffer.setColor(new Color((i * couleur1) / list_faces.size(), (i * couleur2) / list_faces.size(),(i * couleur3) / list_faces.size()));
 			buffer.fillPolygon(generatePolygon(list_faces.get(i), zoom,
 					decalageX, decalageY));
 
