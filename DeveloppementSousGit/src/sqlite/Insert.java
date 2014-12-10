@@ -14,8 +14,8 @@ public class Insert
       System.out.println("Opened database successfully");
 
       stmt = c.createStatement();
-      String sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,FORME,UTILISATION,VOLUME,DATECREATION,COMPLEXITE,LIEN) " +
-               "VALUES ('tie', 'Clement', 'tie', 'Mode', 'En attente', '2014-11-28', 0, 'En attente' );"; 
+      String sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,COMPLEXITE,LIEN) " +
+               "VALUES ('tie', 'Clement', 0, 'En attente' );"; 
       stmt.executeUpdate(sql);
 
       stmt.close(); 

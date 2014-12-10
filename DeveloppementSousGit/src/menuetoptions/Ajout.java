@@ -155,8 +155,8 @@ public class Ajout extends JFrame
 					    	 if (cbox.isSelected()&&!tfield.getText().equals(null)&&!tfield1.getText().equals(null)) {
 					    		 name = tfield.getText();
 					    		 auteur = tfield1.getText();
-					    		 sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,FORME,UTILISATION,VOLUME,DATECREATION,COMPLEXITE,LIEN) " +
-							               "VALUES ('"+name+"', '"+auteur+"', '"+name+"', 'Mode', 'En attente', '2014-11-28', 0, '"+fichier.getText()+"' );";
+					    		 sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,COMPLEXITE,LIEN) " +
+							               "VALUES ('"+name+"', '"+auteur+"', 0, '"+fichier.getText()+"' );";
 					    		 stmt.executeUpdate(sql);
 					    		 JOptionPane.showMessageDialog(frame,"L'objet a bien ete integre.","Attention",JOptionPane.WARNING_MESSAGE);
 					   //triangle, complexité à ajouter automatiquement  !!!!!!!!!!!!!
