@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Polygon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
@@ -84,8 +86,12 @@ public class PanelAffichage extends JPanel {
 		}
 		zoom = (int) (250/max);
 		return true;
-		
+
 	}
+	
+	//Si on clic sur bouton zoom par default, le zoom ce remet par default
+			
+	
 	
 			/*List<String> fichier = new ArrayList<String>();
 			try {
