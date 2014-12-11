@@ -6,12 +6,15 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class Recherche extends JPanel{
 	AffichageDuModele frame;
+	List<String> listeRecherche=new ArrayList<String>();
 
 	public Recherche(final AffichageDuModele a) {
 		this.frame = a;
@@ -114,15 +117,19 @@ public class Recherche extends JPanel{
 
 						while (!name.equals(tfield.getText()) && rs.next()) {
 							name = rs.getString("name");
+							/*listeRecherche.add(name);
+							System.out.println(listeRecherche);*/
 						}
 						while (!auteur.equals(tfield1.getText()) && rs.next()) {
 							auteur = rs.getString("auteur");
 						}
 						if (cbox.isSelected() && name.equals(tfield.getText())) {
 							// JOptionPane.showMessageDialog(frame,"L'objet existe.","Attention",JOptionPane.WARNING_MESSAGE);
+							//ListeRecherche(listeRecherche);
 							a.nouvelOnglet(name);
 							//frame.dispose();
 						} else if (cbox.isSelected()) {
+							//le cas auteur et le cas complexite devrait etre gere
 							JOptionPane.showMessageDialog(frame,
 									"L'auteur n'existe pas.", "Attention",
 									JOptionPane.WARNING_MESSAGE);
@@ -171,5 +178,8 @@ public class Recherche extends JPanel{
 		this.setSize(640, 480);
 		this.setVisible(true);
 
+	}
+	public void ListeRecherche(List<String>l){
+		new ListAfterSearch(l);
 	}
 }

@@ -1,6 +1,7 @@
 package menuetoptions;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.*;
 import java.io.File;
@@ -20,11 +21,12 @@ public class Ajout extends JFrame
 	 */
 	private static final long serialVersionUID = 1L;
 	static JFrame frame = new JFrame("Veuillez charger le fichier et ajouter les infos necessaires :   ");
-	
+
+
 	public Ajout(){
 		Dimension d=new Dimension(100,27);
-		JButton charger=new JButton("Charger fichier");
-		JPanel pannelCharger=new JPanel();
+		 JButton charger=new JButton("Charger fichier");
+		final JPanel pannelCharger=new JPanel();
 		charger.setPreferredSize(new Dimension(150,27) );
 		final JTextField fichier=new JTextField("Veuiller chosir un fichier");
 		fichier.setPreferredSize(new Dimension(350,27));
@@ -62,13 +64,13 @@ public class Ajout extends JFrame
 					}
 				}
 			}
+		
 		});
 
 		 
 		Container c=frame.getContentPane();
 		c.setLayout(new GridLayout(8,1,7,7));
 		c.add( pannelCharger);
-		
 		
 		c.add(new JLabel("  VEUILLEZ ENTRER LES INFORMATIONS RELATIVES A VOTRE OBJET:     "));
 		
@@ -124,8 +126,8 @@ public class Ajout extends JFrame
 		contentPane1.setPreferredSize(d);
 		c.add(contentPane2);
 		JPanel pa1=new JPanel();
-		JButton bu=new JButton("Valider ");
-		bu.addActionListener(new ActionListener() {
+		final JButton valider=new JButton("Valider ");
+		valider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if((cbox1.isSelected()&&tfield1.getText().isEmpty())||(cbox.isSelected()&&tfield.getText().isEmpty())){
 					JOptionPane.showMessageDialog(frame,
@@ -151,16 +153,47 @@ public class Ajout extends JFrame
 				        String  name;
 				        String  auteur;
 				      //verifier aussi que le test de corruption que fera clement passe avnt de faire l'insertion la date sera gen�r�e comme celle du jour 
-				        //commentaire laisser dans SQLITE.java et le nombre de triangles(complexite) sera ajoute � partir de la fonction dont a parle clemtn
+				        //commentaire laisser dans SQLITE.java et le nombre de triangles(complexite) sera ajoute a partir de la fonction dont a parle clemtn
 					    	 if (cbox.isSelected()&&!tfield.getText().equals(null)&&!tfield1.getText().equals(null)) {
+					    		 //nous avons besoin de l'objet pour recuperer sa complexite il s'agira d'un objet qu'on dont-on a teste l'appartenance a la communaute gts
+					    		//complexite a modifier lors de l'insertion appeler la methode getface size sur le fichier charge!!!!!!!!!!!!!
 					    		 name = tfield.getText();
 					    		 auteur = tfield1.getText();
 					    		 sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,COMPLEXITE,LIEN) " +
 							               "VALUES ('"+name+"', '"+auteur+"', 0, '"+fichier.getText()+"' );";
 					    		 stmt.executeUpdate(sql);
-					    		 JOptionPane.showMessageDialog(frame,"L'objet a bien ete integre.","Attention",JOptionPane.WARNING_MESSAGE);
-					   //triangle, complexité à ajouter automatiquement  !!!!!!!!!!!!!
-				         	} 
+					    		 frame.setEnabled(false);
+					    		 
+					    		 Object[] options = {" Ok, fermer ",
+				                    "Modifier les informations"};
+					    		 
+					    		 final JOptionPane optionPane=new JOptionPane();
+					    		 
+				int n = JOptionPane.showOptionDialog(frame,
+				    "Objet bien ajoute",
+				    "",
+				    JOptionPane.YES_NO_OPTION,
+				    JOptionPane.QUESTION_MESSAGE,
+				    null,     //do not use a custom Icon
+				    options,  //the titles of buttons
+				    options[0]); //default button title
+				
+				if (n == JOptionPane.YES_OPTION) {
+					frame.dispose();
+					
+				   
+				} else if (n== JOptionPane.NO_OPTION) {
+					frame.dispose();
+					/*nouvelle fenetre ajout avec tous ce qu'il y a dans ajout sans le jtextfield et dont les info serviront 
+					a modifier l'objet dans la base de donnees*/ 
+					
+				    
+				}
+					   
+					   
+				         	}
+					    	 //l'ajout ne doit pas marcher tant que tous les champs ne sont pas remplis ce qui n'est pas le cas il nous manque des tests
+					    	 
 					    	else if (cbox.isSelected()){ 
 				        	 JOptionPane.showMessageDialog(frame,
 										"Le nom n'est pas complete.",
@@ -186,19 +219,19 @@ public class Ajout extends JFrame
 			}
 		});
 
-		bu.setPreferredSize(d);
-		pa1.add(bu);
+		valider.setPreferredSize(d);
+		pa1.add(valider);
 		c.add(pa1);
 
 
 		JPanel pa2=new JPanel();
-		JButton e=new JButton("Retour ");
-		e.setPreferredSize(d);
-		pa2.add(e);
+		JButton annuler=new JButton("Annuler ");
+		annuler.setPreferredSize(d);
+		pa2.add(annuler);
 		c.add(pa2);
 		
 		// ferme l'application
-		e.addActionListener(new ActionListener() {
+		annuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
 			}
