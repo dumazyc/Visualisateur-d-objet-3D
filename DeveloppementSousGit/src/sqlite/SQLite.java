@@ -13,6 +13,7 @@ public class SQLite
       Class.forName("org.sqlite.JDBC");
       c = DriverManager.getConnection("jdbc:sqlite:Database.db");
       System.out.println("Opened database successfully");
+      //supprimer les parties liens des objets le lien n'ai pas encore au point a cause des tests sur le fichier charge qui manquent 
 
       stmt = c.createStatement();
       String sql = "CREATE TABLE OBJETS3D " +
