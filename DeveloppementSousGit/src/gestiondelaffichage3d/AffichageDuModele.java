@@ -30,6 +30,7 @@ import java.awt.Toolkit;
 @SuppressWarnings("serial")
 public class AffichageDuModele extends JFrame {
 	JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+	sp.setOneTouchExpandable(true);
 	JMenuBar jmenubar;
 	JTabbedPane j = new JTabbedPane(JTabbedPane.TOP);
 	boolean recherche = false;
@@ -128,6 +129,7 @@ public class AffichageDuModele extends JFrame {
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
+		//annuler devrait faire disparaitre le cote gauche de la fenetre a revoir
 		// ouvre la recherceh d'objet
 		recherche.addActionListener(new tmpListener(this));
 
