@@ -20,8 +20,8 @@ public class Delete {
 
 	      ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D;" );
 	      while ( rs.next() ) {
-	         String  name = rs.getString("name");
-	         System.out.println( "NAME = " + name );
+	    	  String  name = rs.getString("name");
+	          System.out.print(name + " ");
 	      }
 	      rs.close();
 	      stmt.close();
@@ -30,6 +30,8 @@ public class Delete {
 	      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 	      System.exit(0);
 	    }
+	    System.out.println();
+	    System.out.println();
 	    System.out.println("Suppression terminée");
 	  }
 	}

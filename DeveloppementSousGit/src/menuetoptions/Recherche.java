@@ -117,20 +117,18 @@ public class Recherche extends JPanel {
 						while (rs.next()) {
 							name = rs.getString("name");
 							if (name.equals(tfield.getText())) {
-							listeRecherche.add(name);
-							System.out.println(listeRecherche);
+								listeRecherche.add(name);
+								System.out.println(listeRecherche);
 							}
 						}
 						
-						while (!auteur.equals(tfield1.getText()) && rs.next()) {
+						while (rs.next()) {
 							auteur = rs.getString("auteur");
 						}
 						
-						if (cbox.isSelected()) {
+						if (cbox.isSelected() && !listeRecherche.isEmpty()) {
 							// JOptionPane.showMessageDialog(frame,"L'objet existe.","Attention",JOptionPane.WARNING_MESSAGE);
-
-							ListAfterSearch l = new ListAfterSearch(
-									listeRecherche);
+							ListAfterSearch l = new ListAfterSearch(listeRecherche);
 							//a.nouvelOnglet(name);
 							// frame.dispose();
 						} else if (cbox.isSelected()) {
@@ -141,8 +139,7 @@ public class Recherche extends JPanel {
 									JOptionPane.WARNING_MESSAGE);
 
 						}
-						if (cbox1.isSelected()
-								&& auteur.equals(tfield1.getText())) {
+						if (cbox1.isSelected() && auteur.equals(tfield1.getText())) {
 							JOptionPane.showMessageDialog(frame,
 									"Clement est l'auteur des objets ...",
 									"Attention", JOptionPane.WARNING_MESSAGE);

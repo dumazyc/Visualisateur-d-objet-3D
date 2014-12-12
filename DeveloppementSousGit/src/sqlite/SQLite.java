@@ -12,7 +12,7 @@ public class SQLite
     try {
       Class.forName("org.sqlite.JDBC");
       c = DriverManager.getConnection("jdbc:sqlite:Database.db");
-      System.out.println("Opened database successfully");
+      System.out.println("Ouverture de la base de donnée");
 
       stmt = c.createStatement();
       String sql = "CREATE TABLE OBJETS3D " +
@@ -29,6 +29,6 @@ public class SQLite
       System.err.println( e.getClass().getName() + ": " + e.getMessage() );
       System.exit(0);
     }
-    System.out.println("Table created successfully");
+    System.out.println("Table créée avec succès");
   }
 }

@@ -1,7 +1,8 @@
 package sqlite;
+
 import java.sql.*;
 
-public class Select
+public class Update
 {
   public static void main( String args[] )
   {
@@ -13,21 +14,27 @@ public class Select
       c.setAutoCommit(false);
 
       stmt = c.createStatement();
+      String modif = "tie";
+      String sql = "UPDATE OBJETS3D set COMPLEXITE = 1 where NAME='"+modif+"';";
+      stmt.executeUpdate(sql);
+      c.commit();
+
       ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D;" );
-      while ( rs.next() ) {
-         int id = rs.getInt("id");
-         String  name = rs.getString("name");
+ 
+      while (rs.next()) {
+    	 String  name = rs.getString("name");
          String  auteur = rs.getString("auteur");
          String datecreation  = rs.getString("datecreation");
          String complexite  = rs.getString("complexite");
          String lien  = rs.getString("lien");
-         System.out.println( "ID = " + id );
-         System.out.println( "NAME = " + name );
-         System.out.println( "AUTEUR = " + auteur );
-         System.out.println( "DATECREATION = " + datecreation );
-         System.out.println( "COMPLEXITE = " + complexite );
-         System.out.println( "LIEN = " + lien );
-         System.out.println();
+         if (modif.equals(name)) {
+	         System.out.println( "NAME = " + name );
+	         System.out.println( "AUTEUR = " + auteur );
+	         System.out.println( "DATECREATION = " + datecreation );
+	         System.out.println( "COMPLEXITE = " + complexite );
+	         System.out.println( "LIEN = " + lien );
+	         System.out.println();
+         }
       }
       rs.close();
       stmt.close();
