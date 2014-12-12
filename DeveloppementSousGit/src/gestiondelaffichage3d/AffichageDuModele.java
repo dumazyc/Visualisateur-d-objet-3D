@@ -129,19 +129,9 @@ public class AffichageDuModele extends JFrame {
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-<<<<<<< HEAD
-
-		//annuler devrait faire disparaitre le cote gauche de la fenetre a revoir
-		// ouvre la recherche d'objet
-
-=======
-<<<<<<< HEAD
 		//annuler devrait faire disparaitre le cote gauche de la fenetre a revoir
 		// ouvre la recherceh d'objet
-=======
-		// ouvre la recherche d'objet
->>>>>>> c26b23d214af28b52bffb613d56da9757168958a
->>>>>>> 41180973a662184e40fdb72ce5f7e8324ce6bd34
+		
 		recherche.addActionListener(new tmpListener(this));
 
 		// si case cocher alors plein ecran
