@@ -19,10 +19,7 @@ public class SQLite
                    "(ID INTEGER PRIMARY KEY   AUTOINCREMENT," +
                    " NAME           TEXT    NOT NULL, " + 
                    " AUTEUR         TEXT    NOT NULL, " + 
-                   " FORME          TEXT    NOT NULL, " + 
-                   " UTILISATION    TEXT    NOT NULL, " + 
-                   " VOLUME         TEXT    NOT NULL, " + 
-                   " DATECREATION   DATE    NOT NULL, " + 
+                   " DATECREATION   DATE    DEFAULT CURRENT_DATE, " +
                    " COMPLEXITE     INT    	NOT NULL," +
                    " LIEN 			TEXT 	NOT NULL)"; 
       stmt.executeUpdate(sql);

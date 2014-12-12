@@ -2,27 +2,24 @@ package menuetoptions;
 
 import gestiondelaffichage3d.AffichageDuModele;
 
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.*;
 import java.sql.*;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.*;
 
-public class Recherche {
-	static JFrame frame = new JFrame(
-			"Veuillez entrer vos criteres de recherche :   ");
+@SuppressWarnings("serial")
+public class Recherche extends JPanel {
+	AffichageDuModele frame;
+	List<String> listeRecherche = new ArrayList<String>();
 
 	public Recherche(final AffichageDuModele a) {
-
+		this.frame = a;
 		Dimension d = new Dimension(100, 27);
-		Container c = frame.getContentPane();
-		c.setLayout(new GridLayout(5, 1));
-
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationByPlatform(true);
+		this.setLayout(new GridLayout(5, 1));
 
 		final JPanel contentPane = new JPanel();
 
@@ -41,7 +38,7 @@ public class Recherche {
 		contentPane.add(cbox);
 		contentPane.add(tfield);
 
-		c.add(contentPane);
+		this.add(contentPane);
 
 		final JPanel contentPane1 = new JPanel();
 
@@ -61,7 +58,7 @@ public class Recherche {
 
 		contentPane1.add(cbox1);
 		contentPane1.add(tfield1);
-		c.add(contentPane1);
+		this.add(contentPane1);
 
 		final JPanel contentPane2 = new JPanel();
 
@@ -93,7 +90,7 @@ public class Recherche {
 		contentPane.setPreferredSize(d);
 		contentPane1.setPreferredSize(d);
 		contentPane1.setPreferredSize(d);
-		c.add(contentPane2);
+		this.add(contentPane2);
 		JPanel pa1 = new JPanel();
 		JButton bu = new JButton("Valider ");
 		bu.addActionListener(new ActionListener() {
@@ -113,25 +110,36 @@ public class Recherche {
 						c.setAutoCommit(false);
 
 						stmt = c.createStatement();
-						ResultSet rs = stmt
-								.executeQuery("SELECT * FROM OBJETS3D;");
+						ResultSet rs = stmt.executeQuery("SELECT * FROM OBJETS3D;");
 						String name = rs.getString("name");
 						String auteur = rs.getString("auteur");
 
-						while (!name.equals(tfield.getText()) && rs.next()) {
+						while (rs.next()) {
 							name = rs.getString("name");
+							if (name.equals(tfield.getText())) {
+							listeRecherche.add(name);
+							System.out.println(listeRecherche);
+							}
 						}
+						
 						while (!auteur.equals(tfield1.getText()) && rs.next()) {
 							auteur = rs.getString("auteur");
 						}
-						if (cbox.isSelected() && name.equals(tfield.getText())) {
-							//JOptionPane.showMessageDialog(frame,"L'objet existe.","Attention",JOptionPane.WARNING_MESSAGE);
-			    		 	a.nouvelOnglet(name);
-			    		 	frame.dispose();
+						
+						if (cbox.isSelected()) {
+							// JOptionPane.showMessageDialog(frame,"L'objet existe.","Attention",JOptionPane.WARNING_MESSAGE);
+
+							ListAfterSearch l = new ListAfterSearch(
+									listeRecherche);
+							//a.nouvelOnglet(name);
+							// frame.dispose();
 						} else if (cbox.isSelected()) {
+							// le cas auteur et le cas complexite devrait etre
+							// gere
 							JOptionPane.showMessageDialog(frame,
 									"L'objet n'existe pas.", "Attention",
 									JOptionPane.WARNING_MESSAGE);
+
 						}
 						if (cbox1.isSelected()
 								&& auteur.equals(tfield1.getText())) {
@@ -158,25 +166,27 @@ public class Recherche {
 
 		bu.setPreferredSize(d);
 		pa1.add(bu);
-		c.add(pa1);
+		this.add(pa1);
 
 		JPanel pa2 = new JPanel();
 		JButton e = new JButton("Annuler ");
 		e.setPreferredSize(d);
 		pa2.add(e);
-		c.add(pa2);
+		this.add(pa2);
 
-		e.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				frame.dispose();
+		/*
+		 * e.addActionListener(new ActionListener() { public void
+		 * actionPerformed(ActionEvent arg0) { frame.dispose();
+		 * 
+		 * } });
+		 */
 
-			}
-		});
+		this.setSize(640, 480);
+		this.setVisible(true);
 
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(640, 480);
-		frame.setResizable(false);
-		frame.setVisible(true);
+	}
 
+	public void ListeRecherche(List<String> l) {
+		new ListAfterSearch(l);
 	}
 }

@@ -1,28 +1,26 @@
 package gestiondelaffichage3d;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Polygon;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileFilter;
 
 @SuppressWarnings("serial")
 public class PanelAffichage extends JPanel {
+	AffichageDuModele a;
 	private List<Point> list_points = new ArrayList<Point>();
 	private List<Segment> list_segments = new ArrayList<Segment>();
 	private List<Face> list_faces = new ArrayList<Face>();
@@ -38,7 +36,7 @@ public class PanelAffichage extends JPanel {
 	
 	private boolean RecupDonneeFichier(String name){
 		if (name==null) {
-			name = "icosa";
+			name = "space_station";
 		}
 		List<String> fichier = new ArrayList<String>();
 
@@ -88,8 +86,12 @@ public class PanelAffichage extends JPanel {
 		}
 		zoom = (int) (250/max);
 		return true;
-		
+
 	}
+	
+	//Si on clic sur bouton zoom par default, le zoom ce remet par default
+			
+	
 	
 			/*List<String> fichier = new ArrayList<String>();
 			try {
@@ -216,54 +218,66 @@ public class PanelAffichage extends JPanel {
 	}*/
 
 	
-	public PanelAffichage(String name) {
+	public PanelAffichage(AffichageDuModele a, String name) {
+		this.a = a;
 			RecupDonneeFichier(name);
 			this.setBackground(Color.WHITE);
 			this.setVisible(true);
 			this.addMouseMotionListener(new MouseListenerMaison(this));
 			this.addMouseWheelListener(new MouseWheelListenerMaison(this));
-			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-			decalageY = 350;
-			decalageX = 350;
+			//Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+			if (a.getHauteur()==0) {
+				decalageX = 672/2;
+				decalageY = 637/2;
+			}else{
+				decalageY = (int) (a.getHauteur()/2);
+				decalageX = (int) (a.getLargeur()/2);
+			}
 	}
 	
 	
 	Graphics buffer;
-	Image image; 
-	 public void paint( Graphics g ){
-	     if(buffer==null){
-	        image = createImage(getWidth(),getHeight());
-	        buffer = image.getGraphics();
-	      }
-	     buffer.setColor(Color.BLACK);
-	     buffer.fillRect(0,0,8000, 8000);
-	     for (int i = 0; i <  list_faces.size(); i++) {
-	    	 rotation(list_faces.get(i));
-		}
-	
-			
-			
-			Collections.sort(list_faces);
-			
-			
-	     rotationX=0;
-			rotationY =0;
-			rotationZ=0;
-			for (int i = list_faces.size()-1; i >-1; i--) {
-				buffer.setColor(new Color(255-(i*255)/list_faces.size(),255-(i*255)/list_faces.size(),255-(i*255)/list_faces.size()));
-				//g.setColor(tableau[i].getColor());
-				//g.setColor(new Color(r.nextInt(255)+1, r.nextInt(255)+1, r.nextInt(255)+1));
-				buffer.fillPolygon(generatePolygon(list_faces.get(i),zoom,decalageX,decalageY));
-				
-			}
+	Image image;
 
-	      g.drawImage(image, 0, 0, this);
-	   }
-	
+	public void paint(Graphics g) {
+		
+		//if (buffer == null) {
+			image = createImage((int)a.getLargeur(),(int)a.getHauteur());
+			buffer = image.getGraphics();
+		//}
+		buffer.setColor(Color.WHITE);
+		buffer.fillRect(0, 0, 10000, 10000);
+		for (int i = 0; i < list_faces.size(); i++) {
+			rotation(list_faces.get(i));
+		}
+
+		Collections.sort(list_faces);
+
+		rotationX = 0;
+		rotationY = 0;
+		rotationZ = 0;
+		int couleur1 = 255;
+		int couleur2 = 112;
+		int couleur3 = 0;
+		
+		for (int i = 0; i < list_faces.size(); i++) {
+			
+			// Coeef blanc : coeffLuminosite = 255 - (i * 255) / list_faces.size();
+			// coeef couleur -> blanc  255 - (i * (255-couleur1)) / list_faces.size()
+
+			buffer.setColor(new Color((i * couleur1) / list_faces.size(), (i * couleur2) / list_faces.size(),(i * couleur3) / list_faces.size()));
+			buffer.fillPolygon(generatePolygon(list_faces.get(i), zoom,
+					decalageX, decalageY));
+
+		}
+
+		g.drawImage(image, 0, 0, this);
+	}
+
 	public void update(Graphics g) {
 		paint(getGraphics());
 	}
-	
+
 	private void rotation(Face f){
 		double[] x = new double[3];
 		double[] y = new double[3];
@@ -359,12 +373,12 @@ public class PanelAffichage extends JPanel {
 			mouseX = e.getX();
 			mouseY = e.getY();
 		}
-		public void setTaille(Graphics buffer ){
+		/*public void setTaille(Graphics buffer ){
 			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 			int Y = (int)tailleEcran.getHeight();
 			int X = (int)tailleEcran.getWidth();
 			buffer.clipRect(0, 0, X, Y);
-		}
+		}*/
 		
 	}
 }
