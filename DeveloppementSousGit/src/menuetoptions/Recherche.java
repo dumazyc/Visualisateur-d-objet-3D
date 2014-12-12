@@ -174,19 +174,18 @@ public class Recherche extends JPanel {
 		pa2.add(e);
 		this.add(pa2);
 
-		/*
-		 * e.addActionListener(new ActionListener() { public void
-		 * actionPerformed(ActionEvent arg0) { frame.dispose();
-		 * 
-		 * } });
-		 */
+		/*e.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.dispose();
+
+			}
+		});*/
 
 		this.setSize(640, 480);
 		this.setVisible(true);
 
 	}
-
-	public void ListeRecherche(List<String> l) {
+	public void ListeRecherche(List<String>l){
 		new ListAfterSearch(l);
 	}
 }

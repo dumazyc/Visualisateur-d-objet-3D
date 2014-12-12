@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-// affiche la listes apr�s recherche de l'utilisateur
 
 public class ListAfterSearch {
 	
