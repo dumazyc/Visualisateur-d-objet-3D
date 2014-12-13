@@ -23,7 +23,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import menuetoptions.Ajout;
-import menuetoptions.Enregistrer;
 import menuetoptions.Recherche;
 
 import java.awt.Toolkit;
@@ -31,11 +30,9 @@ import java.awt.Toolkit;
 @SuppressWarnings("serial")
 public class AffichageDuModele extends JFrame {
 	JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-	
-	
+	//sp.setOneTouchExpandable(true);
 	JMenuBar jmenubar;
 	JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-
 	boolean recherche = false;
 	Recherche r = new Recherche(this);
 	private ImageIcon closeXIcon = new ImageIcon("./ressources/imageMenu/close.gif");
@@ -46,7 +43,6 @@ public class AffichageDuModele extends JFrame {
 	public AffichageDuModele() {
 		
 		jmenubar = new JMenuBar();
-	
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		int X = 700;
 		int Y = 700;
@@ -133,16 +129,9 @@ public class AffichageDuModele extends JFrame {
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		// Ajout de l'aide
-		enregistre.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			new Enregistrer(tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()));
-			}
-		});
-
 		//annuler devrait faire disparaitre le cote gauche de la fenetre a revoir
-		// ouvre la recherche d'objet
-
+		// ouvre la recherceh d'objet
+		
 		recherche.addActionListener(new tmpListener(this));
 
 		// si case cocher alors plein ecran

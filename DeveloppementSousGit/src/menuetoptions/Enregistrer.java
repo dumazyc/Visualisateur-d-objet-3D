@@ -1,18 +1,53 @@
 package menuetoptions;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 
-public class Enregistrer {
-	/*
+public class Enregistrer extends JFrame {
+
+	/**
 	 * 
-    Creer un objet JFileChooser et appeler sa méthode showSaveDialog pour demander à l’utilisateur le nom du fichier qu’il souhaite créer.
-    Le résultat de la méthode showSaveDialog informe sur la manière dont l’utilisateur a quitté ce dialogue d’ouverture de fichier. Si ce resultat est APPROVE_OPTION c’est qu’un nom de fichier (objet File) a été spécifié avec succès.
-    A l’aide de ce nom de fichier, créer un objet FileOutputStream (c’est-à-dire un flux de sortie aboutissant à un fichier).
-    A l’aide de ce flux de sortie, créer un objet ObjectOutputStream (c’est-à-dire un flux de sortie dans lequel on peut mettre des objets).
-    Dans ce flux, écrire l’objet racine (mais oui, c’est aussi simple que cela...)
-    Fermer le flux
-
 	 */
-	
+	private static final long serialVersionUID = 1L;
+
+	public Enregistrer(String name) {
+
+		JFileChooser fileChooser = new JFileChooser();
+
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooser.setDialogTitle("Specify a file to save");
+
+		int userSelection = fileChooser.showSaveDialog(this);
+
+		if (userSelection == JFileChooser.APPROVE_OPTION) {
+			String ligne;
+			int cpt = 0;
+			FileReader flux;
+			BufferedReader entree;
+			PrintWriter sortie;
+			ArrayList<String> liste = new ArrayList<String>();
+			try {
+				flux = new FileReader("./ressources/modeles/" + name + ".gts");
+				entree = new BufferedReader(flux);
+				sortie = new PrintWriter(fileChooser.getSelectedFile()
+						.getAbsolutePath() + "/" + name + ".gts");
+				while ((ligne = entree.readLine()) != null) {
+					liste.add(ligne);
+					sortie.println(liste.get(cpt++));
+				}
+				entree.close();
+				sortie.close();
+			} catch (Exception e) {
+				System.err.println(e.toString());
+			}
+		}
+
+	}
 
 }
+
