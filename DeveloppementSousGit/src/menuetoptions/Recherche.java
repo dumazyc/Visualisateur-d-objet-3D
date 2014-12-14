@@ -1,4 +1,3 @@
-
 package menuetoptions;
 
 import gestiondelaffichage3d.AffichageDuModele;
@@ -229,6 +228,89 @@ public class Recherche extends JPanel{
 	}
 	
 }
+
+		// String ac = perso.getSelectedItem().toString()
+
+
+		/*bu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if ((cbox1.isSelected() && tfield1.getText().isEmpty())
+						|| tfield.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(frame,
+							"Un champ coche ne peut etre vide.", "Attention",
+							JOptionPane.WARNING_MESSAGE);
+				} else {
+					Connection c = null;
+					Statement stmt = null;
+					try {
+						Class.forName("org.sqlfalseite.JDBC");
+						c = DriverManager
+								.getConnection("jdbc:sqlite:Database.db");
+						c.setAutoCommit(false);
+
+						stmt = c.createStatement();
+						ResultSet rs = stmt
+								.executeQuery("SELECT * FROM OBJETS3D;");
+						String name = rs.getString("name");
+						String auteur = rs.getString("auteur");
+
+						while (!name.equals(tfield.getText()) && rs.next()) {
+							name = rs.getString("name");
+						}
+						while (!auteur.equals(tfield1.getText()) && rs.next()) {
+							auteur = rs.getString("auteur");
+						}
+						if ( name.equals(tfield.getText())) {
+							// JOptionPane.showMessageDialog(frame,"L'objet existe.","Attention",JOptionPane.WARNING_MESSAGE);
+							a.nouvelOnglet(name);
+							//frame.dispose();
+						} else  {
+							JOptionPane.showMessageDialog(frame,
+									"L'auteur n'existe pas.", "Attention",
+									JOptionPane.WARNING_MESSAGE);
+	
+						}
+						if (cbox1.isSelected()
+								&& auteur.equals(tfield1.getText())) {
+							JOptionPane.showMessageDialog(frame,
+									"Clement est l'auteur des objets ...",
+									"Attention", JOptionPane.WARNING_MESSAGE);
+						} else if (cbox1.isSelected()) {
+							JOptionPane.showMessageDialog(frame,
+									"L'auteur n'existe pas.", "Attention",
+									JOptionPane.WARNING_MESSAGE);
+						}
+						rs.close();
+						stmt.close();
+						c.close();
+					} catch (Exception e1) {
+						System.err.println(e1.getClass().getName() + ": "
+								+ e1.getMessage());
+						System.exit(0);
+					}
+				}
+			}
+
+		});
+
+		bu.setPreferredSize(d);
+		pa1.add(bu);
+		this.add(pa1);
+
+		JPanel pa2 = new JPanel();
+		JButton e = new JButton("Annuler ");
+		e.setPreferredSize(d);
+		pa2.add(e);
+		this.add(pa2);
+*/
+		/*e.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				frame.dispose();
+
+			}
+		});*/
+
+
 
 
 // ancien panel
