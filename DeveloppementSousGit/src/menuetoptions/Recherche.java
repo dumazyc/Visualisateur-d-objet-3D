@@ -1,4 +1,238 @@
+
 package menuetoptions;
+
+import gestiondelaffichage3d.AffichageDuModele;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Scrollbar;
+import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.sql.*;
+import java.util.ArrayList;
+
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+
+public class Recherche extends JPanel{
+	AffichageDuModele frame;
+	public Recherche(final AffichageDuModele a) {
+		this.frame = a;
+		Dimension d = new Dimension(100, 27);
+		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
+		
+		// premier contentPane recherche.
+		JPanel contentPane1 = new JPanel();
+		JLabel recherche = new JLabel("Recherche : ");
+		final JTextField tfield = new JTextField("Mots Cles",8);
+		JButton valider = new JButton("Valider ");
+		contentPane1.add(recherche);
+		contentPane1.add(tfield);
+		contentPane1.add(valider);
+		contentPane1.setBorder(BorderFactory.createMatteBorder(2, 2, 0, 2, Color.black));
+		this.add(contentPane1);
+		contentPane1.setPreferredSize((new Dimension(30,0)));
+
+		// 2eme contentPane resultat.
+		final JPanel contentPane2 = new JPanel();
+		contentPane2.setPreferredSize((new Dimension(50,100)));
+		JLabel resultat = new JLabel("Resultat : ");
+		//final JList liste_gts = new JList(fichier_gts.toArray());
+		final DefaultListModel listModel_gts = new DefaultListModel();
+		final JList liste_gts = new JList(listModel_gts);
+		listModel_gts.addElement("bunny");
+		listModel_gts.addElement("cone");
+		liste_gts.setVisibleRowCount(10);
+		liste_gts.setEnabled(false);
+		liste_gts.setPreferredSize(new Dimension(120,150));
+		contentPane2.setBorder(BorderFactory.createMatteBorder(0, 2, 3, 2, Color.black));
+		contentPane2.add(resultat);
+		contentPane2.add(liste_gts);
+		this.add(contentPane2);
+		
+		//panel text
+		JPanel contentPane5 = new JPanel();
+		//contentPane5.setBackground(Color.blue);
+		JLabel label_modifier = new JLabel("<html><b><font size=4>Modifier les mots cles : </font></b></html>");
+		contentPane5.add(label_modifier);
+		contentPane5.setBorder(BorderFactory.createMatteBorder(0, 2, 0, 2, Color.black));
+		//contentPane5.setSize(new Dimension(50, 50));
+		this.add(contentPane5);
+		
+		
+		// 3eme contentpane liste des mots cles.
+		JPanel contentPane3 = new JPanel();
+		//contentPane3.setBackground(Color.red);		
+		JLabel label_motscles = new JLabel("Mots Cles : ");
+		final DefaultListModel listModel_motscles = new DefaultListModel();
+		final JList liste_mots_clef = new JList(listModel_motscles);
+		listModel_motscles.addElement("animal");
+		listModel_motscles.addElement("figure");
+		liste_mots_clef.setVisibleRowCount(10);
+		liste_mots_clef.setPreferredSize(new Dimension(120,150));
+		contentPane3.add(label_motscles);
+		contentPane3.add(liste_mots_clef);
+		final JButton supprimer = new JButton("Supprimer");
+		supprimer.setEnabled(false);
+		liste_mots_clef.setEnabled(false);
+		contentPane3.add(supprimer);
+		contentPane3.setBorder(BorderFactory.createMatteBorder(0, 2, 0, 2, Color.black));
+		this.add(contentPane3);
+		contentPane3.setPreferredSize(new Dimension(10,180));
+		
+		
+		// 4eme contentpane modification des mots cles.
+		
+		JPanel contentPane4 = new JPanel();
+		//contentPane4.setBackground(Color.green);
+		final JTextField tfield2 = new JTextField("New mots cles",10);
+		final JButton modifier = new JButton("modifier");
+		final JButton ajouter = new JButton("Ajouter");
+		tfield2.setEnabled(false);
+		ajouter.setEnabled(false);
+		modifier.setEnabled(false);
+		contentPane4.setBorder(BorderFactory.createMatteBorder(0, 2, 2, 2, Color.black));
+		contentPane4.add(tfield2);
+		contentPane4.add(modifier);
+		contentPane4.add(ajouter);
+		this.add(contentPane4);
+		this.setVisible(true);
+
+		
+		// L'action quand on clic sur le bouton valider.
+		valider.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			
+			if(!tfield.getText().equals("") && !tfield.getText().equals("Mots Cles") ){
+		/*	Connection c = null;
+			Statement stmt = null;
+			try {
+				Class.forName("org.sqlfalseite.JDBC");
+				c = DriverManager
+						.getConnection("jdbc:sqlite:Database.db");
+				c.setAutoCommit(false);
+
+				stmt = c.createStatement();
+				String requete = "SELECT NAME FROM OBJETS3D WHERE MOTCLES = " + tfield.getText();
+				ResultSet rs = stmt.executeQuery(requete);
+				while(rs.next()){
+					fichier_gts.add((rs.getString("NAME")));
+				}*/
+				liste_gts.setEnabled(true);
+			
+			/*}catch (Exception e1) {
+				System.err.println(e1.getClass().getName() + ": "
+						+ e1.getMessage());
+				System.exit(0);
+			}*/
+			}
+		}
+	});
+	
+	// Action quand on selectionne un element de la liste des .gts.
+	liste_gts.addListSelectionListener(new ListSelectionListener() {
+		
+		@Override
+		public void valueChanged(ListSelectionEvent e) {
+			
+			if(e.getValueIsAdjusting()){return;}
+			liste_gts.getSelectedValue();
+			a.nouvelOnglet((String)liste_gts.getSelectedValue());
+			
+			/*	Connection c = null;
+			Statement stmt = null;
+			try {
+				Class.forName("org.sqlfalseite.JDBC");
+				c = DriverManager
+						.getConnection("jdbc:sqlite:Database.db");
+				c.setAutoCommit(false);
+
+				stmt = c.createStatement();
+				String requete = "SELECT MOTES FROM OBJETS3D WHERE NAME = " + ((String)liste_gts.getSelectedValue());
+				ResultSet rs = stmt.executeQuery(requete);
+				while(rs.next()){
+					fichier_gts.add((rs.getString("NAME")));
+				}*/
+				liste_mots_clef.setEnabled(true);
+			
+			
+			/*}catch (Exception e1) {
+				System.err.println(e1.getClass().getName() + ": "
+						+ e1.getMessage());
+				System.exit(0);
+			}*/
+			
+		}
+	});
+	
+	// Action quand on selectionne un element de la liste des mots clef.
+		liste_mots_clef.addListSelectionListener(new ListSelectionListener() {
+			
+			public void valueChanged(ListSelectionEvent arg0) {
+				supprimer.setEnabled(true);
+				modifier.setEnabled(true);
+				ajouter.setEnabled(true);
+				tfield2.setText((String)liste_mots_clef.getSelectedValue());
+				tfield2.setEnabled(true);
+			}
+		});
+		
+	// Action du bouton Suprrimé.
+		
+		supprimer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				listModel_motscles.removeElement(liste_mots_clef.getSelectedValue());
+			}
+		});
+		
+	// Action du bouton Modifier.
+		
+		modifier.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int index =0;
+				index= liste_mots_clef.getSelectedIndex();
+				if( index != 0){
+				listModel_motscles.insertElementAt(tfield2.getText(), index);
+				listModel_motscles.remove(index+1);
+				}
+			}
+		});
+		
+	// Action du bouton Ajouter.
+		ajouter.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(!tfield2.getText().equals("New mots cles")){
+					listModel_motscles.addElement(tfield2.getText());
+					
+					
+				}else{
+					System.out.println("vous n'avez pas entrer de nouveau mots cles");
+				}
+				
+			}
+		});
+	}
+	
+}
+
+
+// ancien panel
+/*package menuetoptions;
 
 import gestiondelaffichage3d.AffichageDuModele;
 
@@ -176,7 +410,7 @@ public class Recherche extends JPanel {
 				frame.dispose();
 
 			}
-		});*/
+		});
 
 		this.setSize(640, 480);
 		this.setVisible(true);
@@ -186,3 +420,4 @@ public class Recherche extends JPanel {
 		new ListAfterSearch(l);
 	}
 }
+*/
