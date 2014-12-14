@@ -15,13 +15,16 @@ public class SQLite
       System.out.println("Ouverture de la base de donnée");
 
       stmt = c.createStatement();
-      String sql = "CREATE TABLE OBJETS3D " +
+      /*String sql = "CREATE TABLE OBJETS3D " +
                    "(ID INTEGER PRIMARY KEY   AUTOINCREMENT," +
                    " NAME           TEXT    NOT NULL, " + 
                    " AUTEUR         TEXT    NOT NULL, " + 
                    " DATECREATION   DATE    DEFAULT CURRENT_DATE, " +
                    " COMPLEXITE     INT    	NOT NULL," +
-                   " LIEN 			TEXT 	NOT NULL)"; 
+                   " LIEN 			TEXT 	NOT NULL)"; */
+      String sql = "CREATE TABLE MOTSCLES " +
+              "(ID_M INTEGER   NOT NULL," +
+              " MOTCLE 		TEXT 	NOT NULL)"; 
       stmt.executeUpdate(sql);
       stmt.close();
       c.close();
