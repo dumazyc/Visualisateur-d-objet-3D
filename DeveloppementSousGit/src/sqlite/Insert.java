@@ -13,8 +13,10 @@ public class Insert
       c.setAutoCommit(false);
 
       stmt = c.createStatement();
-      String sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,COMPLEXITE,LIEN) " +
-               "VALUES ('tie', 'clement', 0, 'En attente' );"; 
+      /*String sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,COMPLEXITE,LIEN) " +
+               "VALUES ('tie', 'clement', 0, 'En attente' );"; */
+      String sql = "INSERT INTO MOTSCLES (ID_M,MOTCLE) " +
+              "VALUES (2, 'figure' );"; 
       stmt.executeUpdate(sql);
 
       stmt.close(); 
