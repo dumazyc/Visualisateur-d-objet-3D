@@ -133,7 +133,7 @@ public class AffichageDuModele extends JFrame {
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		// Ajout de l'aide
+		// Option enregistrer
 		enregistre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			new Enregistrer(tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()));
