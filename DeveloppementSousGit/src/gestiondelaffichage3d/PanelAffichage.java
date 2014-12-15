@@ -3,9 +3,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Polygon;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -33,6 +32,7 @@ public class PanelAffichage extends JPanel {
 	int mouseX = 0;
 	int mouseY = 0;
 	int zoom = 1;
+	boolean ligneOrNot = false;
 	
 	private boolean RecupDonneeFichier(String name){
 		if (name==null) {
@@ -223,6 +223,7 @@ public class PanelAffichage extends JPanel {
 			RecupDonneeFichier(name);
 			this.setBackground(Color.WHITE);
 			this.setVisible(true);
+			this.addMouseListener(new MouseListenerDeuxiemeMaison(this));
 			this.addMouseMotionListener(new MouseListenerMaison(this));
 			this.addMouseWheelListener(new MouseWheelListenerMaison(this));
 			//Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
@@ -266,8 +267,14 @@ public class PanelAffichage extends JPanel {
 			// coeef couleur -> blanc  255 - (i * (255-couleur1)) / list_faces.size()
 
 			buffer.setColor(new Color((i * couleur1) / list_faces.size(), (i * couleur2) / list_faces.size(),(i * couleur3) / list_faces.size()));
-			buffer.fillPolygon(generatePolygon(list_faces.get(i), zoom,
-					decalageX, decalageY));
+			if (ligneOrNot) {
+				buffer.drawPolygon(generatePolygon(list_faces.get(i), zoom,
+						decalageX, decalageY));
+			}else{
+				buffer.fillPolygon(generatePolygon(list_faces.get(i), zoom,
+						decalageX, decalageY));
+			}
+			
 
 		}
 
@@ -349,6 +356,7 @@ public class PanelAffichage extends JPanel {
 		}
 		@Override
 		public void mouseDragged(MouseEvent e) {
+			ligneOrNot = true;
 			if (SwingUtilities.isLeftMouseButton (e)&&SwingUtilities.isRightMouseButton (e)) {
 				decalageX += e.getX() - mouseX;
 				decalageY += e.getY() - mouseY;
@@ -367,7 +375,7 @@ public class PanelAffichage extends JPanel {
 			mouseY = e.getY();
 			p.repaint();
 		}
-
+		
 		@Override
 		public void mouseMoved(MouseEvent e) {
 			mouseX = e.getX();
@@ -379,6 +387,82 @@ public class PanelAffichage extends JPanel {
 			int X = (int)tailleEcran.getWidth();
 			buffer.clipRect(0, 0, X, Y);
 		}*/
+		
+	}
+	public class MouseListenerDeuxiemeMaison implements MouseListener {
+private PanelAffichage p;
+		
+		public MouseListenerDeuxiemeMaison(PanelAffichage p) {
+			this.p = p;
+			
+
+		}
+		
+		
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			ligneOrNot = false;
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			ligneOrNot = true;
+			if (SwingUtilities.isLeftMouseButton (e)&&SwingUtilities.isRightMouseButton (e)) {
+				decalageX += e.getX() - mouseX;
+				decalageY += e.getY() - mouseY;
+				rotationY -=  e.getX() - mouseX ;
+				rotationX +=  e.getY() - mouseY ;
+			}else if (SwingUtilities.isLeftMouseButton (e)) {
+				decalageX += e.getX() - mouseX;
+				decalageY += e.getY() - mouseY;
+				
+			}else if (SwingUtilities.isRightMouseButton (e)) {
+					rotationY -=  e.getX() - mouseX ;
+					rotationX +=  e.getY() - mouseY ;
+					
+			}
+			mouseX = e.getX();
+			mouseY = e.getY();
+			p.repaint();
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			ligneOrNot = false;
+			if (SwingUtilities.isLeftMouseButton (e)&&SwingUtilities.isRightMouseButton (e)) {
+				decalageX += e.getX() - mouseX;
+				decalageY += e.getY() - mouseY;
+				rotationY -=  e.getX() - mouseX ;
+				rotationX +=  e.getY() - mouseY ;
+			}else if (SwingUtilities.isLeftMouseButton (e)) {
+				decalageX += e.getX() - mouseX;
+				decalageY += e.getY() - mouseY;
+				
+			}else if (SwingUtilities.isRightMouseButton (e)) {
+					rotationY -=  e.getX() - mouseX ;
+					rotationX +=  e.getY() - mouseY ;
+					
+			}
+			mouseX = e.getX();
+			mouseY = e.getY();
+			p.repaint();
+			
+		}
+		
 		
 	}
 }
