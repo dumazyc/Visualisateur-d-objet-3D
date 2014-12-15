@@ -9,10 +9,13 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -38,38 +41,31 @@ public class PanelAffichage extends JPanel {
 		if (name==null) {
 			name = "space_station";
 		}
-		List<String> fichier = new ArrayList<String>();
-
+		
+		Scanner s = null;
 		try {
-			String ligne;
-			FileReader flux;
-			BufferedReader entree;
-			flux = new FileReader("./ressources/modeles/"+name+".gts");
-			entree = new BufferedReader(flux);
-			while ((ligne = entree.readLine()) != null) {
-				fichier.add(ligne);
-			}
-			entree.close();
-		} catch (Exception e) {
-			System.err.println(e.toString());
-			return false;
+			s = new Scanner(new File("./ressources/modeles/"+name+".gts"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		nomDeLObjet = name;
-		String first = fichier.get(0);
-		int nbPoints = Integer.parseInt(first.substring(0,first.indexOf(' ')));
-		int nbSegments = Integer.parseInt(first.substring(first.indexOf(' ')+1,first.indexOf(' ')+1+first.substring(first.indexOf(' ')+1).indexOf(' ')));
-		int nbFaces = Integer.parseInt(first.substring(first.indexOf(' ')+1+first.substring(first.indexOf(' ')+1).indexOf(' ')+1));
+		
+		int nbPoints = s.nextInt();
+		int nbSegments = s.nextInt();
+		int nbFaces = s.nextInt();
 		int parcoursDeLigne = 1;
 		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbPoints; i++) {
-			list_points.add(new Point(Double.parseDouble(fichier.get(i).substring(0,fichier.get(i).indexOf(' '))), Double.parseDouble(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' '))), Double.parseDouble(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1)),(i-parcoursDeLigne+1)));
+				list_points.add(new Point(Double.parseDouble(s.next()),Double.parseDouble(s.next()),Double.parseDouble(s.next()),i));		
 		}
 		parcoursDeLigne+=nbPoints;
 		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbSegments; i++) {
-			list_segments.add(new Segment(list_points.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_points.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
+			list_segments.add(new Segment(list_points.get(s.nextInt()-1),list_points.get(s.nextInt()-1), i));
 		}
 		parcoursDeLigne+=nbSegments;
 		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbFaces; i++) {
-			list_faces.add(new Face(list_segments.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
+			
+			list_faces.add(new Face(list_segments.get(s.nextInt()-1), list_segments.get(s.nextInt()-1), list_segments.get(s.nextInt()-1), i));
 		}
 		Double max = list_points.get(0).getX();
 		for (int i = 0; i < list_points.size(); i++) {
