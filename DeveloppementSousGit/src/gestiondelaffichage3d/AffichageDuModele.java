@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,6 +24,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import menuetoptions.Ajout;
+import menuetoptions.CouleurFond;
+import menuetoptions.CouleurObjet;
 import menuetoptions.Enregistrer;
 import menuetoptions.Recherche;
 
@@ -66,6 +69,8 @@ public class AffichageDuModele extends JFrame {
 		JMenuItem fermer = new JMenuItem("Fermer");
 		JMenuItem aide = new JMenuItem("?");
 		JMenuItem Zoom = new JMenuItem("Zoom par Default");
+		JMenuItem background = new JMenuItem("Couleur de fond");
+		JMenuItem colorObjet = new JMenuItem("Couleur de la figure");
 		JMenu resolution = new JMenu("Resolution");
 		JRadioButtonMenuItem full = new JRadioButtonMenuItem("Plein ecran");
 		JRadioButtonMenuItem full2 = new JRadioButtonMenuItem("700*700", true);
@@ -90,6 +95,8 @@ public class AffichageDuModele extends JFrame {
 		j1.add(fermer);
 		j2.add(resolution);
 		j2.add(Zoom);
+		j2.add(background);
+		j2.add(colorObjet);
 		j3.add(aide);
 		resolution.add(full);
 		resolution.add(full2);
@@ -185,6 +192,9 @@ public class AffichageDuModele extends JFrame {
 			}
 		});
 		
+		//Gestion des couleurs
+		background.addActionListener(new colorBackground(this));
+		colorObjet.addActionListener(new colorObjet(this));
 
 		this.setVisible(true);
 
@@ -235,6 +245,33 @@ public class AffichageDuModele extends JFrame {
 			recherche = true;
 			}		
 		}		
+	}
+	
+	public class colorBackground implements ActionListener{
+		AffichageDuModele a;
+
+		public colorBackground(AffichageDuModele a){
+			this.a=a;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new CouleurFond(a);
+		}
+		
+	}
+	public class colorObjet implements ActionListener{
+		AffichageDuModele a;
+
+		public colorObjet(AffichageDuModele a){
+			this.a=a;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			new CouleurObjet(a);
+		}
+		
 	}
 	
 	public double getHauteur() {		

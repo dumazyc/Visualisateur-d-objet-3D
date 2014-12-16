@@ -20,6 +20,9 @@ import java.util.Scanner;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import menuetoptions.CouleurFond;
+import menuetoptions.CouleurObjet;
+
 @SuppressWarnings("serial")
 public class PanelAffichage extends JPanel {
 	AffichageDuModele a;
@@ -217,7 +220,6 @@ public class PanelAffichage extends JPanel {
 	public PanelAffichage(AffichageDuModele a, String name) {
 		this.a = a;
 			RecupDonneeFichier(name);
-			this.setBackground(Color.WHITE);
 			this.setVisible(true);
 			this.addMouseListener(new MouseListenerDeuxiemeMaison(this));
 			this.addMouseMotionListener(new MouseListenerMaison(this));
@@ -242,7 +244,7 @@ public class PanelAffichage extends JPanel {
 			image = createImage((int)a.getLargeur(),(int)a.getHauteur());
 			buffer = image.getGraphics();
 		//}
-		buffer.setColor(Color.WHITE);
+		buffer.setColor(CouleurFond.couleur);
 		buffer.fillRect(0, 0, 10000, 10000);
 		for (int i = 0; i < list_faces.size(); i++) {
 			rotation(list_faces.get(i));
@@ -253,9 +255,9 @@ public class PanelAffichage extends JPanel {
 		rotationX = 0;
 		rotationY = 0;
 		rotationZ = 0;
-		int couleur1 = 255;
-		int couleur2 = 112;
-		int couleur3 = 0;
+		int couleur1 = CouleurObjet.couleur.getRed();
+		int couleur2 = CouleurObjet.couleur.getGreen();
+		int couleur3 = CouleurObjet.couleur.getBlue();
 		
 		for (int i = 0; i < list_faces.size(); i++) {
 			
