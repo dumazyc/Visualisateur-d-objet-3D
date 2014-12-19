@@ -115,12 +115,7 @@ public class AffichageDuModele extends JFrame {
 		this.add(sp);
 		
 		// ouvre l'ajout d'objet
-		ajout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//nouvelOnglet("cube");
-				new Ajout();
-			}
-		});
+		ajout.addActionListener(new ActionListenerMaison(this));
 
 		// ferme l'application
 		fermer.addActionListener(new ActionListener() {
@@ -282,7 +277,20 @@ public class AffichageDuModele extends JFrame {
 		return tabbedPane.getSize().getWidth();
 	}
 	
-	
+	public class ActionListenerMaison implements ActionListener{
+		
+			private AffichageDuModele a;
+
+			public ActionListenerMaison(AffichageDuModele a) {
+			this.a=a;
+		}
+
+			public void actionPerformed(ActionEvent e) {
+				//nouvelOnglet("cube");
+				new Ajout(a);
+			}
+		
+	}
 	public static void main(String[] args) {
 		new AffichageDuModele();
 	}
