@@ -275,37 +275,23 @@ public class Ajout extends JFrame {
 							stmt.executeUpdate(sql);
 							a.setEnabled(false);
 
-							// if(res!=0){
-							Object[] options = { " Ok,Visualiser Objet",
-									"Modifier les informations" };
+							JFrame popup=new JFrame();
+							Container co=popup.getContentPane();
+							co.setLayout(new GridLayout(2,2));
+							co.add(new JLabel("Objet bien ajoute"));
+							JButton visualiser=new JButton("Ok, Visualiser");
+							co.add(visualiser);
+							visualiser.addActionListener(new ActionListener() {
 
-							int n = JOptionPane.showOptionDialog(a,
-									"Objet bien ajoute", "",
-									JOptionPane.YES_NO_OPTION,
-									JOptionPane.QUESTION_MESSAGE, null, // do
-																		// not
-																		// use a
-																		// custom
-																		// Icon
-									options, // the titles of buttons
-									options[0]); // default button title
-
-							if (n == JOptionPane.YES_OPTION) {
-								a.dispose();
-
-								aff.nouvelOnglet(tfield.getText());
-
-							} else if (n == JOptionPane.NO_OPTION) {
-								a.dispose();
-								/*
-								 * nouvelle fenetre ajout avec tous ce qu'il y a
-								 * dans ajout sans le jtextfield et dont les
-								 * info serviront a modifier l'objet dans la
-								 * base de donnees vendredi
-								 */
-								new ModificationAjout(tfield.getText());
-
-							}
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									a.dispose();
+									aff.nouvelOnglet(tfield.getText());
+								}
+							});
+							
+							
+						
 						}
 
 						// }
