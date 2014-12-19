@@ -14,7 +14,7 @@ public class Select
 
       stmt = c.createStatement();
       //ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D;" );
-      ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M;" );
+      ResultSet rs = stmt.executeQuery(" SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE MOTCLE = 'lapin';" );
       while ( rs.next() ) {
     	 int id = rs.getInt("id");
          String  name = rs.getString("name");

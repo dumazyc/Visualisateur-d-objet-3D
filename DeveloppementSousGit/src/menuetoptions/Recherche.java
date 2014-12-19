@@ -49,8 +49,6 @@ public class Recherche extends JPanel{
 		//final JList liste_gts = new JList(fichier_gts.toArray());
 		final DefaultListModel listModel_gts = new DefaultListModel();
 		final JList liste_gts = new JList(listModel_gts);
-		listModel_gts.addElement("bunny");
-		listModel_gts.addElement("cone");
 		liste_gts.setVisibleRowCount(10);
 		liste_gts.setEnabled(false);
 		liste_gts.setPreferredSize(new Dimension(120,150));
@@ -75,8 +73,6 @@ public class Recherche extends JPanel{
 		JLabel label_motscles = new JLabel("Mots Cles : ");
 		final DefaultListModel listModel_motscles = new DefaultListModel();
 		final JList liste_mots_clef = new JList(listModel_motscles);
-		listModel_motscles.addElement("animal");
-		listModel_motscles.addElement("figure");
 		liste_mots_clef.setVisibleRowCount(10);
 		liste_mots_clef.setPreferredSize(new Dimension(120,150));
 		contentPane3.add(label_motscles);
@@ -113,27 +109,27 @@ public class Recherche extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			
 			if(!tfield.getText().equals("") && !tfield.getText().equals("Mots Cles") ){
-		/*	Connection c = null;
+			Connection c = null;
 			Statement stmt = null;
 			try {
-				Class.forName("org.sqlfalseite.JDBC");
+				Class.forName("org.sqlite.JDBC");
 				c = DriverManager
 						.getConnection("jdbc:sqlite:Database.db");
 				c.setAutoCommit(false);
 
 				stmt = c.createStatement();
-				String requete = "SELECT NAME FROM OBJETS3D WHERE MOTCLES = " + tfield.getText();
+				String requete = "SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE MOTCLE ='" + tfield.getText()+"';";
 				ResultSet rs = stmt.executeQuery(requete);
 				while(rs.next()){
-					fichier_gts.add((rs.getString("NAME")));
-				}*/
+					listModel_gts.addElement((rs.getString("NAME")));
+				}
 				liste_gts.setEnabled(true);
 			
-			/*}catch (Exception e1) {
+			}catch (Exception e1) {
 				System.err.println(e1.getClass().getName() + ": "
 						+ e1.getMessage());
 				System.exit(0);
-			}*/
+			}
 			}
 		}
 	});
@@ -148,28 +144,29 @@ public class Recherche extends JPanel{
 			liste_gts.getSelectedValue();
 			a.nouvelOnglet((String)liste_gts.getSelectedValue());
 			
-			/*	Connection c = null;
+				Connection c = null;
 			Statement stmt = null;
 			try {
-				Class.forName("org.sqlfalseite.JDBC");
+				Class.forName("org.sqlite.JDBC");
 				c = DriverManager
 						.getConnection("jdbc:sqlite:Database.db");
 				c.setAutoCommit(false);
 
 				stmt = c.createStatement();
-				String requete = "SELECT MOTES FROM OBJETS3D WHERE NAME = " + ((String)liste_gts.getSelectedValue());
+				String requete = "SELECT MOTCLE FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE NAME = '" + ((String)liste_gts.getSelectedValue())+"'";
+				
 				ResultSet rs = stmt.executeQuery(requete);
 				while(rs.next()){
-					fichier_gts.add((rs.getString("NAME")));
-				}*/
+					listModel_motscles.addElement((rs.getString("MOTCLE")));
+				}
 				liste_mots_clef.setEnabled(true);
 			
 			
-			/*}catch (Exception e1) {
+			}catch (Exception e1) {
 				System.err.println(e1.getClass().getName() + ": "
 						+ e1.getMessage());
 				System.exit(0);
-			}*/
+			}
 			
 		}
 	});
