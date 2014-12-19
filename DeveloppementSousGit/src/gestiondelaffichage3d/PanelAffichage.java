@@ -17,8 +17,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileFilter;
 
 import menuetoptions.CouleurFond;
 import menuetoptions.CouleurObjet;
@@ -37,113 +39,12 @@ public class PanelAffichage extends JPanel {
 	int rotationZ =0;
 	int mouseX = 0;
 	int mouseY = 0;
-	int zoom = 1;
+	double zoom = 1;
+	Double max;
 	boolean ligneOrNot = false;
 	
 	private boolean RecupDonneeFichier(String name){
-		if (name==null) {
-			name = "space_station";
-		}
-		
-		Scanner s = null;
-		try {
-			s = new Scanner(new File("./ressources/modeles/"+name+".gts"));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		nomDeLObjet = name;
-		
-		int nbPoints = s.nextInt();
-		int nbSegments = s.nextInt();
-		int nbFaces = s.nextInt();
-		int parcoursDeLigne = 1;
-		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbPoints; i++) {
-				list_points.add(new Point(Double.parseDouble(s.next()),Double.parseDouble(s.next()),Double.parseDouble(s.next()),i));		
-		}
-		parcoursDeLigne+=nbPoints;
-		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbSegments; i++) {
-			list_segments.add(new Segment(list_points.get(s.nextInt()-1),list_points.get(s.nextInt()-1), i));
-		}
-		parcoursDeLigne+=nbSegments;
-		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbFaces; i++) {
-			
-			list_faces.add(new Face(list_segments.get(s.nextInt()-1), list_segments.get(s.nextInt()-1), list_segments.get(s.nextInt()-1), i));
-		}
-		Double max = list_points.get(0).getX();
-		for (int i = 0; i < list_points.size(); i++) {
-			if (list_points.get(i).getX() > max) {
-				max = list_points.get(i).getX();
-			} else if (list_points.get(i).getX() < -max) {
-				max = -list_points.get(i).getX();
-			}
-			if (list_points.get(i).getY() > max) {
-				max = list_points.get(i).getY();
-			} else if (list_points.get(i).getY() < -max) {
-				max = -list_points.get(i).getY();
-			}
-		}
-		zoom = (int) (250/max);
-		return true;
-
-	}
-	
-	//Si on clic sur bouton zoom par default, le zoom ce remet par default
-			
-	
-	
-			/*List<String> fichier = new ArrayList<String>();
-			try {
-				String ligne;
-				FileReader flux;
-				BufferedReader entree;
-				flux = new FileReader("ressources/modeles/icosa.gts");
-				entree = new BufferedReader(flux);
-				while ((ligne = entree.readLine()) != null) {
-					fichier.add(ligne);
-				}
-				entree.close();
-			} catch (Exception e) {
-				System.err.println(e.toString());
-				return false;
-			}
-			nomDeLObjet = "icosa.gts";
-			String first = fichier.get(0);
-			int nbPoints = Integer.parseInt(first.substring(0,first.indexOf(' ')));
-			int nbSegments = Integer.parseInt(first.substring(first.indexOf(' ')+1,first.indexOf(' ')+1+first.substring(first.indexOf(' ')+1).indexOf(' ')));
-			int nbFaces = Integer.parseInt(first.substring(first.indexOf(' ')+1+first.substring(first.indexOf(' ')+1).indexOf(' ')+1));
-			int parcoursDeLigne = 1;
-			for (int i = parcoursDeLigne; i < parcoursDeLigne+nbPoints; i++) {
-				list_points.add(new Point(Double.parseDouble(fichier.get(i).substring(0,fichier.get(i).indexOf(' '))), Double.parseDouble(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' '))), Double.parseDouble(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1)),(i-parcoursDeLigne+1)));
-			}
-			parcoursDeLigne+=nbPoints;
-			for (int i = parcoursDeLigne; i < parcoursDeLigne+nbSegments; i++) {
-				list_segments.add(new Segment(list_points.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_points.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
-			}
-			parcoursDeLigne+=nbSegments;
-			for (int i = parcoursDeLigne; i < parcoursDeLigne+nbFaces; i++) {
-				list_faces.add(new Face(list_segments.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
-			}
-			Double max = list_points.get(0).getX();
-			for (int i = 0; i < list_points.size(); i++) {
-				if (list_points.get(i).getX() > max) {
-					max = list_points.get(i).getX();
-				} else if (list_points.get(i).getX() < -max) {
-					max = -list_points.get(i).getX();
-				}
-				if (list_points.get(i).getY() > max) {
-					max = list_points.get(i).getY();
-				} else if (list_points.get(i).getY() < -max) {
-					max = -list_points.get(i).getY();
-				}
-			}
-			zoom = (int) (250/max);
-			name! = false;
-			return true;
-			
-			
-		}else{
-		List<String> fichier = new ArrayList<String>();
+		/*List<String> fichier = new ArrayList<String>();
 		JFileChooser fc = new JFileChooser("ressources/modeles/");
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.addChoosableFileFilter(new FileFilter() {
@@ -182,23 +83,34 @@ public class PanelAffichage extends JPanel {
 			return false;
 		}
 		nomDeLObjet = fc.getSelectedFile().getName();
-		String first = fichier.get(0);
-		int nbPoints = Integer.parseInt(first.substring(0,first.indexOf(' ')));
-		int nbSegments = Integer.parseInt(first.substring(first.indexOf(' ')+1,first.indexOf(' ')+1+first.substring(first.indexOf(' ')+1).indexOf(' ')));
-		int nbFaces = Integer.parseInt(first.substring(first.indexOf(' ')+1+first.substring(first.indexOf(' ')+1).indexOf(' ')+1));
+		name = nomDeLObjet;*/
+		Scanner s = null;
+		try {
+			s = new Scanner(new File("./ressources/modeles/"+name+".gts"));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		int nbPoints = s.nextInt();
+		int nbSegments = s.nextInt();
+		int nbFaces = s.nextInt();
 		int parcoursDeLigne = 1;
 		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbPoints; i++) {
-			list_points.add(new Point(Double.parseDouble(fichier.get(i).substring(0,fichier.get(i).indexOf(' '))), Double.parseDouble(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' '))), Double.parseDouble(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1)),(i-parcoursDeLigne+1)));
+				list_points.add(new Point(Double.parseDouble(s.next()),Double.parseDouble(s.next()),Double.parseDouble(s.next()),i));		
 		}
 		parcoursDeLigne+=nbPoints;
 		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbSegments; i++) {
-			list_segments.add(new Segment(list_points.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_points.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
+			list_segments.add(new Segment(list_points.get(s.nextInt()-1),list_points.get(s.nextInt()-1), i));
 		}
 		parcoursDeLigne+=nbSegments;
 		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbFaces; i++) {
-			list_faces.add(new Face(list_segments.get(Integer.parseInt(fichier.get(i).substring(0,fichier.get(i).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1,fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')))-1), list_segments.get(Integer.parseInt(fichier.get(i).substring(fichier.get(i).indexOf(' ')+1+fichier.get(i).substring(fichier.get(i).indexOf(' ')+1).indexOf(' ')+1))-1),(i-parcoursDeLigne+1)));
+			
+			list_faces.add(new Face(list_segments.get(s.nextInt()-1), list_segments.get(s.nextInt()-1), list_segments.get(s.nextInt()-1), i));
 		}
-		Double max = list_points.get(0).getX();
+		max = list_points.get(0).getX();
+		
 		for (int i = 0; i < list_points.size(); i++) {
 			if (list_points.get(i).getX() > max) {
 				max = list_points.get(i).getX();
@@ -212,10 +124,12 @@ public class PanelAffichage extends JPanel {
 			}
 		}
 		zoom = (int) (250/max);
+		
 		return true;
-		}
-	}*/
 
+	}
+	
+	
 	
 	public PanelAffichage(AffichageDuModele a, String name) {
 		this.a = a;
@@ -303,7 +217,7 @@ public class PanelAffichage extends JPanel {
 		
 	}
 	
-	private Polygon generatePolygon(Face f,int cXY, int dX, int dY) {
+	private Polygon generatePolygon(Face f,Double cXY, int dX, int dY) {
 		double[] x = new double[3];
 		double[] y = new double[3];
 		double[] z = new double[3];
@@ -335,10 +249,9 @@ public class PanelAffichage extends JPanel {
 
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
-			
-			zoom -= e.getWheelRotation();
-			if (zoom<=0) {
-				zoom += e.getWheelRotation();
+			zoom = zoom -  Math.pow(10, (-Math.log10(max)+1))*e.getWheelRotation();
+			if (zoom<=0.5) {
+				zoom = zoom + Math.pow(10, (-Math.log10(max)+1))*e.getWheelRotation();
 			}
 			p.repaint();
 		}

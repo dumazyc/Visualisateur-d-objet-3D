@@ -51,7 +51,7 @@ public class AffichageDuModele extends JFrame {
 		jmenubar = new JMenuBar();
 	
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		int X = 700;
+		int X = 900;
 		int Y = 700;
 		// this.setExtendedState(this.MAXIMIZED_BOTH);
 		this.setSize(X, Y);
