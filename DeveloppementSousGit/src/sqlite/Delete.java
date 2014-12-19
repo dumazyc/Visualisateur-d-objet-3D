@@ -14,8 +14,8 @@ public class Delete {
 	      c.setAutoCommit(false);
 
 	      stmt = c.createStatement();
-	      //String sql = "DELETE from OBJETS3D where NAME='tie';";
-	      String sql = "DROP TABLE MOTSCLES;";
+	      String sql = "DELETE from OBJETS3D where NAME='az';";
+	      //String sql = "DROP TABLE MOTSCLES;";
 	      stmt.executeUpdate(sql);
 	      c.commit();
 

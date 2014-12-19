@@ -112,8 +112,8 @@ public class ModificationAjout {
 						System.out.println("coucou");
 
 						String sql = "";
-						String  name;
-						String  auteur;
+						String name;
+						String auteur;
 						name = tfield.getText();
 						auteur = tfield1.getText();
 
@@ -125,9 +125,8 @@ public class ModificationAjout {
 							sql ="UPDATE OBJETS3D  SET AUTEUR ="+ "'"+ auteur +"'" + "WHERE NAME =" + "'"+ ModificationAjout.this.nomObjet +"';";
 
 						if(cbox1.isSelected()&&!tfield1.getText().equals(null)&&cbox.isSelected()&&!tfield.getText().equals(null)){
-							System.out.println("ma grand est decedee");
 							//UPDATE `membres` SET `email`="jacques@monfai.fr", `pseudo`="Jacques" WHERE `id`=1;
-							sql ="UPDATE OBJETS3D  SET NAME ="+ "'"+ auteur +"'" + ", AUTEUR ="+ "'"+ auteur +"'" + "WHERE NAME =" + "'"+ nomObjet +"';";
+							sql ="UPDATE OBJETS3D  SET NAME ="+ "'"+ name +"'" + ", AUTEUR ="+ "'"+ auteur +"'" + "WHERE NAME =" + "'"+ nomObjet +"';";
 							System.out.println(sql);
 							//sql ="UPDATE OBJETS3D  SET NAME = '"+name+"' WHERE condition"
 						}
@@ -141,8 +140,6 @@ public class ModificationAjout {
 							c = DriverManager.getConnection("jdbc:sqlite:Database.db");
 							c.setAutoCommit(false);
 							stmt = c.createStatement();
-							System.out.println("je suis la");
-
 							//String sql1="INSERT INTO OBJETS3D (NAME,AUTEUR) " +
 							//	"VALUES ('"+name+"', '"+auteur+"' );";
 
@@ -153,6 +150,7 @@ public class ModificationAjout {
 
 
 							stmt.executeUpdate(sql);
+							c.commit();
 							Object[] options = {" Ok,Visualiser Objet",
 							"Modifier les informations"};
 

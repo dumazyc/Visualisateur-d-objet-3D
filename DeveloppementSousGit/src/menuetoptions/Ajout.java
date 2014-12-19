@@ -303,7 +303,7 @@ public class Ajout extends JFrame {
 								 * info serviront a modifier l'objet dans la
 								 * base de donnees vendredi
 								 */
-								new ModificationAjout(tfield.getSelectedText());
+								new ModificationAjout(tfield.getText());
 
 							}
 						}
