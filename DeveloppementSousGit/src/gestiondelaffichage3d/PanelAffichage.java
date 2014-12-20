@@ -1,4 +1,5 @@
 package gestiondelaffichage3d;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -8,196 +9,127 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
-
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.filechooser.FileFilter;
-
 import menuetoptions.CouleurFond;
 import menuetoptions.CouleurObjet;
+import menuetoptions.MusicPlayer;
 
+/**
+ * Classe qui cree un JPanel dans lequel est dessine l'objet 3D.
+ */
 @SuppressWarnings("serial")
 public class PanelAffichage extends JPanel {
-	AffichageDuModele a;
-	private List<Point> list_points = new ArrayList<Point>();
-	private List<Segment> list_segments = new ArrayList<Segment>();
-	private List<Face> list_faces = new ArrayList<Face>();
-	String nomDeLObjet;
-	int decalageX =0;
-	int decalageY=0;
-	int rotationX =0;
-	int rotationY=0;
-	int rotationZ =0;
-	int mouseX = 0;
-	int mouseY = 0;
-	double zoom = 1;
-	Double max;
-	boolean ligneOrNot = false;
-	
-	private boolean RecupDonneeFichier(String name){
-		/*List<String> fichier = new ArrayList<String>();
-		JFileChooser fc = new JFileChooser("ressources/modeles/");
-		fc.setAcceptAllFileFilterUsed(false);
-		fc.addChoosableFileFilter(new FileFilter() {
-			@Override
-			public boolean accept(File f) {
-				 return f.getName().endsWith(".gts");
-			}
-			@Override
-			public String getDescription() {
-				return "Fichier GNU Triangulated Surface Library (.gts)";
-			}
-		});
-		fc.addChoosableFileFilter(new FileFilter() {
-			@Override
-			public boolean accept(File f) {
-				 return f.getName().endsWith(".txt");
-			}
-			@Override
-			public String getDescription() {
-				return "Fichier texte (.txt)";
-			}
-		});
-		fc.showOpenDialog(getParent());
-		try {
-			String ligne;
-			FileReader flux;
-			BufferedReader entree;
-			flux = new FileReader(fc.getSelectedFile().getAbsolutePath());
-			entree = new BufferedReader(flux);
-			while ((ligne = entree.readLine()) != null) {
-				fichier.add(ligne);
-			}
-			entree.close();
-		} catch (Exception e) {
-			System.err.println(e.toString());
-			return false;
-		}
-		nomDeLObjet = fc.getSelectedFile().getName();
-		name = nomDeLObjet;*/
-		Scanner s = null;
-		try {
-			s = new Scanner(new File("./ressources/modeles/"+name+".gts"));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		int nbPoints = s.nextInt();
-		int nbSegments = s.nextInt();
-		int nbFaces = s.nextInt();
-		int parcoursDeLigne = 1;
-		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbPoints; i++) {
-				list_points.add(new Point(Double.parseDouble(s.next()),Double.parseDouble(s.next()),Double.parseDouble(s.next()),i));		
-		}
-		parcoursDeLigne+=nbPoints;
-		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbSegments; i++) {
-			list_segments.add(new Segment(list_points.get(s.nextInt()-1),list_points.get(s.nextInt()-1), i));
-		}
-		parcoursDeLigne+=nbSegments;
-		for (int i = parcoursDeLigne; i < parcoursDeLigne+nbFaces; i++) {
-			
-			list_faces.add(new Face(list_segments.get(s.nextInt()-1), list_segments.get(s.nextInt()-1), list_segments.get(s.nextInt()-1), i));
-		}
-		max = list_points.get(0).getX();
-		
-		for (int i = 0; i < list_points.size(); i++) {
-			if (list_points.get(i).getX() > max) {
-				max = list_points.get(i).getX();
-			} else if (list_points.get(i).getX() < -max) {
-				max = -list_points.get(i).getX();
-			}
-			if (list_points.get(i).getY() > max) {
-				max = list_points.get(i).getY();
-			} else if (list_points.get(i).getY() < -max) {
-				max = -list_points.get(i).getY();
-			}
-		}
-		zoom = (int) (250/max);
-		
-		return true;
 
-	}
-	
-	
-	
-	public PanelAffichage(AffichageDuModele a, String name) {
-		this.a = a;
-			RecupDonneeFichier(name);
-			this.setVisible(true);
-			this.addMouseListener(new MouseListenerDeuxiemeMaison(this));
-			this.addMouseMotionListener(new MouseListenerMaison(this));
-			this.addMouseWheelListener(new MouseWheelListenerMaison(this));
-			//Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-			if (a.getHauteur()==0) {
-				decalageX = 672/2;
-				decalageY = 637/2;
-			}else{
-				decalageY = (int) (a.getHauteur()/2);
-				decalageX = (int) (a.getLargeur()/2);
-			}
-	}
-	
-	
-	Graphics buffer;
-	Image image;
+	private AffichageDuModele fenetrePrincipale;
+	private int decalageX = 0;
+	private int decalageY = 0;
+	private int rotationX = 0;
+	private int rotationY = 0;
+	private int rotationZ = 0;
+	private int mouseX = 0;
+	private int mouseY = 0;
+	private double zoom = 1;
+	private Double max;
+	private boolean ligneOrNot = false;
+	private Graphics buffer;
+	private Image image;
+	private RecupDonneesFichier fichier;
+	private MusicPlayer player;
 
+	/**
+	 * Constructeur de la classe PanelAffichage.
+	 * 
+	 * @param fenetrePrincipale
+	 *            fenetre principale du programme
+	 * @param name
+	 *            nom du fichier .gts sans l'extension
+	 */
+	public PanelAffichage(AffichageDuModele fenetrePrincipale, String name) {
+		this.fenetrePrincipale = fenetrePrincipale;
+		RecupDonneesFichier(name);
+		this.setVisible(true);
+		this.addMouseListener(new MouseListenerMaison(this));
+		this.addMouseMotionListener(new MouseMotionListenerMaison(this));
+		this.addMouseWheelListener(new MouseWheelListenerMaison(this));
+		if (fenetrePrincipale.getHauteur() == 0) {
+			decalageX = 672 / 2;
+			decalageY = 637 / 2;
+		} else {
+			decalageY = (int) (fenetrePrincipale.getHauteur() / 2);
+			decalageX = (int) (fenetrePrincipale.getLargeur() / 2);
+		}
+	}
+
+	/**
+	 * Lance la recuperation des donnees du fichier et regle le zoom par defaut
+	 * 
+	 * @param name
+	 *            nom du fichier .gts sans l'extension
+	 */
+	private void RecupDonneesFichier(String name) {
+		fichier = new RecupDonneesFichier(name, this);
+		max = fichier.getList_points().get(0).getX();
+
+		for (int i = 0; i < fichier.getList_points().size(); i++) {
+			if (fichier.getList_points().get(i).getX() > max) {
+				max = fichier.getList_points().get(i).getX();
+			} else if (fichier.getList_points().get(i).getX() < -max) {
+				max = -fichier.getList_points().get(i).getX();
+			}
+			if (fichier.getList_points().get(i).getY() > max) {
+				max = fichier.getList_points().get(i).getY();
+			} else if (fichier.getList_points().get(i).getY() < -max) {
+				max = -fichier.getList_points().get(i).getY();
+			}
+		}
+		zoom = (int) (250 / max);
+		player = new MusicPlayer("./ressources/musique/nyancat.wav");
+	}
+
+	@Override
 	public void paint(Graphics g) {
-		
-		//if (buffer == null) {
-			image = createImage((int)a.getLargeur(),(int)a.getHauteur());
-			buffer = image.getGraphics();
-		//}
+		image = createImage((int) fenetrePrincipale.getLargeur(),
+				(int) fenetrePrincipale.getHauteur());
+		buffer = image.getGraphics();
 		buffer.setColor(CouleurFond.couleur);
 		buffer.fillRect(0, 0, 10000, 10000);
-		for (int i = 0; i < list_faces.size(); i++) {
-			rotation(list_faces.get(i));
+		for (int i = 0; i < fichier.getList_faces().size(); i++) {
+			rotation(fichier.getList_faces().get(i));
 		}
-
-		Collections.sort(list_faces);
-
+		Collections.sort(fichier.getList_faces());
 		rotationX = 0;
 		rotationY = 0;
 		rotationZ = 0;
 		int couleur1 = CouleurObjet.couleur.getRed();
 		int couleur2 = CouleurObjet.couleur.getGreen();
 		int couleur3 = CouleurObjet.couleur.getBlue();
-		
-		for (int i = 0; i < list_faces.size(); i++) {
-			
-			// Coeef blanc : coeffLuminosite = 255 - (i * 255) / list_faces.size();
-			// coeef couleur -> blanc  255 - (i * (255-couleur1)) / list_faces.size()
-
-			buffer.setColor(new Color((i * couleur1) / list_faces.size(), (i * couleur2) / list_faces.size(),(i * couleur3) / list_faces.size()));
+		for (int i = 0; i < fichier.getList_faces().size(); i++) {
+			buffer.setColor(new Color((i * couleur1)
+					/ fichier.getList_faces().size(), (i * couleur2)
+					/ fichier.getList_faces().size(), (i * couleur3)
+					/ fichier.getList_faces().size()));
 			if (ligneOrNot) {
-				buffer.drawPolygon(generatePolygon(list_faces.get(i), zoom,
-						decalageX, decalageY));
-			}else{
-				buffer.fillPolygon(generatePolygon(list_faces.get(i), zoom,
-						decalageX, decalageY));
+				buffer.drawPolygon(generatePolygon(
+						fichier.getList_faces().get(i), zoom, decalageX,
+						decalageY));
+			} else {
+				buffer.fillPolygon(generatePolygon(
+						fichier.getList_faces().get(i), zoom, decalageX,
+						decalageY));
 			}
-			
-
 		}
-
 		g.drawImage(image, 0, 0, this);
 	}
 
-	public void update(Graphics g) {
-		paint(getGraphics());
-	}
-
-	private void rotation(Face f){
+	/**
+	 * Permet d'executer une rotation d'une face de l'objet 3D.
+	 * 
+	 * @param f
+	 *            face a tourner.
+	 */
+	private void rotation(Face f) {
 		double[] x = new double[3];
 		double[] y = new double[3];
 		double[] z = new double[3];
@@ -208,16 +140,32 @@ public class PanelAffichage extends JPanel {
 		}
 		Matrice m = new Matrice(x, y, z);
 		m = m.rotateX(rotationX).rotateY(rotationY).rotateZ(rotationZ);
-		Point a = new Point(m.getTabX()[0], m.getTabY()[0], m.getTabZ()[0], f.getPoint(1).getNumero());
-		Point b = new Point(m.getTabX()[1], m.getTabY()[1], m.getTabZ()[1], f.getPoint(2).getNumero());
-		Point c = new Point(m.getTabX()[2], m.getTabY()[2], m.getTabZ()[2], f.getPoint(3).getNumero());
+		Point a = new Point(m.getTabX()[0], m.getTabY()[0], m.getTabZ()[0], f
+				.getPoint(1).getNumero());
+		Point b = new Point(m.getTabX()[1], m.getTabY()[1], m.getTabZ()[1], f
+				.getPoint(2).getNumero());
+		Point c = new Point(m.getTabX()[2], m.getTabY()[2], m.getTabZ()[2], f
+				.getPoint(3).getNumero());
 		f.setPoint(1, a);
 		f.setPoint(2, b);
 		f.setPoint(3, c);
-		
+
 	}
-	
-	private Polygon generatePolygon(Face f,Double cXY, int dX, int dY) {
+
+	/**
+	 * Permet de generer un polygone.
+	 * 
+	 * @param f
+	 *            face a generer
+	 * @param zoom
+	 *            zoom de la face
+	 * @param dX
+	 *            decalage horizontal de la face
+	 * @param dY
+	 *            decalage vertical de la face
+	 * @return le polygone modifie
+	 */
+	private Polygon generatePolygon(Face f, Double zoom, int dX, int dY) {
 		double[] x = new double[3];
 		double[] y = new double[3];
 		double[] z = new double[3];
@@ -227,153 +175,142 @@ public class PanelAffichage extends JPanel {
 			z[i] = f.getPoint(i + 1).getZ();
 		}
 		Matrice m = new Matrice(x, y, z);
-		
-		
-		
-		
+
 		for (int i = 0; i < 3; i++) {
-			x[i]=m.getTabX()[i]* cXY + dX;
-			y[i]=m.getTabY()[i] * cXY + dY;
-			z[i]=m.getTabZ()[i]* cXY;
+			x[i] = m.getTabX()[i] * zoom + dX;
+			y[i] = m.getTabY()[i] * zoom + dY;
+			z[i] = m.getTabZ()[i] * zoom;
 		}
 		m = new Matrice(x, y, z);
 		return m.PolygonGeneratorFromMatrice();
 	}
 
+	/**
+	 * Listener de la molette de la souris.
+	 * 
+	 * @see MouseWheelListener
+	 */
 	public class MouseWheelListenerMaison implements MouseWheelListener {
 		private PanelAffichage p;
 
+		/**
+		 * Constructeur de la classe MouseWheelListenerMaison.
+		 * 
+		 * @param p
+		 *            JPanel auquel s'attache le Listener.
+		 */
 		public MouseWheelListenerMaison(PanelAffichage p) {
 			this.p = p;
 		}
 
 		@Override
 		public void mouseWheelMoved(MouseWheelEvent e) {
-			zoom = zoom -  Math.pow(10, (-Math.log10(max)+1))*e.getWheelRotation();
-			if (zoom<=0.5) {
-				zoom = zoom + Math.pow(10, (-Math.log10(max)+1))*e.getWheelRotation();
+			zoom = zoom - Math.pow(10, (-Math.log10(max) + 1))
+					* e.getWheelRotation();
+			if (zoom <= 0.5) {
+				zoom = zoom + Math.pow(10, (-Math.log10(max) + 1))
+						* e.getWheelRotation();
 			}
 			p.repaint();
 		}
 
 	}
-	public class MouseListenerMaison implements MouseMotionListener {
+
+	/**
+	 * Listener de la souris qui permet le deplacement de l'objet 3D.
+	 * 
+	 * @see MouseMotionListener
+	 */
+	public class MouseMotionListenerMaison implements MouseMotionListener {
 		private PanelAffichage p;
-		
-		public MouseListenerMaison(PanelAffichage p) {
+
+		/**
+		 * Constructeur de la classe MouseMotionListenerMaison.
+		 * 
+		 * @param p
+		 *            JPanel auquel s'attache le Listener.
+		 */
+		public MouseMotionListenerMaison(PanelAffichage p) {
 			this.p = p;
-			
 
 		}
+
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			ligneOrNot = true;
-			if (SwingUtilities.isLeftMouseButton (e)&&SwingUtilities.isRightMouseButton (e)) {
+			if (SwingUtilities.isLeftMouseButton(e)
+					&& SwingUtilities.isRightMouseButton(e)) {
 				decalageX += e.getX() - mouseX;
 				decalageY += e.getY() - mouseY;
-				rotationY -=  e.getX() - mouseX ;
-				rotationX +=  e.getY() - mouseY ;
-			}else if (SwingUtilities.isLeftMouseButton (e)) {
+				rotationY -= e.getX() - mouseX;
+				rotationX += e.getY() - mouseY;
+			} else if (SwingUtilities.isLeftMouseButton(e)) {
 				decalageX += e.getX() - mouseX;
 				decalageY += e.getY() - mouseY;
-				
-			}else if (SwingUtilities.isRightMouseButton (e)) {
-					rotationY -=  e.getX() - mouseX ;
-					rotationX +=  e.getY() - mouseY ;
-					
+
+			} else if (SwingUtilities.isRightMouseButton(e)) {
+				rotationY -= e.getX() - mouseX;
+				rotationX += e.getY() - mouseY;
+
 			}
 			mouseX = e.getX();
 			mouseY = e.getY();
 			p.repaint();
 		}
-		
+
 		@Override
 		public void mouseMoved(MouseEvent e) {
 			mouseX = e.getX();
 			mouseY = e.getY();
 		}
-		/*public void setTaille(Graphics buffer ){
-			Dimension tailleEcran = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-			int Y = (int)tailleEcran.getHeight();
-			int X = (int)tailleEcran.getWidth();
-			buffer.clipRect(0, 0, X, Y);
-		}*/
-		
 	}
-	public class MouseListenerDeuxiemeMaison implements MouseListener {
-private PanelAffichage p;
-		
-		public MouseListenerDeuxiemeMaison(PanelAffichage p) {
+
+	/**
+	 * Listener de la souris qui permet la lecture de la musique et l'affichage
+	 * en ligne.
+	 * 
+	 * @see MouseListener
+	 */
+	public class MouseListenerMaison implements MouseListener {
+		private PanelAffichage p;
+
+		public MouseListenerMaison(PanelAffichage p) {
 			this.p = p;
-			
 
 		}
-		
-		
+
 		@Override
 		public void mouseClicked(MouseEvent arg0) {
-			// TODO Auto-generated method stub
 			ligneOrNot = false;
+			p.repaint();
+			player.pause();
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void mouseExited(MouseEvent arg0) {
-			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
 			ligneOrNot = true;
-			if (SwingUtilities.isLeftMouseButton (e)&&SwingUtilities.isRightMouseButton (e)) {
-				decalageX += e.getX() - mouseX;
-				decalageY += e.getY() - mouseY;
-				rotationY -=  e.getX() - mouseX ;
-				rotationX +=  e.getY() - mouseY ;
-			}else if (SwingUtilities.isLeftMouseButton (e)) {
-				decalageX += e.getX() - mouseX;
-				decalageY += e.getY() - mouseY;
-				
-			}else if (SwingUtilities.isRightMouseButton (e)) {
-					rotationY -=  e.getX() - mouseX ;
-					rotationX +=  e.getY() - mouseY ;
-					
-			}
-			mouseX = e.getX();
-			mouseY = e.getY();
+			player.lecture();
 			p.repaint();
-			
+
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			ligneOrNot = false;
-			if (SwingUtilities.isLeftMouseButton (e)&&SwingUtilities.isRightMouseButton (e)) {
-				decalageX += e.getX() - mouseX;
-				decalageY += e.getY() - mouseY;
-				rotationY -=  e.getX() - mouseX ;
-				rotationX +=  e.getY() - mouseY ;
-			}else if (SwingUtilities.isLeftMouseButton (e)) {
-				decalageX += e.getX() - mouseX;
-				decalageY += e.getY() - mouseY;
-				
-			}else if (SwingUtilities.isRightMouseButton (e)) {
-					rotationY -=  e.getX() - mouseX ;
-					rotationX +=  e.getY() - mouseY ;
-					
-			}
-			mouseX = e.getX();
-			mouseY = e.getY();
+			player.pause();
 			p.repaint();
-			
+
 		}
-		
-		
+
 	}
 }
