@@ -190,8 +190,8 @@ public class AffichageDuModele extends JFrame {
 		});
 
 		// Gestion des couleurs
-		background.addActionListener(new colorBackground(this));
-		colorObjet.addActionListener(new colorObjet(this));
+		background.addActionListener(new colorBackground((PanelAffichage) this.tabbedPane.getComponentAt(this.tabbedPane.getSelectedIndex())));
+		colorObjet.addActionListener(new colorObjet((PanelAffichage) this.tabbedPane.getComponentAt(this.tabbedPane.getSelectedIndex())));
 
 		this.setVisible(true);
 
@@ -255,9 +255,9 @@ public class AffichageDuModele extends JFrame {
 	 *
 	 */
 	public class colorBackground implements ActionListener {
-		AffichageDuModele a;
+		PanelAffichage a;
 
-		public colorBackground(AffichageDuModele a) {
+		public colorBackground(PanelAffichage a) {
 			this.a = a;
 		}
 
@@ -273,9 +273,9 @@ public class AffichageDuModele extends JFrame {
 	 *
 	 */
 	public class colorObjet implements ActionListener {
-		AffichageDuModele a;
+		PanelAffichage a;
 
-		public colorObjet(AffichageDuModele a) {
+		public colorObjet(PanelAffichage a) {
 			this.a = a;
 		}
 
