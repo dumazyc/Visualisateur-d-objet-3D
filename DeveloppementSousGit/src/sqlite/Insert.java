@@ -1,6 +1,8 @@
 package sqlite;
 import java.sql.*;
 
+/*Classe pour insérer un objet et/ou un mot clé dans la base */
+
 public class Insert
 {
   public static void main( String args[] )
@@ -13,11 +15,15 @@ public class Insert
       c.setAutoCommit(false);
 
       stmt = c.createStatement();
-      /*String sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,COMPLEXITE,LIEN) " +
-               "VALUES ('tie', 'clement', 0, 'En attente' );"; */
-      String sql = "INSERT INTO MOTSCLES (ID_M,MOTCLE) " +
-              "VALUES (2, 'figure' );"; 
+      String sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,COMPLEXITE,LIEN) " +
+               "VALUES ('HarryPotter', 'Damien', 0, 'En attente' );";
+     /* String sql2 = "INSERT INTO MOTSCLES (ID_M,MOTCLE) " +
+              "VALUES (17, 'HarryPotter' );"; 
+      String sql3 = "INSERT INTO MOTSCLES (ID_M,MOTCLE) " +
+             "VALUES (17, 'film' );"; */
       stmt.executeUpdate(sql);
+     /* stmt.executeUpdate(sql2);
+      stmt.executeUpdate(sql3);*/
 
       stmt.close(); 
       c.commit();

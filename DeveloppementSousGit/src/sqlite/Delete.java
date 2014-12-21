@@ -2,6 +2,8 @@ package sqlite;
 
 import java.sql.*;
 
+/*Classe pour effectuer les suppressions dans la base*/
+
 public class Delete {
 
 	  public static void main( String args[] )
@@ -14,7 +16,7 @@ public class Delete {
 	      c.setAutoCommit(false);
 
 	      stmt = c.createStatement();
-	      String sql = "DELETE from OBJETS3D where NAME='az';";
+	      String sql = "DELETE from OBJETS3D where NAME='HarryPotter';";
 	      //String sql = "DROP TABLE MOTSCLES;";
 	      stmt.executeUpdate(sql);
 	      c.commit();
