@@ -50,12 +50,14 @@ public class Recherche extends JPanel{
 		//final JList liste_gts = new JList(fichier_gts.toArray());
 		final DefaultListModel listModel_gts = new DefaultListModel();
 		final JList liste_gts = new JList(listModel_gts);
-		liste_gts.setVisibleRowCount(10);
-		liste_gts.setEnabled(false);
-		liste_gts.setPreferredSize(new Dimension(120,150));
+		//liste_gts.setVisibleRowCount(10);
+		//liste_gts.setEnabled(false);
+		//liste_gts.setPreferredSize(new Dimension(120,150));
+		JScrollPane jsp = new JScrollPane(liste_gts);
+		jsp.setPreferredSize(new Dimension(120,150));
 		contentPane2.setBorder(BorderFactory.createMatteBorder(0, 2, 3, 2, Color.black));
 		contentPane2.add(resultat);
-		contentPane2.add(liste_gts);
+		contentPane2.add(jsp);
 		this.add(contentPane2);
 		
 		//panel text
@@ -74,10 +76,12 @@ public class Recherche extends JPanel{
 		JLabel label_motscles = new JLabel("Mots Cles : ");
 		final DefaultListModel listModel_motscles = new DefaultListModel();
 		final JList liste_mots_clef = new JList(listModel_motscles);
-		liste_mots_clef.setVisibleRowCount(10);
-		liste_mots_clef.setPreferredSize(new Dimension(120,150));
+		//liste_mots_clef.setVisibleRowCount(10);
+		//liste_mots_clef.setPreferredSize(new Dimension(120,150));
+		JScrollPane jsp2 = new JScrollPane(liste_mots_clef);
+		jsp2.setPreferredSize(new Dimension(120,150));
 		contentPane3.add(label_motscles);
-		contentPane3.add(liste_mots_clef);
+		contentPane3.add(jsp2);
 		final JButton supprimer = new JButton("Supprimer");
 		supprimer.setEnabled(false);
 		liste_mots_clef.setEnabled(false);
