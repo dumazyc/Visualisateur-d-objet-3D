@@ -28,11 +28,9 @@ public class Recherche extends JPanel{
 		this.frame = a;
 		Dimension d = new Dimension(100, 27);
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
 		
 		// premier contentPane recherche.
 		JPanel contentPane1 = new JPanel();
-		contentPane1.setBackground(Color.BLUE);
 		JLabel recherche = new JLabel("Recherche : ");
 		final JTextField tfield = new JTextField("Mots Cles",8);
 		JButton valider = new JButton("Valider ");
@@ -62,7 +60,6 @@ public class Recherche extends JPanel{
 		
 		//panel text
 		JPanel contentPane5 = new JPanel();
-		//contentPane5.setBackground(Color.blue);
 		JLabel label_modifier = new JLabel("<html><b><font size=4>Modifier les mots cles : </font></b></html>");
 		contentPane5.add(label_modifier);
 		contentPane5.setBorder(BorderFactory.createMatteBorder(0, 2, 0, 2, Color.black));
@@ -71,8 +68,7 @@ public class Recherche extends JPanel{
 		
 		
 		// 3eme contentpane liste des mots cles.
-		JPanel contentPane3 = new JPanel();
-		contentPane3.setBackground(Color.red);		
+		JPanel contentPane3 = new JPanel();	
 		JLabel label_motscles = new JLabel("Mots Cles : ");
 		final DefaultListModel listModel_motscles = new DefaultListModel();
 		final JList liste_mots_clef = new JList(listModel_motscles);
@@ -94,7 +90,6 @@ public class Recherche extends JPanel{
 		// 4eme contentpane modification des mots cles.
 		
 		JPanel contentPane4 = new JPanel();
-		contentPane4.setBackground(Color.green);
 		final JTextField tfield2 = new JTextField("New mots cles",10);
 		final JButton modifier = new JButton("modifier");
 		final JButton ajouter = new JButton("Ajouter");
@@ -112,8 +107,7 @@ public class Recherche extends JPanel{
 		// L'action quand on clic sur le bouton valider.
 		valider.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
-			
-			if(!tfield.getText().equals("") && !tfield.getText().equals("Mots Cles") ){
+			if(!tfield.getText().equals("") && !tfield.getText().equals("Mots Cles")){
 			Connection c = null;
 			Statement stmt = null;
 			try {
@@ -121,12 +115,10 @@ public class Recherche extends JPanel{
 				c = DriverManager
 						.getConnection("jdbc:sqlite:Database.db");
 				c.setAutoCommit(false);
-
 				stmt = c.createStatement();
-				String requete = "SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE MOTCLE ='" + tfield.getText()+"';";
+				String requete = "SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE MOTCLE ='" + tfield.getText()+"' OR NAME ='"+ tfield.getText()+"' OR AUTEUR ='"+ tfield.getText()+"' OR ID ='"+ tfield.getText()+"' OR DATECREATION ='"+ tfield.getText()+"';";
 				ResultSet rs = stmt.executeQuery(requete);
-				while(rs.next()){
-					
+				while(rs.next()){				
 					listModel_gts.addElement((rs.getString("NAME")));
 					
 				}
@@ -163,6 +155,7 @@ public class Recherche extends JPanel{
 				String requete = "SELECT MOTCLE FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE NAME = '" + ((String)liste_gts.getSelectedValue())+"'";
 				
 				ResultSet rs = stmt.executeQuery(requete);
+				listModel_motscles.removeAllElements();
 				while(rs.next()){
 					listModel_motscles.addElement((rs.getString("MOTCLE")));
 				}
