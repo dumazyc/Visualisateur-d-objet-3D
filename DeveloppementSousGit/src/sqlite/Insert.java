@@ -15,15 +15,15 @@ public class Insert
       c.setAutoCommit(false);
 
       stmt = c.createStatement();
-      String sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,COMPLEXITE,LIEN) " +
-               "VALUES ('HarryPotter', 'Damien', 0, 'En attente' );";
-     /* String sql2 = "INSERT INTO MOTSCLES (ID_M,MOTCLE) " +
-              "VALUES (17, 'HarryPotter' );"; 
+     /* String sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,COMPLEXITE,LIEN) " +
+               "VALUES ('HarryPotter', 'Damien', 0, 'En attente' );"; */
+     String sql2 = "INSERT INTO MOTSCLES (ID_M,MOTCLE) " +
+              "VALUES (21, 'jeux' );"; 
       String sql3 = "INSERT INTO MOTSCLES (ID_M,MOTCLE) " +
-             "VALUES (17, 'film' );"; */
-      stmt.executeUpdate(sql);
-     /* stmt.executeUpdate(sql2);
-      stmt.executeUpdate(sql3);*/
+             "VALUES (21, 'personnage' );";
+      //stmt.executeUpdate(sql);
+      stmt.executeUpdate(sql2);
+      stmt.executeUpdate(sql3);
 
       stmt.close(); 
       c.commit();

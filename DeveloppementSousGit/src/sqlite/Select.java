@@ -15,8 +15,8 @@ public class Select
       c.setAutoCommit(false);
 
       stmt = c.createStatement();
-      ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D;" );
-     // ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M;" );
+      //ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D;" );
+      ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M ORDER BY ID_M;" );
       while ( rs.next() ) {
     	 int id = rs.getInt("id");
          String  name = rs.getString("name");
@@ -24,8 +24,8 @@ public class Select
          String datecreation  = rs.getString("datecreation");
          String complexite  = rs.getString("complexite");
          String lien  = rs.getString("lien");
-      // String  motcle = rs.getString("motcle");
-       // System.out.println( "MOTCLE = " + motcle );
+       String  motcle = rs.getString("motcle");
+        System.out.println( "MOTCLE = " + motcle );
          System.out.println( "ID = " + id );
          System.out.println( "NAME = " + name );
          System.out.println( "AUTEUR = " + auteur );
