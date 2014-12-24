@@ -18,9 +18,8 @@ public class Update
       stmt = c.createStatement();
      // String modif = "tie";
      // String sql = "UPDATE OBJETS3D set COMPLEXITE = 0 where NAME='"+modif+"';";
-     //String sql = "UPDATE MOTSCLES SET ID=17 WHERE NAME ='HarryPotter';";
-      //String sql ="ALTER TABLE OBJETS3D AUTOINCREMENT=16;";
-     String sql ="ALTER TABLE OBJETS3D MODIFY COLUMN ID auto_increment INT;";
+     String sql = "UPDATE OBJETS3D SET name='MarioAndBowser' WHERE id=21;";
+ 
       stmt.executeUpdate(sql);
       c.commit();
 
