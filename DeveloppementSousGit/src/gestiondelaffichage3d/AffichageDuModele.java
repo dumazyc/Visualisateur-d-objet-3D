@@ -25,7 +25,9 @@ import javax.swing.KeyStroke;
 import menuetoptions.Ajout;
 import menuetoptions.CouleurFond;
 import menuetoptions.CouleurObjet;
+import menuetoptions.Description;
 import menuetoptions.Enregistrer;
+import menuetoptions.ModificationAjout;
 import menuetoptions.Recherche;
 
 import java.awt.Toolkit;
@@ -40,7 +42,8 @@ public class AffichageDuModele extends JFrame {
 
 	private JMenuBar jmenubar;
 	private JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-
+	public static JMenuItem modifierInfos = new JMenuItem("Modifier les infos");
+	
 	private boolean recherche = false;
 	private Recherche r = new Recherche(this);
 	private ImageIcon closeXIcon = new ImageIcon(
@@ -68,6 +71,7 @@ public class AffichageDuModele extends JFrame {
 		JMenuItem ajout = new JMenuItem("Ajouter un objet");
 		JMenuItem recherche = new JMenuItem("Rechercher un objet");
 		JMenuItem enregistre = new JMenuItem("Enregistrer sous..");
+		JMenuItem description  = new JMenuItem("Description de l'objet courant");
 		JMenuItem fermer = new JMenuItem("Fermer");
 		JMenuItem aide = new JMenuItem("?");
 		JMenuItem Zoom = new JMenuItem("Zoom par Default");
@@ -97,9 +101,11 @@ public class AffichageDuModele extends JFrame {
 		j1.add(fermer);
 		j2.add(resolution);
 		j2.add(Zoom);
+		j2.add(modifierInfos);
+		j2.add(description);
 		j2.add(background);
 		j2.add(colorObjet);
-		j3.add(aide);
+		j3.add(aide); 
 		resolution.add(full);
 		resolution.add(full2);
 		resolution.add(full3);
@@ -144,8 +150,7 @@ public class AffichageDuModele extends JFrame {
 			}
 		});
 
-		// annuler devrait faire disparaitre le cote gauche de la fenetre a
-		// revoir
+		
 		// ouvre la recherche d'objet
 
 		recherche.addActionListener(new RechercheListener(this));
@@ -188,6 +193,33 @@ public class AffichageDuModele extends JFrame {
 
 			}
 		});
+		description.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new Description(tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()));
+			}
+		});
+		
+			
+		
+			
+		//pour modifier les informations associees a l'objet courant
+		modifierInfos.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(tabbedPane.getTitleAt(tabbedPane
+						.getSelectedIndex()).equals("space_station"))
+					modifierInfos.setEnabled(false);
+				else{
+				new ModificationAjout(tabbedPane.getTitleAt(tabbedPane
+						.getSelectedIndex()));
+				}
+
+			}
+		});
+
 
 		// Gestion des couleurs
 		background.addActionListener(new colorBackground((PanelAffichage) this.tabbedPane.getComponentAt(this.tabbedPane.getSelectedIndex())));
