@@ -1,30 +1,25 @@
 package menuetoptions;
-
 import gestiondelaffichage3d.AffichageDuModele;
 
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
+// Pour gerer l'ajout d'un objet
+
 public class Ajout extends JFrame {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	AffichageDuModele aff;
 	final JTextField fichier;
@@ -34,9 +29,14 @@ public class Ajout extends JFrame {
 	final JTextField tfield1;
 	final JFileChooser fc;
 
+	//constructeur dela classe
 	public Ajout(AffichageDuModele a) {
+
+		//pour communiquer avec la fenetre principale
 		this.aff = a;
 		Dimension d = new Dimension(100, 27);
+
+		//pour charger le fichier
 		JButton charger = new JButton("Charger fichier");
 		final JPanel pannelCharger = new JPanel();
 		fc = new JFileChooser(".");
@@ -49,14 +49,14 @@ public class Ajout extends JFrame {
 		charger.addActionListener(new ActionListenerKarenNumero2(this));
 
 		Container c = this.getContentPane();
-		c.setLayout(new GridLayout(8, 1, 7, 7));
+		c.setLayout(new GridLayout(12,1,7,7));
 		c.add(pannelCharger);
 
-		c.add(new JLabel(
-				"  VEUILLEZ ENTRER LES INFORMATIONS RELATIVES A VOTRE OBJET:     "));
+		c.add(new JLabel("  VEUILLEZ ENTRER LES INFORMATIONS RELATIVES A VOTRE OBJET:     "));
+
+		//gestion des checkboxs
 
 		final JPanel contentPane = new JPanel();
-
 		tfield = new JTextField(15);
 		tfield.setEnabled(false);
 
@@ -94,12 +94,12 @@ public class Ajout extends JFrame {
 		contentPane1.add(tfield1);
 		c.add(contentPane1);
 
-		final JPanel contentPane2 = new JPanel();
+
 
 		contentPane.setPreferredSize(d);
 		contentPane1.setPreferredSize(d);
 		contentPane1.setPreferredSize(d);
-		c.add(contentPane2);
+
 		JPanel pa1 = new JPanel();
 		final JButton valider = new JButton("Valider ");
 		valider.addActionListener(new ActionListenerKaren(this));
@@ -114,11 +114,11 @@ public class Ajout extends JFrame {
 		pa2.add(annuler);
 		c.add(pa2);
 
-		// ferme l'application
-		annuler.addActionListener(new ActionListenerKarenNumero3(this));
+		//pour annuler l'ajout
 
+		annuler.addActionListener(new ActionListenerKarenNumero3(this));
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setSize(640, 480);
+		this.setSize(640,650);
 		this.setResizable(false);
 		this.setVisible(true);
 
@@ -128,10 +128,10 @@ public class Ajout extends JFrame {
 		public ActionListenerKarenNumero3(Ajout ajout) {
 			this.a = ajout;
 		}
-			public void actionPerformed(ActionEvent e) {
-				a.dispose();
-			}
-		
+		public void actionPerformed(ActionEvent e) {
+			a.dispose();
+		}
+
 	}
 	public class ActionListenerKarenNumero2 implements ActionListener {
 
@@ -140,6 +140,8 @@ public class Ajout extends JFrame {
 		public ActionListenerKarenNumero2(Ajout ajout) {
 			this.a = ajout;
 		}
+
+		//choix du fichier
 
 		public void actionPerformed(ActionEvent e) {
 
@@ -171,6 +173,7 @@ public class Ajout extends JFrame {
 			} catch (NullPointerException ex) {
 				if (fichier.getText().isEmpty()) {
 					fichier.setText("Veuiller chosir un fichier");
+
 				}
 			}
 
@@ -184,7 +187,6 @@ public class Ajout extends JFrame {
 			this.a = a;
 		}
 
-		@SuppressWarnings("null")
 		public void actionPerformed(ActionEvent e) {
 			if (a.fichier.getText().equals(("Veuiller chosir un fichier"))) {
 				JOptionPane.showMessageDialog(a, "Veuillez choisir un fichier",
@@ -203,15 +205,9 @@ public class Ajout extends JFrame {
 						JOptionPane.WARNING_MESSAGE);
 			}
 
-			// else insertion dans la base
-			/*
-			 * clement devra s'occcuper du reste de l'ajout dans les ressources
-			 * ert de la verification du fichier charge en se servant de
-			 * fiochier.getText();
-			 */
-			// String ac = perso.getSelectedItem().toString()
-			// la date de l'objet sera ajout�e directement � la base avec une
-			// fonction qui renvoie la date du jour
+			// sinon insertion dans la base
+
+
 			else {
 				if (fichier.getText().equals("Veuiller chosir un fichier")) {
 					JOptionPane.showMessageDialog(a,
@@ -233,13 +229,45 @@ public class Ajout extends JFrame {
 						sortie = new PrintWriter("./ressources/modeles/"
 								+ tfield.getText() + ".gts");
 
+
+
 						while ((ligne = entree.readLine()) != null) {
+
 							liste.add(ligne);
 							sortie.println(liste.get(cpt++));
+
 						}
 
 						entree.close();
 						sortie.close();
+					} catch (Exception e1) {
+						System.err.println(e.toString());
+					}
+
+					String complexite ="";
+					FileReader flux1;
+					BufferedReader entree1;
+					try {
+
+						flux1 = new FileReader("./ressources/modeles/"
+								+ tfield.getText() + ".gts");
+						entree1 = new BufferedReader(flux1);
+						String tmp=entree1.readLine();
+						int space=0;
+
+
+						for(int i=0;i<tmp.length();++i){
+							if(space==2){
+								complexite+=tmp.charAt(i);
+							}else{
+								if(Character.isWhitespace(tmp.charAt(i)))
+									space++;
+							}
+
+						}
+
+						entree1.close();
+
 					} catch (Exception e1) {
 						System.err.println(e.toString());
 					}
@@ -256,14 +284,10 @@ public class Ajout extends JFrame {
 						String name;
 						String auteur;
 
+
 						if (cbox.isSelected() && !tfield.getText().equals(null)
 								&& !tfield1.getText().equals(null)) {
-							// nous avons besoin de l'objet pour recuperer sa
-							// complexite il s'agira d'un objet qu'on dont-on a
-							// teste l'appartenance a la communaute gts
-							// complexite a modifier lors de l'insertion appeler
-							// la methode getface size sur le fichier
-							// charge!!!!!!!!!!!!!
+
 							name = tfield.getText();
 							auteur = tfield1.getText();
 							sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,COMPLEXITE,LIEN) "
@@ -271,30 +295,48 @@ public class Ajout extends JFrame {
 									+ name
 									+ "', '"
 									+ auteur
-									+ "', 0, '" + fichier.getText() + "' );";
+									+ "', '"
+									+ Integer.parseInt(complexite)+ "', '" + fichier.getText() + "' );";
 							stmt.executeUpdate(sql);
 							a.setEnabled(false);
 
-							JFrame popup=new JFrame();
-							Container co=popup.getContentPane();
-							co.setLayout(new GridLayout(2,2));
-							co.add(new JLabel("Objet bien ajoute"));
-							JButton visualiser=new JButton("Ok, Visualiser");
-							co.add(visualiser);
-							visualiser.addActionListener(new ActionListener() {
 
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									a.dispose();
-									aff.nouvelOnglet(tfield.getText());
-								}
-							});
-							
-							
-						
 						}
+						//popup de confirmation
 
-						// }
+						Object[] options = {"Ok,visualiser",
+						"Annuler l'ajout"};
+						JOptionPane confirme=new JOptionPane();
+						int n = JOptionPane.showOptionDialog(a,
+								"Objet bien ajoute",
+								"A Silly Question",
+								JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE,
+								null,     //do not use a custom Icon
+								options,  //the titles of buttons
+								options[0]); //default button title
+						
+						//si on confirme l'ajout
+						if (n == JOptionPane.YES_OPTION) {
+							confirme.setVisible(false);
+							aff.nouvelOnglet(tfield.getText());
+							a.dispose();
+							AffichageDuModele.modifierInfos.setEnabled(true);
+							
+							//si on annule l'ajout
+						} else if (n == JOptionPane.NO_OPTION) {
+							confirme.setVisible(false);
+							Statement stmt1;
+							stmt1 = c.createStatement();
+							 String sql1= "DELETE from OBJETS3D where NAME='"+ tfield.getText() +"';";
+						     stmt1.executeUpdate(sql1);
+						     JOptionPane.showMessageDialog(a, "Ajout annule",
+										" ", JOptionPane.WARNING_MESSAGE);
+							a.dispose();
+
+
+						}
+						//fermeture de connection
 
 						stmt.close();
 						c.commit();
