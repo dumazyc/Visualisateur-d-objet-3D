@@ -23,6 +23,10 @@ import javax.swing.event.ListSelectionListener;
 
 
 public class Recherche extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	AffichageDuModele frame;
 	public Recherche(final AffichageDuModele a) {
 		this.frame = a;
@@ -141,6 +145,7 @@ public class Recherche extends JPanel{
 			
 			if(e.getValueIsAdjusting()){return;}
 			liste_gts.getSelectedValue();
+			AffichageDuModele.modifierInfos.setEnabled(false);
 			a.nouvelOnglet((String)liste_gts.getSelectedValue());
 			
 				Connection c = null;
@@ -183,7 +188,7 @@ public class Recherche extends JPanel{
 			}
 		});
 		
-	// Action du bouton Suprrimé.
+	// Action du bouton Suprrime.
 		
 		supprimer.addActionListener(new ActionListener() {
 			@Override
