@@ -12,8 +12,6 @@ import java.awt.event.MouseWheelListener;
 import java.util.Collections;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import menuetoptions.CouleurFond;
-import menuetoptions.CouleurObjet;
 import menuetoptions.MusicPlayer;
 
 /**
@@ -37,7 +35,8 @@ public class PanelAffichage extends JPanel {
 	private Image image;
 	private RecupDonneesFichier fichier;
 	private MusicPlayer player;
-
+	private Color couleurDeFond = new Color(255, 255, 255);
+	private Color couleurObjet = new  Color(255,122, 0);
 	/**
 	 * Constructeur de la classe PanelAffichage.
 	 * 
@@ -97,7 +96,7 @@ public class PanelAffichage extends JPanel {
 		image = createImage((int) fenetrePrincipale.getLargeur(),
 				(int) fenetrePrincipale.getHauteur());
 		buffer = image.getGraphics();
-		buffer.setColor(CouleurFond.couleur);
+		buffer.setColor(couleurDeFond);
 		buffer.fillRect(0, 0, 10000, 10000);
 		for (int i = 0; i < fichier.getList_faces().size(); i++) {
 			rotation(fichier.getList_faces().get(i));
@@ -106,13 +105,10 @@ public class PanelAffichage extends JPanel {
 		rotationX = 0;
 		rotationY = 0;
 		rotationZ = 0;
-		int couleur1 = CouleurObjet.couleur.getRed();
-		int couleur2 = CouleurObjet.couleur.getGreen();
-		int couleur3 = CouleurObjet.couleur.getBlue();
 		for (int i = 0; i < fichier.getList_faces().size(); i++) {
-			buffer.setColor(new Color((i * couleur1)
-					/ fichier.getList_faces().size(), (i * couleur2)
-					/ fichier.getList_faces().size(), (i * couleur3)
+			buffer.setColor(new Color((i * couleurObjet.getRed())
+					/ fichier.getList_faces().size(), (i *couleurObjet.getGreen())
+					/ fichier.getList_faces().size(), (i * couleurObjet.getBlue())
 					/ fichier.getList_faces().size()));
 			if (ligneOrNot) {
 				buffer.drawPolygon(generatePolygon(
@@ -333,6 +329,22 @@ public class PanelAffichage extends JPanel {
 		
 		this.repaint();
 		
+	}
+
+	public Color getCouleurDeFond() {
+		return couleurDeFond;
+	}
+
+	public void setCouleurDeFond(Color couleurDeFond) {
+		this.couleurDeFond = couleurDeFond;
+	}
+
+	public Color getCouleurObjet() {
+		return couleurObjet;
+	}
+
+	public void setCouleurObjet(Color couleurObjet) {
+		this.couleurObjet = couleurObjet;
 	}
 	
 }

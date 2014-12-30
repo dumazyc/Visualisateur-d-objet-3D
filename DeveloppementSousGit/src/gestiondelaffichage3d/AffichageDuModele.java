@@ -23,11 +23,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import menuetoptions.Ajout;
-import menuetoptions.CouleurFond;
-import menuetoptions.CouleurObjet;
 import menuetoptions.Description;
 import menuetoptions.Enregistrer;
 import menuetoptions.ModificationAjout;
+import menuetoptions.OptionCouleur;
 import menuetoptions.Recherche;
 
 import java.awt.Toolkit;
@@ -43,7 +42,7 @@ public class AffichageDuModele extends JFrame {
 	private JMenuBar jmenubar;
 	private JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	public static JMenuItem modifierInfos = new JMenuItem("Modifier les infos");
-	
+
 	private boolean recherche = false;
 	private Recherche r = new Recherche(this);
 	private ImageIcon closeXIcon = new ImageIcon(
@@ -71,12 +70,11 @@ public class AffichageDuModele extends JFrame {
 		JMenuItem ajout = new JMenuItem("Ajouter un objet");
 		JMenuItem recherche = new JMenuItem("Rechercher un objet");
 		JMenuItem enregistre = new JMenuItem("Enregistrer sous..");
-		JMenuItem description  = new JMenuItem("Description de l'objet courant");
+		JMenuItem description = new JMenuItem("Description de l'objet courant");
 		JMenuItem fermer = new JMenuItem("Fermer");
 		JMenuItem aide = new JMenuItem("?");
 		JMenuItem Zoom = new JMenuItem("Zoom par Default");
-		JMenuItem background = new JMenuItem("Couleur de fond");
-		JMenuItem colorObjet = new JMenuItem("Couleur de la figure");
+		JMenuItem color = new JMenuItem("Modifier les couleurs");
 		JMenu resolution = new JMenu("Resolution");
 		JRadioButtonMenuItem full = new JRadioButtonMenuItem("Plein ecran");
 		JRadioButtonMenuItem full2 = new JRadioButtonMenuItem("700*700", true);
@@ -103,9 +101,8 @@ public class AffichageDuModele extends JFrame {
 		j2.add(Zoom);
 		j2.add(modifierInfos);
 		j2.add(description);
-		j2.add(background);
-		j2.add(colorObjet);
-		j3.add(aide); 
+		j2.add(color);
+		j3.add(aide);
 		resolution.add(full);
 		resolution.add(full2);
 		resolution.add(full3);
@@ -115,7 +112,6 @@ public class AffichageDuModele extends JFrame {
 		this.setJMenuBar(jmenubar);
 
 		this.add(tabbedPane, BorderLayout.CENTER);
-		
 
 		sp.add(tabbedPane, JSplitPane.RIGHT);
 		sp.setVisible(true);
@@ -150,7 +146,6 @@ public class AffichageDuModele extends JFrame {
 			}
 		});
 
-		
 		// ouvre la recherche d'objet
 
 		recherche.addActionListener(new RechercheListener(this));
@@ -185,12 +180,14 @@ public class AffichageDuModele extends JFrame {
 			}
 		});
 
-		// Si on clique sur le bouton zoom par default, le zoom se remet par default
+		// Si on clique sur le bouton zoom par default, le zoom se remet par
+		// default
 		Zoom.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				PanelAffichage p = (PanelAffichage) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+				PanelAffichage p = (PanelAffichage) tabbedPane
+						.getComponentAt(tabbedPane.getSelectedIndex());
 				p.remettreZoomParDefaut();
 			}
 		});
@@ -198,37 +195,35 @@ public class AffichageDuModele extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				new Description(tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()));
+				new Description(tabbedPane.getTitleAt(tabbedPane
+						.getSelectedIndex()));
 			}
 		});
-		
-			
-		
-			
-		//pour modifier les informations associees a l'objet courant
+
+		// pour modifier les informations associees a l'objet courant
 		modifierInfos.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(tabbedPane.getTitleAt(tabbedPane
-						.getSelectedIndex()).equals("space_station"))
+				if (tabbedPane.getTitleAt(tabbedPane.getSelectedIndex())
+						.equals("space_station"))
 					modifierInfos.setEnabled(false);
-				else{
-				new ModificationAjout(tabbedPane.getTitleAt(tabbedPane
-						.getSelectedIndex()));
+				else {
+					new ModificationAjout(tabbedPane.getTitleAt(tabbedPane
+							.getSelectedIndex()));
 				}
 
 			}
 		});
 
-
 		// Gestion des couleurs
 		nouvelOnglet("space_station");
-		background.addActionListener(new colorBackground((PanelAffichage) this.tabbedPane.getComponentAt(this.tabbedPane.getSelectedIndex())));
-		colorObjet.addActionListener(new colorObjet((PanelAffichage) this.tabbedPane.getComponentAt(this.tabbedPane.getSelectedIndex())));
-		
+		color.addActionListener(new ColorListener(
+				(PanelAffichage) this.tabbedPane.getComponentAt(this.tabbedPane
+						.getSelectedIndex())));
+
 		this.setVisible(true);
-		
+
 	}
 
 	/**
@@ -285,37 +280,19 @@ public class AffichageDuModele extends JFrame {
 	}
 
 	/**
-	 * Listener qui permet de faire appel au choix de la couleur du fond
+	 * Listener qui permet de faire appel aux options des couleurs
 	 *
 	 */
-	public class colorBackground implements ActionListener {
+	public class ColorListener implements ActionListener {
 		PanelAffichage a;
 
-		public colorBackground(PanelAffichage a) {
+		public ColorListener(PanelAffichage a) {
 			this.a = a;
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new CouleurFond(a);
-		}
-
-	}
-
-	/**
-	 * Listener qui permet de faire appel au choix de la couleur de l'objet
-	 *
-	 */
-	public class colorObjet implements ActionListener {
-		PanelAffichage a;
-
-		public colorObjet(PanelAffichage a) {
-			this.a = a;
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			new CouleurObjet(a);
+			new OptionCouleur(a);
 		}
 
 	}
