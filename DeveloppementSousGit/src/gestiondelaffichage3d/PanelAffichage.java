@@ -48,18 +48,18 @@ public class PanelAffichage extends JPanel {
 	 */
 	public PanelAffichage(AffichageDuModele fenetrePrincipale, String name) {
 		this.fenetrePrincipale = fenetrePrincipale;
-		RecupDonneesFichier(name);
+
+			RecupDonneesFichier(name);
+
+		
 		this.setVisible(true);
 		this.addMouseListener(new MouseListenerMaison(this));
 		this.addMouseMotionListener(new MouseMotionListenerMaison(this));
 		this.addMouseWheelListener(new MouseWheelListenerMaison(this));
-		if (fenetrePrincipale.getHauteur() == 0) {
-			decalageX = 672 / 2;
-			decalageY = 637 / 2;
-		} else {
-			decalageY = (int) (fenetrePrincipale.getHauteur() / 2);
-			decalageX = (int) (fenetrePrincipale.getLargeur() / 2);
-		}
+		
+			decalageY = (int) (fenetrePrincipale.getSize().getHeight() / 2)-50;
+			decalageX = (int) (fenetrePrincipale.getSize().getWidth() / 2);
+		
 	}
 
 	/**
@@ -84,7 +84,11 @@ public class PanelAffichage extends JPanel {
 				max = -fichier.getList_points().get(i).getY();
 			}
 		}
-		zoom = (int) (250 / max);
+		if (this.fenetrePrincipale.getHauteur()<= this.fenetrePrincipale.getLargeur()) {
+			zoom = (int) (fenetrePrincipale.getSize().getHeight() /2.5/ max);
+		}else{
+			zoom = (int) (fenetrePrincipale.getSize().getWidth()/2.5 / max);
+		}
 		player = new MusicPlayer("./ressources/musique/nyancat.wav");
 	}
 
@@ -212,6 +216,7 @@ public class PanelAffichage extends JPanel {
 						* e.getWheelRotation();
 			}
 			p.repaint();
+
 		}
 
 	}
@@ -313,4 +318,21 @@ public class PanelAffichage extends JPanel {
 		}
 
 	}
+
+	/**
+	 * Permet de remettre le zoom par defaut
+	 */
+	public void remettreZoomParDefaut() {
+		decalageY = (int) (fenetrePrincipale.getSize().getHeight() / 2)-50;
+		decalageX = (int) (fenetrePrincipale.getSize().getWidth() / 2);
+		if (this.fenetrePrincipale.getHauteur()<= this.fenetrePrincipale.getLargeur()) {
+			zoom = (int) (fenetrePrincipale.getSize().getHeight() /2.5/ max);
+		}else{
+			zoom = (int) (fenetrePrincipale.getSize().getWidth()/2.5 / max);
+		}
+		
+		this.repaint();
+		
+	}
+	
 }

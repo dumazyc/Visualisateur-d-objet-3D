@@ -115,7 +115,7 @@ public class AffichageDuModele extends JFrame {
 		this.setJMenuBar(jmenubar);
 
 		this.add(tabbedPane, BorderLayout.CENTER);
-		nouvelOnglet("space_station");
+		
 
 		sp.add(tabbedPane, JSplitPane.RIGHT);
 		sp.setVisible(true);
@@ -185,12 +185,13 @@ public class AffichageDuModele extends JFrame {
 			}
 		});
 
-		// Si on clic sur bouton zoom par default, le zoom ce remet par default
+		// Si on clique sur le bouton zoom par default, le zoom se remet par default
 		Zoom.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-
+				PanelAffichage p = (PanelAffichage) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+				p.remettreZoomParDefaut();
 			}
 		});
 		description.addActionListener(new ActionListener() {
@@ -222,11 +223,12 @@ public class AffichageDuModele extends JFrame {
 
 
 		// Gestion des couleurs
+		nouvelOnglet("space_station");
 		background.addActionListener(new colorBackground((PanelAffichage) this.tabbedPane.getComponentAt(this.tabbedPane.getSelectedIndex())));
 		colorObjet.addActionListener(new colorObjet((PanelAffichage) this.tabbedPane.getComponentAt(this.tabbedPane.getSelectedIndex())));
-
+		
 		this.setVisible(true);
-
+		
 	}
 
 	/**
