@@ -18,6 +18,8 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -106,36 +108,79 @@ public class Recherche extends JPanel{
 		contentPane4.add(ajouter);
 		this.add(contentPane4);
 		this.setVisible(true);
+		
+		
+		// Permet le traitement automatique des la saisie d'un nouveau caractère dans le textfield.
+		tfield.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+				warn();
+			}
+			public void removeUpdate(DocumentEvent e) {
+				warn();
+			}
+			public void insertUpdate(DocumentEvent e) {
+				warn();
+			}
+
+			public void warn() {
+				listModel_gts.removeAllElements();
+				if(!tfield.getText().equals("") && !tfield.getText().equals("Mots Cles")){
+					Connection c = null;
+					Statement stmt = null;
+					try {
+						Class.forName("org.sqlite.JDBC");
+						c = DriverManager
+								.getConnection("jdbc:sqlite:Database.db");
+						c.setAutoCommit(false);
+						stmt = c.createStatement();
+						String requete = "SELECT DISTINCT OBJETS3D.NAME FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE MOTCLE LIKE '" + tfield.getText()+"%' OR NAME LIKE '"+ tfield.getText()+"%' OR AUTEUR LIKE '"+ tfield.getText()+"%' OR ID LIKE '"+ tfield.getText()+"%' OR DATECREATION LIKE '"+ tfield.getText()+"%';";
+						ResultSet rs = stmt.executeQuery(requete);
+						while(rs.next()){				
+							listModel_gts.addElement((rs.getString("NAME")));
+
+						}
+						liste_gts.setEnabled(true);
+
+					}catch (Exception e1) {
+						System.err.println(e1.getClass().getName() + ": "
+								+ e1.getMessage());
+						System.exit(0);
+					}
+				}
+
+			}
+		});
+
 
 		
 		// L'action quand on clic sur le bouton valider.
 		valider.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			if(!tfield.getText().equals("") && !tfield.getText().equals("Mots Cles")){
-			Connection c = null;
-			Statement stmt = null;
-			try {
-				Class.forName("org.sqlite.JDBC");
-				c = DriverManager
-						.getConnection("jdbc:sqlite:Database.db");
-				c.setAutoCommit(false);
-				stmt = c.createStatement();
-				String requete = "SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE MOTCLE ='" + tfield.getText()+"' OR NAME ='"+ tfield.getText()+"' OR AUTEUR ='"+ tfield.getText()+"' OR ID ='"+ tfield.getText()+"' OR DATECREATION ='"+ tfield.getText()+"';";
-				ResultSet rs = stmt.executeQuery(requete);
-				while(rs.next()){				
-					listModel_gts.addElement((rs.getString("NAME")));
-					
+			public void actionPerformed(ActionEvent e) {
+				if(!tfield.getText().equals("") && !tfield.getText().equals("Mots Cles")){
+					Connection c = null;
+					Statement stmt = null;
+					try {
+						Class.forName("org.sqlite.JDBC");
+						c = DriverManager
+								.getConnection("jdbc:sqlite:Database.db");
+						c.setAutoCommit(false);
+						stmt = c.createStatement();
+						String requete = "SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE MOTCLE ='" + tfield.getText()+"' OR NAME ='"+ tfield.getText()+"' OR AUTEUR ='"+ tfield.getText()+"' OR ID ='"+ tfield.getText()+"' OR DATECREATION ='"+ tfield.getText()+"';";
+						ResultSet rs = stmt.executeQuery(requete);
+						while(rs.next()){				
+							listModel_gts.addElement((rs.getString("NAME")));
+
+						}
+						liste_gts.setEnabled(true);
+
+					}catch (Exception e1) {
+						System.err.println(e1.getClass().getName() + ": "
+								+ e1.getMessage());
+						System.exit(0);
+					}
 				}
-				liste_gts.setEnabled(true);
-			
-			}catch (Exception e1) {
-				System.err.println(e1.getClass().getName() + ": "
-						+ e1.getMessage());
-				System.exit(0);
 			}
-			}
-		}
-	});
+		});
 	
 	// Action quand on selectionne un element de la liste des .gts.
 	liste_gts.addListSelectionListener(new ListSelectionListener() {
