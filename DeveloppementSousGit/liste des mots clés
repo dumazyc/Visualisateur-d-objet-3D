@@ -17,15 +17,14 @@ Liste des mots clés :
 15 sphere20 : "sphère","figure"
 16 tetrahedron : "tetrèdre","figure"
 17 HarryPotter : "HarryPotter","film"
-18 iphone4s : "iPhone","téléphone" (Problème ne s'ouvre pas)
+18 iphone4s : "iPhone","téléphone" 
 19 helmet : "casque","casque"
 20 mario : "mario","personnage"
-21 MarioAndBrowser : "mario","personnage" (Problème ne s'ouvre pas)
-22 mecha : "robot","personnage"
-23 mont_saint_michel : "Mont Saint-Michel","monument" (Blanc)
-24 pikachu : "pikachu","pokémon"
-25 Porsche911 : "porsche","voiture"
-26 PortalTurret : "portal","robot"
-27 SpaceInvader : "robot","espace"
-28 Verre : "verre","cuisine"
-29 zelda : "zelda","personnage" (Blanc)
+21 mecha : "robot","personnage"
+22 mont_saint_michel : "Mont Saint-Michel","monument"
+23 pikachu : "pikachu","pokémon"
+24 Porsche911 : "porsche","voiture"
+25 PortalTurret : "portal","robot"
+26 SpaceInvader : "robot","espace"
+27 Verre : "verre","cuisine"
+28 zelda : "zelda","personnage"
