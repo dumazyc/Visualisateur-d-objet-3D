@@ -36,7 +36,9 @@ public class PanelAffichage extends JPanel {
 	private RecupDonneesFichier fichier;
 	private MusicPlayer player;
 	private Color couleurDeFond = new Color(255, 255, 255);
-	private Color couleurObjet = new  Color(255,122, 0);
+	private Color couleurObjet = new Color(255, 122, 0);
+	private boolean musiqueActive = true;
+
 	/**
 	 * Constructeur de la classe PanelAffichage.
 	 * 
@@ -48,17 +50,16 @@ public class PanelAffichage extends JPanel {
 	public PanelAffichage(AffichageDuModele fenetrePrincipale, String name) {
 		this.fenetrePrincipale = fenetrePrincipale;
 
-			RecupDonneesFichier(name);
+		RecupDonneesFichier(name);
 
-		
 		this.setVisible(true);
 		this.addMouseListener(new MouseListenerMaison(this));
 		this.addMouseMotionListener(new MouseMotionListenerMaison(this));
 		this.addMouseWheelListener(new MouseWheelListenerMaison(this));
-		
-			decalageY = (int) (fenetrePrincipale.getSize().getHeight() / 2)-50;
-			decalageX = (int) (fenetrePrincipale.getSize().getWidth() / 2);
-		
+
+		decalageY = (int) (fenetrePrincipale.getSize().getHeight() / 2) - 50;
+		decalageX = (int) (fenetrePrincipale.getSize().getWidth() / 2);
+
 	}
 
 	/**
@@ -83,10 +84,11 @@ public class PanelAffichage extends JPanel {
 				max = -fichier.getList_points().get(i).getY();
 			}
 		}
-		if (this.fenetrePrincipale.getHauteur()<= this.fenetrePrincipale.getLargeur()) {
-			zoom = (int) (fenetrePrincipale.getSize().getHeight() /2.5/ max);
-		}else{
-			zoom = (int) (fenetrePrincipale.getSize().getWidth()/2.5 / max);
+		if (this.fenetrePrincipale.getHauteur() <= this.fenetrePrincipale
+				.getLargeur()) {
+			zoom = (int) (fenetrePrincipale.getSize().getHeight() / 2.5 / max);
+		} else {
+			zoom = (int) (fenetrePrincipale.getSize().getWidth() / 2.5 / max);
 		}
 		player = new MusicPlayer("./ressources/musique/nyancat.wav");
 	}
@@ -107,9 +109,10 @@ public class PanelAffichage extends JPanel {
 		rotationZ = 0;
 		for (int i = 0; i < fichier.getList_faces().size(); i++) {
 			buffer.setColor(new Color((i * couleurObjet.getRed())
-					/ fichier.getList_faces().size(), (i *couleurObjet.getGreen())
-					/ fichier.getList_faces().size(), (i * couleurObjet.getBlue())
-					/ fichier.getList_faces().size()));
+					/ fichier.getList_faces().size(), (i * couleurObjet
+					.getGreen()) / fichier.getList_faces().size(),
+					(i * couleurObjet.getBlue())
+							/ fichier.getList_faces().size()));
 			if (ligneOrNot) {
 				buffer.drawPolygon(generatePolygon(
 						fichier.getList_faces().get(i), zoom, decalageX,
@@ -300,7 +303,10 @@ public class PanelAffichage extends JPanel {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			ligneOrNot = true;
-			player.lecture();
+			if (musiqueActive) {
+
+				player.lecture();
+			}
 			p.repaint();
 
 		}
@@ -319,16 +325,17 @@ public class PanelAffichage extends JPanel {
 	 * Permet de remettre le zoom par defaut
 	 */
 	public void remettreZoomParDefaut() {
-		decalageY = (int) (fenetrePrincipale.getSize().getHeight() / 2)-50;
+		decalageY = (int) (fenetrePrincipale.getSize().getHeight() / 2) - 50;
 		decalageX = (int) (fenetrePrincipale.getSize().getWidth() / 2);
-		if (this.fenetrePrincipale.getHauteur()<= this.fenetrePrincipale.getLargeur()) {
-			zoom = (int) (fenetrePrincipale.getSize().getHeight() /2.5/ max);
-		}else{
-			zoom = (int) (fenetrePrincipale.getSize().getWidth()/2.5 / max);
+		if (this.fenetrePrincipale.getHauteur() <= this.fenetrePrincipale
+				.getLargeur()) {
+			zoom = (int) (fenetrePrincipale.getSize().getHeight() / 2.5 / max);
+		} else {
+			zoom = (int) (fenetrePrincipale.getSize().getWidth() / 2.5 / max);
 		}
-		
+
 		this.repaint();
-		
+
 	}
 
 	public Color getCouleurDeFond() {
@@ -346,5 +353,18 @@ public class PanelAffichage extends JPanel {
 	public void setCouleurObjet(Color couleurObjet) {
 		this.couleurObjet = couleurObjet;
 	}
-	
+
+	/**
+	 * Permet de desactiver/activer la musique
+	 */
+	public void desactiverMusique() {
+		if (musiqueActive) {
+			musiqueActive = false;
+			player.pause();
+		} else {
+			musiqueActive = true;
+		}
+
+	}
+
 }

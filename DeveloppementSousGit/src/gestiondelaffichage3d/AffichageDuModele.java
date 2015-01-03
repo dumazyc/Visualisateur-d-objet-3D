@@ -76,13 +76,13 @@ public class AffichageDuModele extends JFrame {
 		JMenuItem Zoom = new JMenuItem("Zoom par Default");
 		JMenuItem color = new JMenuItem("Modifier les couleurs");
 		JMenu resolution = new JMenu("Resolution");
+		JMenuItem music = new JMenuItem("Activer/Desactiver la musique");
+
 		JRadioButtonMenuItem full = new JRadioButtonMenuItem("Plein ecran");
-		JRadioButtonMenuItem full2 = new JRadioButtonMenuItem("700*700", true);
-		JRadioButtonMenuItem full3 = new JRadioButtonMenuItem("xxx*xxx");
+		JRadioButtonMenuItem full2 = new JRadioButtonMenuItem("900*700", true);
 		ButtonGroup bg = new ButtonGroup();
 		bg.add(full);
 		bg.add(full2);
-		bg.add(full3);
 
 		// raccourci clavier
 		ajout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
@@ -99,13 +99,13 @@ public class AffichageDuModele extends JFrame {
 		j1.add(fermer);
 		j2.add(resolution);
 		j2.add(Zoom);
+		j2.add(music);
 		j2.add(modifierInfos);
 		j2.add(description);
 		j2.add(color);
 		j3.add(aide);
 		resolution.add(full);
 		resolution.add(full2);
-		resolution.add(full3);
 		jmenubar.add(j1);
 		jmenubar.add(j2);
 		jmenubar.add(j3);
@@ -163,20 +163,12 @@ public class AffichageDuModele extends JFrame {
 			}
 		});
 
-		// si case cocher alors taille fenetre = 700/700
+		// si case cocher alors taille fenetre = 900/700
 		full2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AffichageDuModele.this.setSize(700, 700);
+				AffichageDuModele.this.setSize(900, 700);
 
-			}
-		});
-		// si case cocher alors taille fenetre = xxx
-		full3.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				AffichageDuModele.this.setSize(1240, 720);
 			}
 		});
 
@@ -189,6 +181,19 @@ public class AffichageDuModele extends JFrame {
 				PanelAffichage p = (PanelAffichage) tabbedPane
 						.getComponentAt(tabbedPane.getSelectedIndex());
 				p.remettreZoomParDefaut();
+			}
+		});
+
+		music.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+					PanelAffichage p = (PanelAffichage) tabbedPane
+							.getComponentAt(i);
+					p.desactiverMusique();
+				}
+
 			}
 		});
 		description.addActionListener(new ActionListener() {
