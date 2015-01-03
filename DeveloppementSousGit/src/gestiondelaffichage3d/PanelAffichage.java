@@ -46,10 +46,11 @@ public class PanelAffichage extends JPanel {
 	 *            fenetre principale du programme
 	 * @param name
 	 *            nom du fichier .gts sans l'extension
+	 * @param musiqueActive booleen qui permet de savoir si la musique est active ou non
 	 */
-	public PanelAffichage(AffichageDuModele fenetrePrincipale, String name) {
+	public PanelAffichage(AffichageDuModele fenetrePrincipale, String name, boolean musiqueActive) {
 		this.fenetrePrincipale = fenetrePrincipale;
-
+		this.musiqueActive = musiqueActive;
 		RecupDonneesFichier(name);
 
 		this.setVisible(true);

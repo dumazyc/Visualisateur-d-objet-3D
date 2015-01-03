@@ -49,7 +49,7 @@ public class AffichageDuModele extends JFrame {
 			"./ressources/imageMenu/close.gif");
 	private Dimension closeButtonSize = new Dimension(
 			closeXIcon.getIconWidth() + 2, closeXIcon.getIconHeight() + 2);
-
+	private boolean musiqueActive = true;
 	/**
 	 * Constructeur de AffichageDuModele
 	 */
@@ -192,6 +192,11 @@ public class AffichageDuModele extends JFrame {
 					PanelAffichage p = (PanelAffichage) tabbedPane
 							.getComponentAt(i);
 					p.desactiverMusique();
+					if(musiqueActive){
+						musiqueActive = false;
+					}else{
+						musiqueActive = true;
+					}
 				}
 
 			}
@@ -238,7 +243,7 @@ public class AffichageDuModele extends JFrame {
 	 *            nom de l'objet .gts a afficher (sans l'extension)
 	 */
 	public void nouvelOnglet(String name) {
-		final PanelAffichage p = new PanelAffichage(this, name);
+		final PanelAffichage p = new PanelAffichage(this, name,musiqueActive);
 		JPanel tab = new JPanel();
 		tab.setOpaque(false);
 
