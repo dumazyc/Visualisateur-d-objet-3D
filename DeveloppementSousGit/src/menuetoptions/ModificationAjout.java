@@ -24,7 +24,7 @@ public class ModificationAjout {
 
 	//objet a modifier et fenetre
 	String nomObjet;
-	final JFrame frame = new JFrame("Veuillez ajouter les informations a modifier:   ");
+	final JFrame frame = new JFrame();
 
 	//constructeur
 	public ModificationAjout(final String nomObjet){
@@ -34,7 +34,7 @@ public class ModificationAjout {
 		c.setLayout(new GridLayout(8,1,7,7));
 
 
-		c.add(new JLabel("  VEUILLEZ ENTRER LES INFORMATIONS RELATIVES A VOTRE OBJET:    "));
+		c.add(new JLabel("  VEUILLEZ ENTRER LES INFORMATIONS A MODIFIER   "));
 
 		//gestion des checkbox
 
@@ -141,12 +141,14 @@ public class ModificationAjout {
 						//custom title, no icon
 						JOptionPane.showMessageDialog(frame,
 								"Modification bien prise en compte",
-								"A plain message",
+								"Modification",
 								JOptionPane.PLAIN_MESSAGE);
 
 						stmt.close(); 
 						c.commit();
 						c.close();
+						frame.dispose();
+						
 
 						//en cas d'erreur
 					} catch ( Exception e1 ) {

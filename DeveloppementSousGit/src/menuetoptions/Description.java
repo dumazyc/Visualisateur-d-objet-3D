@@ -41,7 +41,7 @@ public class Description
 							+ "AUTEUR : " + auteur +".\n"
 							+ "DATECREATION : " + datecreation +".\n" 
 							+ "COMPLEXITE : " + complexite +".\n" 
-									,"A plain message",
+									,"Description de l'objet.",
 									JOptionPane.PLAIN_MESSAGE);
 
 				}
