@@ -33,7 +33,7 @@ import java.awt.Toolkit;
 
 /**
  * Fenetre principale du programme
- *
+ * 
  */
 @SuppressWarnings("serial")
 public class AffichageDuModele extends JFrame {
@@ -50,6 +50,7 @@ public class AffichageDuModele extends JFrame {
 	private Dimension closeButtonSize = new Dimension(
 			closeXIcon.getIconWidth() + 2, closeXIcon.getIconHeight() + 2);
 	private boolean musiqueActive = true;
+
 	/**
 	 * Constructeur de AffichageDuModele
 	 */
@@ -192,9 +193,9 @@ public class AffichageDuModele extends JFrame {
 					PanelAffichage p = (PanelAffichage) tabbedPane
 							.getComponentAt(i);
 					p.desactiverMusique();
-					if(musiqueActive){
+					if (musiqueActive) {
 						musiqueActive = false;
-					}else{
+					} else {
 						musiqueActive = true;
 					}
 				}
@@ -215,14 +216,8 @@ public class AffichageDuModele extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if (tabbedPane.getTitleAt(tabbedPane.getSelectedIndex())
-						.equals("space_station"))
-					modifierInfos.setEnabled(false);
-				else {
-					new ModificationAjout(tabbedPane.getTitleAt(tabbedPane
-							.getSelectedIndex()));
-				}
-
+				new ModificationAjout(tabbedPane.getTitleAt(tabbedPane
+						.getSelectedIndex()));
 			}
 		});
 
@@ -243,7 +238,7 @@ public class AffichageDuModele extends JFrame {
 	 *            nom de l'objet .gts a afficher (sans l'extension)
 	 */
 	public void nouvelOnglet(String name) {
-		final PanelAffichage p = new PanelAffichage(this, name,musiqueActive);
+		final PanelAffichage p = new PanelAffichage(this, name, musiqueActive);
 		JPanel tab = new JPanel();
 		tab.setOpaque(false);
 
@@ -268,7 +263,7 @@ public class AffichageDuModele extends JFrame {
 
 	/**
 	 * Listener qui permet d'enlever d'afficher la fenetre recherche.
-	 *
+	 * 
 	 */
 	public class RechercheListener implements ActionListener {
 		AffichageDuModele a;
@@ -291,7 +286,7 @@ public class AffichageDuModele extends JFrame {
 
 	/**
 	 * Listener qui permet de faire appel aux options des couleurs
-	 *
+	 * 
 	 */
 	public class ColorListener implements ActionListener {
 		PanelAffichage a;
@@ -327,7 +322,7 @@ public class AffichageDuModele extends JFrame {
 
 	/**
 	 * Listener qui permet de faire appel a la fenetre d'ajout
-	 *
+	 * 
 	 */
 	public class ActionListenerMaison implements ActionListener {
 

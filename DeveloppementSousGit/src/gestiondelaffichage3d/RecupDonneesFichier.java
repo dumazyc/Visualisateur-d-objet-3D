@@ -35,7 +35,7 @@ public class RecupDonneesFichier {
 	 */
 	public RecupDonneesFichier(String name, Component component) {
 		this.name = name;
-		if (this.name == null) {
+		/*if (this.name == null) {
 
 			List<String> fichier = new ArrayList<String>();
 			JFileChooser fc = new JFileChooser("ressources/modeles/");
@@ -67,7 +67,7 @@ public class RecupDonneesFichier {
 				System.err.println(e.toString());
 			}
 			this.name = fc.getSelectedFile().getName();
-		}
+		}*/
 		Scanner s = null;
 		try {
 			s = new Scanner(new File("./ressources/modeles/" + this.name
