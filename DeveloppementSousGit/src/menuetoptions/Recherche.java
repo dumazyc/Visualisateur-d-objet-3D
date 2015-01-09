@@ -13,13 +13,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 public class Recherche extends JPanel {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	AffichageDuModele frame;
-	 DefaultListModel listModel_gts;
-	 JList liste_gts;
+	DefaultListModel listModel_gts;
+	JList liste_gts;
+
 	public Recherche(final AffichageDuModele a) {
 		this.frame = a;
 		Dimension d = new Dimension(100, 27);
@@ -103,7 +102,7 @@ public class Recherche extends JPanel {
 		this.setVisible(true);
 
 		// Permet le traitement automatique des la saisie d'un nouveau
-		// caract�re
+		// caractere
 		// dans le textfield.
 		tfield.getDocument().addDocumentListener(new DocumentListener() {
 			public void changedUpdate(DocumentEvent e) {
@@ -256,13 +255,15 @@ public class Recherche extends JPanel {
 		});
 	}
 
+	/**
+	 * Permet de remplir la Jlist d'objet de tous les objets dela base
+	 */
 	private void remplirLaListeObjets() {
 		Connection c = null;
 		Statement stmt = null;
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager
-					.getConnection("jdbc:sqlite:Database.db");
+			c = DriverManager.getConnection("jdbc:sqlite:Database.db");
 			c.setAutoCommit(false);
 			stmt = c.createStatement();
 			String requete = "SELECT DISTINCT NAME FROM OBJETS3D;";
@@ -274,8 +275,8 @@ public class Recherche extends JPanel {
 			liste_gts.setEnabled(true);
 
 		} catch (Exception e1) {
-			System.err.println(e1.getClass().getName() + ": "
-					+ e1.getMessage());
+			System.err
+					.println(e1.getClass().getName() + ": " + e1.getMessage());
 			System.exit(0);
 		}
 	}

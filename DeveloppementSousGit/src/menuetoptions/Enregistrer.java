@@ -28,8 +28,8 @@ public class Enregistrer extends JFrame {
 			String ligne;
 			int cpt = 0;
 			FileReader flux;
-			BufferedReader entree;
-			PrintWriter sortie;
+			BufferedReader entree = null;
+			PrintWriter sortie = null;
 			ArrayList<String> liste = new ArrayList<String>();
 			try {
 				flux = new FileReader("./ressources/modeles/" + name + ".gts");
@@ -40,14 +40,20 @@ public class Enregistrer extends JFrame {
 					liste.add(ligne);
 					sortie.println(liste.get(cpt++));
 				}
-				entree.close();
-				sortie.close();
 			} catch (Exception e) {
 				System.err.println(e.toString());
+			} finally {
+				try {
+					entree.close();
+					sortie.close();
+
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+
 			}
 		}
 
 	}
 
 }
-

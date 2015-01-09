@@ -91,7 +91,7 @@ public class PanelAffichage extends JPanel {
 		} else {
 			zoom = (int) (fenetrePrincipale.getSize().getWidth() / 2.5 / max);
 		}
-		player = new MusicPlayer("./ressources/musique/nyancat.wav");
+		player = new MusicPlayer("./ressources/musique/Symphony40inGMinor.wav");
 	}
 
 	@Override

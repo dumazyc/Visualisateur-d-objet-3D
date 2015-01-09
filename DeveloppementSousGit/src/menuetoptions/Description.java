@@ -1,6 +1,7 @@
 package menuetoptions;
 
 import java.sql.*;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -20,6 +21,7 @@ public class Description
 		{
 			Connection c = null;
 			Statement stmt = null;
+			ResultSet rs = null;
 			try {
 				Class.forName("org.sqlite.JDBC");
 				c = DriverManager.getConnection("jdbc:sqlite:Database.db");
@@ -28,7 +30,7 @@ public class Description
 				stmt = c.createStatement();
 				//on interroge la base
 				
-				ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D WHERE NAME =" + "'"+ Description.this.nomObjet +"';" );
+				 rs = stmt.executeQuery( "SELECT * FROM OBJETS3D WHERE NAME =" + "'"+ Description.this.nomObjet +"';" );
 				while ( rs.next() ) {
 					String  name = rs.getString("name");
 					String  auteur = rs.getString("auteur");
@@ -45,14 +47,21 @@ public class Description
 									JOptionPane.PLAIN_MESSAGE);
 
 				}
-				rs.close();
-				stmt.close();
-				c.close();
 				//en cas d'erreur
 				
 			} catch ( Exception e ) {
 				System.err.println( e.getClass().getName() + ": " + e.getMessage() );
 				System.exit(0);
+			}finally{
+				try {
+					rs.close();
+					stmt.close();
+					c.close();
+					frame.dispose();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				
 			}
 		}
 

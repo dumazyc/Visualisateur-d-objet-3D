@@ -7,9 +7,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -133,7 +140,41 @@ public class ModificationAjout {
 						c.setAutoCommit(false);
 						stmt = c.createStatement();
 						stmt.executeUpdate(sql);
+
 						c.commit();
+						if (cbox.isSelected() && !tfield.getText().equals(null)) {
+							String ligne;
+							int cpt = 0;
+							FileReader flux;
+							BufferedReader entree = null;
+							PrintWriter sortie = null;
+							ArrayList<String> liste = new ArrayList<String>();
+							try {
+								flux = new FileReader("./ressources/modeles/"
+										+ nomObjet + ".gts");
+								entree = new BufferedReader(flux);
+								sortie = new PrintWriter(
+										"./ressources/modeles/" + name + ".gts");
+								while ((ligne = entree.readLine()) != null) {
+									liste.add(ligne);
+									sortie.println(liste.get(cpt++));
+								}
+							} catch (Exception exception) {
+								System.err.println(exception.toString());
+							}finally{
+								try {
+									entree.close();
+									sortie.close();
+								} catch (Exception e1) {
+									e1.printStackTrace();
+								}
+								
+							}
+							File MyFile = new File("./ressources/modeles/"
+									+ nomObjet + ".gts");
+							MyFile.delete();
+
+						}
 
 						// pour confirmer
 						// custom title, no icon
@@ -141,16 +182,21 @@ public class ModificationAjout {
 								"Modification bien prise en compte",
 								"Modification", JOptionPane.PLAIN_MESSAGE);
 
-						stmt.close();
-						c.commit();
-						c.close();
-						frame.dispose();
-
 						// en cas d'erreur
 					} catch (Exception e1) {
 						System.err.println(e1.getClass().getName() + ": "
 								+ e1.getMessage());
 						System.exit(0);
+
+					} finally {
+						try {
+							stmt.close();
+							c.commit();
+							c.close();
+							frame.dispose();
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						}
 
 					}
 				}

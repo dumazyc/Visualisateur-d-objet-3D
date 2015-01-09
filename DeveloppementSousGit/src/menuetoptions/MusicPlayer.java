@@ -93,11 +93,18 @@ public class MusicPlayer {
 						sourceDataLine.write(tempBuffer, 0, cnt);
 					}
 				}
-				sourceDataLine.drain();
-				sourceDataLine.close();
-				stopPlayback = false;
-				t = null;
 			} catch (Exception e) {
+
+			} finally {
+				try {
+					sourceDataLine.drain();
+					sourceDataLine.close();
+					stopPlayback = false;
+					t = null;
+
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
 
 			}
 
