@@ -50,7 +50,7 @@ public class MusicPlayer {
 				t = new PlayThread();
 				t.start();
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			}
 		} else {
 			t.resume();
@@ -94,7 +94,7 @@ public class MusicPlayer {
 					}
 				}
 			} catch (Exception e) {
-
+				e.printStackTrace();
 			} finally {
 				try {
 					sourceDataLine.drain();

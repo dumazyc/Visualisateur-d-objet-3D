@@ -223,9 +223,15 @@ public class AffichageDuModele extends JFrame {
 
 		// Gestion des couleurs
 		nouvelOnglet("space_station");
-		color.addActionListener(new ColorListener(
-				(PanelAffichage) this.tabbedPane.getComponentAt(this.tabbedPane
-						.getSelectedIndex())));
+		
+		color.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new OptionCouleur((PanelAffichage) tabbedPane.getComponentAt(tabbedPane
+								.getSelectedIndex()));
+			}
+		});
 
 		this.setVisible(true);
 
@@ -284,23 +290,6 @@ public class AffichageDuModele extends JFrame {
 		}
 	}
 
-	/**
-	 * Listener qui permet de faire appel aux options des couleurs
-	 * 
-	 */
-	public class ColorListener implements ActionListener {
-		PanelAffichage a;
-
-		public ColorListener(PanelAffichage a) {
-			this.a = a;
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			new OptionCouleur(a);
-		}
-
-	}
 
 	/**
 	 * Permet de connaitre la hauteur de de l'onglet courant.
