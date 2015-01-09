@@ -18,8 +18,8 @@ public class Recherche extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	AffichageDuModele frame;
-
-
+	 DefaultListModel listModel_gts;
+	 JList liste_gts;
 	public Recherche(final AffichageDuModele a) {
 		this.frame = a;
 		Dimension d = new Dimension(100, 27);
@@ -41,8 +41,8 @@ public class Recherche extends JPanel {
 		contentPane2.setPreferredSize((new Dimension(50, 100)));
 		JLabel resultat = new JLabel("Resultat : ");
 		// final JList liste_gts = new JList(fichier_gts.toArray());
-		final DefaultListModel listModel_gts = new DefaultListModel();
-		final JList liste_gts = new JList(listModel_gts);
+		listModel_gts = new DefaultListModel();
+		liste_gts = new JList(listModel_gts);
 		// liste_gts.setVisibleRowCount(10);
 		// liste_gts.setEnabled(false);
 		// liste_gts.setPreferredSize(new Dimension(120,150));
@@ -99,9 +99,11 @@ public class Recherche extends JPanel {
 		contentPane4.add(modifier);
 		contentPane4.add(ajouter);
 		this.add(contentPane4);
+		remplirLaListeObjets();
 		this.setVisible(true);
 
-		// Permet le traitement automatique des la saisie d'un nouveau caract�re
+		// Permet le traitement automatique des la saisie d'un nouveau
+		// caract�re
 		// dans le textfield.
 		tfield.getDocument().addDocumentListener(new DocumentListener() {
 			public void changedUpdate(DocumentEvent e) {
@@ -117,14 +119,12 @@ public class Recherche extends JPanel {
 			}
 
 			public void warn() {
-				
+
 				listModel_gts.removeAllElements();
 				liste_gts.clearSelection();
 				liste_gts.removeAll();
-				
 
-				if (!tfield.getText().equals("")
-						&& !tfield.getText().equals("Mots Cles")) {
+				if (!tfield.getText().equals("")) {
 					Connection c = null;
 					Statement stmt = null;
 					try {
@@ -155,6 +155,8 @@ public class Recherche extends JPanel {
 								+ e1.getMessage());
 						System.exit(0);
 					}
+				} else {
+					remplirLaListeObjets();
 				}
 
 			}
@@ -170,8 +172,8 @@ public class Recherche extends JPanel {
 					return;
 				}
 				liste_gts.getSelectedValue();
-				if((String) liste_gts.getSelectedValue()!=null){
-				a.nouvelOnglet((String) liste_gts.getSelectedValue());
+				if ((String) liste_gts.getSelectedValue() != null) {
+					a.nouvelOnglet((String) liste_gts.getSelectedValue());
 				}
 				Connection c = null;
 				Statement stmt = null;
@@ -254,6 +256,29 @@ public class Recherche extends JPanel {
 		});
 	}
 
+	private void remplirLaListeObjets() {
+		Connection c = null;
+		Statement stmt = null;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			c = DriverManager
+					.getConnection("jdbc:sqlite:Database.db");
+			c.setAutoCommit(false);
+			stmt = c.createStatement();
+			String requete = "SELECT DISTINCT NAME FROM OBJETS3D;";
+			ResultSet rs = stmt.executeQuery(requete);
+			while (rs.next()) {
+				listModel_gts.addElement((rs.getString("NAME")));
+
+			}
+			liste_gts.setEnabled(true);
+
+		} catch (Exception e1) {
+			System.err.println(e1.getClass().getName() + ": "
+					+ e1.getMessage());
+			System.exit(0);
+		}
+	}
 }
 
 // String ac = perso.getSelectedItem().toString()
