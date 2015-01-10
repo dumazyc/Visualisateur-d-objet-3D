@@ -225,8 +225,10 @@ public class AffichageDuModele extends JFrame {
 
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				mettreAJourDescription(tabbedPane.getTitleAt(tabbedPane
-						.getSelectedIndex()));
+				if(tabbedPane.getSelectedIndex()>0){
+					mettreAJourDescription(tabbedPane.getTitleAt(tabbedPane
+							.getSelectedIndex()));
+				}
 
 			}
 		});
@@ -330,11 +332,11 @@ public class AffichageDuModele extends JFrame {
 	public class ActionListenerModification implements ActionListener {
 
 		private AffichageDuModele a;
-		
+
 
 		public ActionListenerModification(AffichageDuModele a) {
 			this.a = a;
-			
+
 		}
 
 		public void actionPerformed(ActionEvent e) {

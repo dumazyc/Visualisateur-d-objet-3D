@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
+/**
+ * Classe permettant a l'utilisateur s'il le souhaite d'enregistrer 
+ * le gts de l'ojet qu'il visualise
+ * 
+ *
+ */
 public class Enregistrer extends JFrame {
 
 	/**
@@ -15,16 +21,23 @@ public class Enregistrer extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * @param name
+	 * Nom de l'objet a enregistrer
+	 */
 	public Enregistrer(String name) {
-
+		//Choix des  fihiers
 		JFileChooser fileChooser = new JFileChooser();
-
+		//un qiquement des repetoires comme destinations
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fileChooser.setDialogTitle("Specify a file to save");
 
 		int userSelection = fileChooser.showSaveDialog(this);
-
+		
+		//si l'utilisateur confirme l'enregsitrement
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
+
+			//Utilisation de flux pour les entrees et sorties
 			String ligne;
 			int cpt = 0;
 			FileReader flux;
@@ -40,6 +53,7 @@ public class Enregistrer extends JFrame {
 					liste.add(ligne);
 					sortie.println(liste.get(cpt++));
 				}
+				//Gestion d'exceptions et fermeteure de connection et de flux
 			} catch (Exception e) {
 				System.err.println(e.toString());
 			} finally {

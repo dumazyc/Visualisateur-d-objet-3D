@@ -15,13 +15,24 @@ import javax.swing.JPanel;
 import gestiondecouleur.ModifieurCouleur;
 import gestiondelaffichage3d.PanelAffichage;
 
+/**
+ * Classe pour permettre le changement de couleur fond
+ * et la couleur de la figure
+ *
+ */
 @SuppressWarnings("serial")
 public class OptionCouleur extends JFrame {
 	private JButton oKButton = new JButton("OK");
 	private ModifieurCouleur modifieurFond;
 	private ModifieurCouleur modifieurObjet;
 
+	/**
+	 * Constructeur de la classe
+	 * @param a
+	 * Une instance de PanelAffichage
+	 */
 	public OptionCouleur(PanelAffichage a) {
+		//Gestion de la fenetre
 		this.setTitle("Modifier les couleurs");
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.pack();
@@ -29,6 +40,8 @@ public class OptionCouleur extends JFrame {
 		this.setResizable(false);
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);
+		
+		//Agengement et gestion des composants
 		this.setLayout(new BorderLayout());
 		JPanel principal = new JPanel();
 		principal.setSize(420, (int) (225 * 2.1));
@@ -58,10 +71,19 @@ public class OptionCouleur extends JFrame {
 		oKButton.addActionListener(new ButtonListener(this));
 	}
 
+	/**
+	 * Classe pour ecouter le bouton oKButton
+	 *
+	 */
 	private class ButtonListener implements ActionListener {
 
 		private OptionCouleur option;
 
+		/**
+		 * Constructeur de la classe
+		 * @param optionCouleur
+		 * Une instance de OptionCouleur
+		 */
 		public ButtonListener(OptionCouleur optionCouleur) {
 			this.option = optionCouleur;
 		}

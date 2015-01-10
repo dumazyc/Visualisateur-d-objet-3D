@@ -1,16 +1,11 @@
 package gestiondelaffichage3d;
 
 import java.awt.Component;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
 
 /**
  * Cette classe permet de recuperer les donnees d'un fichier .gts

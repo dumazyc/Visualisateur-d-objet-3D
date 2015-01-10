@@ -5,16 +5,21 @@ import java.sql.*;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-/*Classe pour afficher la description de l'objets courant
- * 
- * */
 
+
+/**
+ * Classe permettant d'afficher la description de l'objet courant
+ *
+ */
 @SuppressWarnings("serial")
 public class Description extends JPanel {
 	// objet a decrire
-	String nomObjet;
+	private String nomObjet;
 
-	// constructeur de la classe
+	/**constructeur de la classe
+	 * @param nomObjet
+	 * Permet de connaitre le nom de l'objet pour interroger la base
+	 */
 	public Description(final String nomObjet) {
 		this.nomObjet = nomObjet;
 		Connection c = null;
@@ -26,6 +31,7 @@ public class Description extends JPanel {
 			c.setAutoCommit(false);
 
 			stmt = c.createStatement();
+
 			// on interroge la base
 
 			rs = stmt.executeQuery("SELECT * FROM OBJETS3D WHERE NAME =" + "'"
@@ -36,6 +42,7 @@ public class Description extends JPanel {
 				String datecreation = rs.getString("datecreation");
 				String complexite = rs.getString("complexite");
 
+				//Un label pour contenir les informations receuillies
 				this.add(new JLabel("Nom : " + name + ".\n" + "   Auteur : "
 						+ auteur + ".\n" + "   Date de creation : "
 						+ datecreation + ".\n" + " Nombre de triangles : "

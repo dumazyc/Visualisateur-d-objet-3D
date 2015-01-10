@@ -20,8 +20,12 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 
-// Pour gerer l'ajout d'un objet
 
+/**
+ * Classe permettant a l'utilsateur d'ajouter un objet et de completer 
+ * les differentes informations associees
+ *
+ */
 public class Ajout extends JFrame {
 	private static final long serialVersionUID = 1L;
 	AffichageDuModele aff;
@@ -32,16 +36,23 @@ public class Ajout extends JFrame {
 	final JTextField tfield1;
 	final JFileChooser fc;
 
-	// constructeur de la classe
+
+	/**
+	 * Constructeur de la Classe
+	 * @param a
+	 * Une instance de la fentre principale pour visualiser le fichier apres Ajout
+	 */
 
 	public Ajout(AffichageDuModele a) {
 
 		// pour communiquer avec la fenetre principale
 		this.aff = a;
+
+		//dimension utilisee le plus souvent
 		Dimension d = new Dimension(100, 27);
 
-		JButton charger = new JButton("Charger fichier");
 		// pour charger le fichier
+		JButton charger = new JButton("Charger fichier");
 		final JPanel pannelCharger = new JPanel();
 		fc = new JFileChooser(".");
 		charger.setPreferredSize(new Dimension(150, 27));
@@ -59,8 +70,7 @@ public class Ajout extends JFrame {
 		c.add(new JLabel(
 				"  VEUILLEZ ENTRER LES INFORMATIONS RELATIVES A VOTRE OBJET:     "));
 
-		// gestion des checkboxs
-
+		//Differents champs a completer pour ajouter l'objet
 		final JPanel contentPane = new JPanel();
 		tfield = new JTextField(15);
 		label1 = new JLabel("Nom de l'objet: ");
@@ -105,10 +115,19 @@ public class Ajout extends JFrame {
 
 	}
 
-	public class ActionListenerKarenNumero3 implements ActionListener {
+	/**
+	 * Classe pour ecouter le bouton annuler
+	 *
+	 */
+	private class ActionListenerKarenNumero3 implements ActionListener {
 		private Ajout a;
 
-		public ActionListenerKarenNumero3(Ajout ajout) {
+		/**
+		 * Constructeur de la classe
+		 * @param a
+		 * Une instance de Ajout
+		 */
+		private ActionListenerKarenNumero3(Ajout ajout) {
 			this.a = ajout;
 		}
 
@@ -118,11 +137,19 @@ public class Ajout extends JFrame {
 
 	}
 
-	public class ActionListenerKarenNumero2 implements ActionListener {
+	/**
+	 * Classe pour ecouter le pannel qui s'occupe du chargement du gts
+	 */
+	private class ActionListenerKarenNumero2 implements ActionListener {
 
 		private Ajout a;
 
-		public ActionListenerKarenNumero2(Ajout ajout) {
+		/**
+		 * Constructeur de la classe
+		 * @param a
+		 * Une instance de Ajout
+		 */
+		private  ActionListenerKarenNumero2(Ajout ajout) {
 			this.a = ajout;
 		}
 
@@ -135,6 +162,10 @@ public class Ajout extends JFrame {
 					return f.getName().endsWith(".gts");
 				}
 
+				/**
+				 * @return
+				 * Description du fichier a charger
+				 */
 				@Override
 				public String getDescription() {
 					return "Fichier GNU Triangulated Surface Library (.gts)";
@@ -153,9 +184,18 @@ public class Ajout extends JFrame {
 		}
 	}
 
+	/**
+	 * Classe qui permet d'ecouter le bouton annuler
+	 *
+	 */
 	public class ActionListenerKaren implements ActionListener {
 		Ajout a;
 
+		/**
+		 * Constructeur de la classe
+		 * @param a
+		 * Une instance de Ajout
+		 */
 		public ActionListenerKaren(Ajout a) {
 			this.a = a;
 		}
@@ -185,6 +225,7 @@ public class Ajout extends JFrame {
 								"Attention", JOptionPane.WARNING_MESSAGE);
 
 					} else {
+						//sinon on lit dans le fichier
 
 						String ligne;
 						int cpt = 0;
@@ -222,7 +263,7 @@ public class Ajout extends JFrame {
 						FileReader flux1;
 						BufferedReader entree1 = null;
 						try {
-
+							//On recupere la complexite
 							flux1 = new FileReader("./ressources/modeles/"
 									+ tfield.getText() + ".gts");
 							entree1 = new BufferedReader(flux1);
@@ -255,6 +296,7 @@ public class Ajout extends JFrame {
 						Connection c = null;
 						Statement stmt = null;
 						try {
+							//insertion des informations dans la base
 							Class.forName("org.sqlite.JDBC");
 							c = DriverManager
 									.getConnection("jdbc:sqlite:Database.db");
@@ -263,7 +305,7 @@ public class Ajout extends JFrame {
 							String sql;
 							String name;
 							String auteur;
-
+							//Pour gerer les oublis des utilisateurs
 							if (!tfield.getText().equals(null)
 									&& !tfield1.getText().equals(null)) {
 
@@ -281,18 +323,16 @@ public class Ajout extends JFrame {
 								a.setEnabled(false);
 								aff.nouvelOnglet(tfield.getText());
 								a.dispose();
-								AffichageDuModele.modifierInfos
-										.setEnabled(true);
-
 							}
-
+							//en cas d'erreur
 						} catch (Exception e1) {
 							System.err.println(e1.getClass().getName() + ": "
 									+ e1.getMessage());
 							System.exit(0);
-							// fermeture de connection
 
 						} finally {
+
+							//fermeture de connection
 							try {
 								stmt.close();
 								c.commit();
@@ -302,7 +342,7 @@ public class Ajout extends JFrame {
 							}
 
 						}
-aff.mettreAJourRecherche();
+
 					}
 				}
 			}
