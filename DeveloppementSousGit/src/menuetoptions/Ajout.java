@@ -53,8 +53,7 @@ public class Ajout extends JFrame {
 		charger.addActionListener(new ActionListenerKarenNumero2(this));
 
 		Container c = this.getContentPane();
-		c.setLayout(new GridLayout(8,1,9
-				,9));
+		c.setLayout(new GridLayout(8, 1, 9, 9));
 		c.add(pannelCharger);
 
 		c.add(new JLabel(
@@ -66,8 +65,6 @@ public class Ajout extends JFrame {
 		tfield = new JTextField(15);
 		label1 = new JLabel("Nom de l'objet: ");
 
-
-
 		contentPane.add(label1);
 		contentPane.add(tfield);
 
@@ -75,7 +72,6 @@ public class Ajout extends JFrame {
 		final JPanel contentPane1 = new JPanel();
 		tfield1 = new JTextField(15);
 		label2 = new JLabel("Auteur:    ");
-
 
 		contentPane1.add(label2);
 		contentPane1.add(tfield1);
@@ -103,7 +99,7 @@ public class Ajout extends JFrame {
 
 		annuler.addActionListener(new ActionListenerKarenNumero3(this));
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setSize(540,400);
+		this.setSize(540, 400);
 		this.setResizable(false);
 		this.setVisible(true);
 
@@ -133,7 +129,6 @@ public class Ajout extends JFrame {
 		// choix du fichier
 
 		public void actionPerformed(ActionEvent e) {
-
 			fc.addChoosableFileFilter(new FileFilter() {
 				@Override
 				public boolean accept(File f) {
@@ -143,17 +138,6 @@ public class Ajout extends JFrame {
 				@Override
 				public String getDescription() {
 					return "Fichier GNU Triangulated Surface Library (.gts)";
-				}
-			});
-			fc.addChoosableFileFilter(new FileFilter() {
-				@Override
-				public boolean accept(File f) {
-					return f.getName().endsWith(".txt");
-				}
-
-				@Override
-				public String getDescription() {
-					return "Fichier texte (.txt)";
 				}
 			});
 			fc.showOpenDialog(a);
@@ -178,7 +162,6 @@ public class Ajout extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 
-
 			if (tfield.getText().isEmpty() || tfield1.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(a,
 						"Tous les champs sont obligatoire", "Attention",
@@ -196,13 +179,12 @@ public class Ajout extends JFrame {
 				} else {
 					// si verification gts valide sinon popup d'erreur
 
-					VerifGts v=new VerifGts(fichier.getText());
-					if(!v.GtsEstCorrect()){
+					VerifGts v = new VerifGts(fichier.getText());
+					if (!v.GtsEstCorrect()) {
 						JOptionPane.showMessageDialog(a, "Fichier Non valide",
 								"Attention", JOptionPane.WARNING_MESSAGE);
 
-
-					}else{
+					} else {
 						// popup de confirmation
 
 						Object[] options = { "Ok,visualiser", "Annuler l'ajout" };
@@ -210,7 +192,8 @@ public class Ajout extends JFrame {
 						int n = JOptionPane.showOptionDialog(a,
 								"Objet bien ajoute", "A Silly Question",
 								JOptionPane.YES_NO_OPTION,
-								JOptionPane.QUESTION_MESSAGE, null, // do not use a
+								JOptionPane.QUESTION_MESSAGE, null, // do not
+																	// use a
 								// custom Icon
 								options, // the titles of buttons
 								options[0]); // default button title
@@ -228,8 +211,9 @@ public class Ajout extends JFrame {
 								flux = new FileReader(fc.getSelectedFile());
 								System.out.println(fc.getSelectedFile());
 								entree = new BufferedReader(flux);
-								sortie = new PrintWriter("./ressources/modeles/"
-										+ tfield.getText() + ".gts");
+								sortie = new PrintWriter(
+										"./ressources/modeles/"
+												+ tfield.getText() + ".gts");
 
 								while ((ligne = entree.readLine()) != null) {
 
@@ -264,7 +248,8 @@ public class Ajout extends JFrame {
 									if (space == 2) {
 										complexite += tmp.charAt(i);
 									} else {
-										if (Character.isWhitespace(tmp.charAt(i)))
+										if (Character.isWhitespace(tmp
+												.charAt(i)))
 											space++;
 									}
 
@@ -307,20 +292,22 @@ public class Ajout extends JFrame {
 											+ auteur
 											+ "', '"
 											+ Integer.parseInt(complexite)
-											+ "', '" + fichier.getText() + "' );";
+											+ "', '"
+											+ fichier.getText()
+											+ "' );";
 									stmt.executeUpdate(sql);
 									a.setEnabled(false);
 									confirme.setVisible(false);
 									aff.nouvelOnglet(tfield.getText());
 									a.dispose();
 									AffichageDuModele.modifierInfos
-									.setEnabled(true);
+											.setEnabled(true);
 
 								}
 
 							} catch (Exception e1) {
-								System.err.println(e1.getClass().getName() + ": "
-										+ e1.getMessage());
+								System.err.println(e1.getClass().getName()
+										+ ": " + e1.getMessage());
 								System.exit(0);
 
 							} finally {
@@ -338,8 +325,8 @@ public class Ajout extends JFrame {
 							// si on annule l'ajout
 						} else if (n == JOptionPane.NO_OPTION) {
 							confirme.setVisible(false);
-							JOptionPane.showMessageDialog(a, "Ajout annule", " ",
-									JOptionPane.WARNING_MESSAGE);
+							JOptionPane.showMessageDialog(a, "Ajout annule",
+									" ", JOptionPane.WARNING_MESSAGE);
 							a.dispose();
 						}
 
