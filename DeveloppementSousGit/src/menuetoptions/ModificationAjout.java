@@ -142,7 +142,8 @@ public class ModificationAjout {
 						stmt.executeUpdate(sql);
 
 						c.commit();
-						if (cbox.isSelected() && !tfield.getText().equals(null)) {
+						
+						if (cbox.isSelected() && !tfield.getText().equals(null)) { // changer le nom physiquement parlan
 							String ligne;
 							int cpt = 0;
 							FileReader flux;

@@ -20,6 +20,9 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import menuetoptions.Ajout;
 import menuetoptions.Description;
 import menuetoptions.Enregistrer;
@@ -48,6 +51,7 @@ public class AffichageDuModele extends JFrame {
 	private Dimension closeButtonSize = new Dimension(
 			closeXIcon.getIconWidth() + 2, closeXIcon.getIconHeight() + 2);
 	private boolean musiqueActive = true;
+	Description description;
 
 	/**
 	 * Constructeur de AffichageDuModele
@@ -69,7 +73,6 @@ public class AffichageDuModele extends JFrame {
 		JMenuItem ajout = new JMenuItem("Ajouter un objet");
 		JMenuItem recherche = new JMenuItem("Rechercher un objet");
 		JMenuItem enregistre = new JMenuItem("Enregistrer sous..");
-		JMenuItem description = new JMenuItem("Description de l'objet courant");
 		JMenuItem fermer = new JMenuItem("Fermer");
 		JMenuItem aide = new JMenuItem("?");
 		JMenuItem Zoom = new JMenuItem("Zoom par Default");
@@ -100,7 +103,6 @@ public class AffichageDuModele extends JFrame {
 		j2.add(Zoom);
 		j2.add(music);
 		j2.add(modifierInfos);
-		j2.add(description);
 		j2.add(color);
 		j3.add(aide);
 		resolution.add(full);
@@ -201,14 +203,6 @@ public class AffichageDuModele extends JFrame {
 
 			}
 		});
-		description.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				new Description(tabbedPane.getTitleAt(tabbedPane
-						.getSelectedIndex()));
-			}
-		});
 
 		// pour modifier les informations associees a l'objet courant
 		modifierInfos.addActionListener(new ActionListener() {
@@ -231,7 +225,25 @@ public class AffichageDuModele extends JFrame {
 						.getSelectedIndex()));
 			}
 		});
-
+		description = new Description(tabbedPane.getTitleAt(tabbedPane
+				.getSelectedIndex()));
+		add(description,BorderLayout.SOUTH); 
+		tabbedPane.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				if (description!=null) {
+					remove(description);
+				}	
+				description = new Description(tabbedPane.getTitleAt(tabbedPane
+						.getSelectedIndex()));
+				add(description,BorderLayout.SOUTH);
+				invalidate();
+				validate();
+				repaint();
+				
+			}
+		});
 		this.setVisible(true);
 
 	}
@@ -263,9 +275,15 @@ public class AffichageDuModele extends JFrame {
 		tab.add(tabCloseButton, BorderLayout.EAST);	
 		tabbedPane.addTab(name, p);
 		tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, tab);
-		tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);	
-		add(new Description(tabbedPane.getTitleAt(tabbedPane
-						.getSelectedIndex())),BorderLayout.SOUTH);
+		tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+		if (description!=null) {
+			this.remove(description);
+		}	
+		description = new Description(name);
+		add(description,BorderLayout.SOUTH);
+		this.invalidate();
+		this.validate();
+		this.repaint();
 	}
 
 	/**
