@@ -185,149 +185,122 @@ public class Ajout extends JFrame {
 								"Attention", JOptionPane.WARNING_MESSAGE);
 
 					} else {
-						// popup de confirmation
 
-						Object[] options = { "Ok,visualiser", "Annuler l'ajout" };
-						JOptionPane confirme = new JOptionPane();
-						int n = JOptionPane.showOptionDialog(a,
-								"Objet bien ajoute", "A Silly Question",
-								JOptionPane.YES_NO_OPTION,
-								JOptionPane.QUESTION_MESSAGE, null, // do not
-																	// use a
-								// custom Icon
-								options, // the titles of buttons
-								options[0]); // default button title
+						String ligne;
+						int cpt = 0;
+						FileReader flux;
+						BufferedReader entree = null;
+						PrintWriter sortie = null;
+						ArrayList<String> liste = new ArrayList<String>();
+						try {
 
-						// si on confirme l'ajout
-						if (n == JOptionPane.YES_OPTION) {
-							String ligne;
-							int cpt = 0;
-							FileReader flux;
-							BufferedReader entree = null;
-							PrintWriter sortie = null;
-							ArrayList<String> liste = new ArrayList<String>();
+							flux = new FileReader(fc.getSelectedFile());
+							System.out.println(fc.getSelectedFile());
+							entree = new BufferedReader(flux);
+							sortie = new PrintWriter("./ressources/modeles/"
+									+ tfield.getText() + ".gts");
+
+							while ((ligne = entree.readLine()) != null) {
+
+								liste.add(ligne);
+								sortie.println(liste.get(cpt++));
+
+							}
+						} catch (Exception e1) {
+							System.err.println(e1.toString());
+						} finally {
 							try {
-
-								flux = new FileReader(fc.getSelectedFile());
-								System.out.println(fc.getSelectedFile());
-								entree = new BufferedReader(flux);
-								sortie = new PrintWriter(
-										"./ressources/modeles/"
-												+ tfield.getText() + ".gts");
-
-								while ((ligne = entree.readLine()) != null) {
-
-									liste.add(ligne);
-									sortie.println(liste.get(cpt++));
-
-								}
+								entree.close();
+								sortie.close();
 							} catch (Exception e1) {
-								System.err.println(e1.toString());
-							} finally {
-								try {
-									entree.close();
-									sortie.close();
-								} catch (Exception e1) {
-									e1.printStackTrace();
+								e1.printStackTrace();
+							}
+
+						}
+
+						String complexite = "";
+						FileReader flux1;
+						BufferedReader entree1 = null;
+						try {
+
+							flux1 = new FileReader("./ressources/modeles/"
+									+ tfield.getText() + ".gts");
+							entree1 = new BufferedReader(flux1);
+							String tmp = entree1.readLine();
+							int space = 0;
+
+							for (int i = 0; i < tmp.length(); ++i) {
+								if (space == 2) {
+									complexite += tmp.charAt(i);
+								} else {
+									if (Character.isWhitespace(tmp.charAt(i)))
+										space++;
 								}
 
 							}
 
-							String complexite = "";
-							FileReader flux1;
-							BufferedReader entree1 = null;
+							entree1.close();
+
+						} catch (Exception e1) {
+							System.err.println(e.toString());
+						} finally {
 							try {
-
-								flux1 = new FileReader("./ressources/modeles/"
-										+ tfield.getText() + ".gts");
-								entree1 = new BufferedReader(flux1);
-								String tmp = entree1.readLine();
-								int space = 0;
-
-								for (int i = 0; i < tmp.length(); ++i) {
-									if (space == 2) {
-										complexite += tmp.charAt(i);
-									} else {
-										if (Character.isWhitespace(tmp
-												.charAt(i)))
-											space++;
-									}
-
-								}
-
 								entree1.close();
-
 							} catch (Exception e1) {
-								System.err.println(e.toString());
-							} finally {
-								try {
-									entree1.close();
-								} catch (Exception e1) {
-									e1.printStackTrace();
-								}
+								e1.printStackTrace();
+							}
+
+						}
+
+						Connection c = null;
+						Statement stmt = null;
+						try {
+							Class.forName("org.sqlite.JDBC");
+							c = DriverManager
+									.getConnection("jdbc:sqlite:Database.db");
+							c.setAutoCommit(false);
+							stmt = c.createStatement();
+							String sql;
+							String name;
+							String auteur;
+
+							if (!tfield.getText().equals(null)
+									&& !tfield1.getText().equals(null)) {
+
+								name = tfield.getText();
+								auteur = tfield1.getText();
+								sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,COMPLEXITE,LIEN) "
+										+ "VALUES ('"
+										+ name
+										+ "', '"
+										+ auteur
+										+ "', '"
+										+ Integer.parseInt(complexite)
+										+ "', '" + fichier.getText() + "' );";
+								stmt.executeUpdate(sql);
+								a.setEnabled(false);
+								aff.nouvelOnglet(tfield.getText());
+								a.dispose();
+								AffichageDuModele.modifierInfos
+										.setEnabled(true);
 
 							}
 
-							Connection c = null;
-							Statement stmt = null;
+						} catch (Exception e1) {
+							System.err.println(e1.getClass().getName() + ": "
+									+ e1.getMessage());
+							System.exit(0);
+
+						} finally {
+							// fermeture de connection
 							try {
-								Class.forName("org.sqlite.JDBC");
-								c = DriverManager
-										.getConnection("jdbc:sqlite:Database.db");
-								c.setAutoCommit(false);
-								stmt = c.createStatement();
-								String sql;
-								String name;
-								String auteur;
-
-								if (!tfield.getText().equals(null)
-										&& !tfield1.getText().equals(null)) {
-
-									name = tfield.getText();
-									auteur = tfield1.getText();
-									sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,COMPLEXITE,LIEN) "
-											+ "VALUES ('"
-											+ name
-											+ "', '"
-											+ auteur
-											+ "', '"
-											+ Integer.parseInt(complexite)
-											+ "', '"
-											+ fichier.getText()
-											+ "' );";
-									stmt.executeUpdate(sql);
-									a.setEnabled(false);
-									confirme.setVisible(false);
-									aff.nouvelOnglet(tfield.getText());
-									a.dispose();
-									AffichageDuModele.modifierInfos
-											.setEnabled(true);
-
-								}
-
-							} catch (Exception e1) {
-								System.err.println(e1.getClass().getName()
-										+ ": " + e1.getMessage());
-								System.exit(0);
-
-							} finally {
-								// fermeture de connection
-								try {
-									stmt.close();
-									c.commit();
-									c.close();
-								} catch (SQLException e1) {
-									e1.printStackTrace();
-								}
-
+								stmt.close();
+								c.commit();
+								c.close();
+							} catch (SQLException e1) {
+								e1.printStackTrace();
 							}
 
-							// si on annule l'ajout
-						} else if (n == JOptionPane.NO_OPTION) {
-							confirme.setVisible(false);
-							JOptionPane.showMessageDialog(a, "Ajout annule",
-									" ", JOptionPane.WARNING_MESSAGE);
-							a.dispose();
 						}
 
 					}
