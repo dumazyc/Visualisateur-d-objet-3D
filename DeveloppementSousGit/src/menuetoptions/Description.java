@@ -2,18 +2,19 @@ package menuetoptions;
 
 import java.sql.*;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /*Classe pour afficher la description de l'objets courant
  * 
  * */
 
-public class Description
+@SuppressWarnings("serial")
+public class Description extends JPanel
 {
 	//objet a decrire et frame pour popup
 	String nomObjet;
-	final JFrame frame = new JFrame("Description");
+	
 
 	//constructeur de la classe
 	public Description(final String nomObjet){
@@ -38,15 +39,14 @@ public class Description
 					String complexite  = rs.getString("complexite");
 
 					//la popup custom title, no icon
-					JOptionPane.showMessageDialog(frame,
-							"NOM : " + name+".\n"
-							+ "AUTEUR : " + auteur +".\n"
-							+ "DATECREATION : " + datecreation +".\n" 
-							+ "COMPLEXITE : " + complexite +".\n" 
-									,"Description de l'objet.",
-									JOptionPane.PLAIN_MESSAGE);
-
+					
+							this.add(new JLabel("NOM : " + name+".\n"
+							+ "   AUTEUR : " + auteur +".\n"
+							+ "   DATECREATION : " + datecreation +".\n" 
+							+ "   COMPLEXITE : " + complexite +".\n" ));
+									
 				}
+				
 				//en cas d'erreur
 				
 			} catch ( Exception e ) {
@@ -57,7 +57,6 @@ public class Description
 					rs.close();
 					stmt.close();
 					c.close();
-					frame.dispose();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
