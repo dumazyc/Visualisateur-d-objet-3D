@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -36,6 +37,40 @@ public class ModificationAjout {
 	// constructeur
 	public ModificationAjout(final String nomObjet) {
 		this.nomObjet = nomObjet;
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		String name = "null";
+		String auteur = "null";
+		try {
+			Class.forName("org.sqlite.JDBC");
+			con = DriverManager.getConnection("jdbc:sqlite:Database.db");
+			con.setAutoCommit(false);
+
+			stmt = con.createStatement();
+			// ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D;" );
+			rs = stmt
+					.executeQuery("SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE NAME = '"
+							+ nomObjet + "' ORDER BY ID_M ;");
+			while (rs.next()) {
+				name = rs.getString("name");
+				auteur = rs.getString("auteur");
+			}
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		} finally {
+			try {
+				rs.close();
+				stmt.close();
+				con.close();
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+		}
+
 		Dimension d = new Dimension(100, 27);
 		Container c = frame.getContentPane();
 		c.setLayout(new GridLayout(8, 1, 7, 7));
@@ -47,6 +82,7 @@ public class ModificationAjout {
 		final JPanel contentPane = new JPanel();
 
 		final JTextField tfield = new JTextField(15);
+		tfield.setText(name);
 		tfield.setEnabled(false);
 
 		final JCheckBox cbox = new JCheckBox("Nom de l'objet: ", false);
@@ -66,7 +102,7 @@ public class ModificationAjout {
 		final JPanel contentPane1 = new JPanel();
 
 		final JTextField tfield1 = new JTextField(15);
-
+		tfield1.setText(auteur);
 		tfield1.setEnabled(false);
 
 		final JCheckBox cbox1 = new JCheckBox("Auteur:    ", false);
@@ -142,8 +178,12 @@ public class ModificationAjout {
 						stmt.executeUpdate(sql);
 
 						c.commit();
-						
-						if (cbox.isSelected() && !tfield.getText().equals(null)) { // changer le nom physiquement parlan
+
+						if (cbox.isSelected() && !tfield.getText().equals(null)) { // changer
+																					// le
+																					// nom
+																					// physiquement
+																					// parlan
 							String ligne;
 							int cpt = 0;
 							FileReader flux;
@@ -162,14 +202,14 @@ public class ModificationAjout {
 								}
 							} catch (Exception exception) {
 								System.err.println(exception.toString());
-							}finally{
+							} finally {
 								try {
 									entree.close();
 									sortie.close();
 								} catch (Exception e1) {
 									e1.printStackTrace();
 								}
-								
+
 							}
 							File MyFile = new File("./ressources/modeles/"
 									+ nomObjet + ".gts");

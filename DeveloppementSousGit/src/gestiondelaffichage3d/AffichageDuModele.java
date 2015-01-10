@@ -346,6 +346,12 @@ public class AffichageDuModele extends JFrame {
 
 	}
 
+	/**
+	 * Permet de mettre à jour la liste d'objets de la classe recherche
+	 */
+	public void mettreAJourRecherche(){
+		r.mettreAJourListeObjet();
+	}
 	public static void main(String[] args) {
 		new AffichageDuModele();
 	}

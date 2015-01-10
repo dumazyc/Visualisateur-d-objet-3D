@@ -290,9 +290,9 @@ public class Ajout extends JFrame {
 							System.err.println(e1.getClass().getName() + ": "
 									+ e1.getMessage());
 							System.exit(0);
+							// fermeture de connection
 
 						} finally {
-							// fermeture de connection
 							try {
 								stmt.close();
 								c.commit();
@@ -302,7 +302,7 @@ public class Ajout extends JFrame {
 							}
 
 						}
-
+aff.mettreAJourRecherche();
 					}
 				}
 			}

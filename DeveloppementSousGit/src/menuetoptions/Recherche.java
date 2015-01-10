@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.*;
 import java.sql.*;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -18,6 +19,7 @@ public class Recherche extends JPanel {
 	AffichageDuModele frame;
 	DefaultListModel listModel_gts;
 	JList liste_gts;
+	private JTextField tfield;
 
 	public Recherche(final AffichageDuModele a) {
 		this.frame = a;
@@ -27,7 +29,7 @@ public class Recherche extends JPanel {
 		// premier contentPane recherche.
 		JPanel contentPane1 = new JPanel();
 		JLabel recherche = new JLabel("Recherche : ");
-		final JTextField tfield = new JTextField("Mots Cles", 8);
+		tfield = new JTextField("Mots Cles", 8);
 		contentPane1.add(recherche);
 		contentPane1.add(tfield);
 		contentPane1.setBorder(BorderFactory.createMatteBorder(2, 2, 0, 2,
@@ -98,7 +100,7 @@ public class Recherche extends JPanel {
 		contentPane4.add(modifier);
 		contentPane4.add(ajouter);
 		this.add(contentPane4);
-		remplirLaListeObjets();
+		mettreAJourListeObjet();
 		this.setVisible(true);
 
 		// Permet le traitement automatique des la saisie d'un nouveau
@@ -106,58 +108,15 @@ public class Recherche extends JPanel {
 		// dans le textfield.
 		tfield.getDocument().addDocumentListener(new DocumentListener() {
 			public void changedUpdate(DocumentEvent e) {
-				warn();
+				mettreAJourListeObjet();
 			}
 
 			public void removeUpdate(DocumentEvent e) {
-				warn();
+				mettreAJourListeObjet();
 			}
 
 			public void insertUpdate(DocumentEvent e) {
-				warn();
-			}
-
-			public void warn() {
-
-				listModel_gts.removeAllElements();
-				liste_gts.clearSelection();
-				liste_gts.removeAll();
-
-				if (!tfield.getText().equals("")) {
-					Connection c = null;
-					Statement stmt = null;
-					try {
-						Class.forName("org.sqlite.JDBC");
-						c = DriverManager
-								.getConnection("jdbc:sqlite:Database.db");
-						c.setAutoCommit(false);
-						stmt = c.createStatement();
-						String requete = "SELECT DISTINCT OBJETS3D.NAME FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE MOTCLE LIKE '"
-								+ tfield.getText()
-								+ "%' OR NAME LIKE '"
-								+ tfield.getText()
-								+ "%' OR AUTEUR LIKE '"
-								+ tfield.getText()
-								+ "%' OR ID LIKE '"
-								+ tfield.getText()
-								+ "%' OR DATECREATION LIKE '"
-								+ tfield.getText() + "%';";
-						ResultSet rs = stmt.executeQuery(requete);
-						while (rs.next()) {
-							listModel_gts.addElement((rs.getString("NAME")));
-
-						}
-						liste_gts.setEnabled(true);
-
-					} catch (Exception e1) {
-						System.err.println(e1.getClass().getName() + ": "
-								+ e1.getMessage());
-						System.exit(0);
-					}
-				} else {
-					remplirLaListeObjets();
-				}
-
+				mettreAJourListeObjet();
 			}
 		});
 
@@ -196,6 +155,15 @@ public class Recherche extends JPanel {
 					System.err.println(e1.getClass().getName() + ": "
 							+ e1.getMessage());
 					System.exit(0);
+				} finally {
+					try {
+						stmt.close();
+						c.commit();
+						c.close();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+
 				}
 
 			}
@@ -256,196 +224,82 @@ public class Recherche extends JPanel {
 	}
 
 	/**
-	 * Permet de remplir la Jlist d'objet de tous les objets dela base
+	 * Permet de mettre a jour la Jlist d'objet de tous les objets de la base
 	 */
-	private void remplirLaListeObjets() {
+	public void mettreAJourListeObjet() {
 		Connection c = null;
 		Statement stmt = null;
-		try {
-			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:Database.db");
-			c.setAutoCommit(false);
-			stmt = c.createStatement();
-			String requete = "SELECT DISTINCT NAME FROM OBJETS3D;";
-			ResultSet rs = stmt.executeQuery(requete);
-			while (rs.next()) {
-				listModel_gts.addElement((rs.getString("NAME")));
+		listModel_gts.removeAllElements();
+		liste_gts.clearSelection();
+		liste_gts.removeAll();
+
+		if (tfield!=null && !tfield.getText().equals("")
+				&& !tfield.getText().equals("Mots Cles")) {
+			try {
+				Class.forName("org.sqlite.JDBC");
+				c = DriverManager.getConnection("jdbc:sqlite:Database.db");
+				c.setAutoCommit(false);
+				stmt = c.createStatement();
+				String requete = "SELECT DISTINCT OBJETS3D.NAME FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE MOTCLE LIKE '"
+						+ tfield.getText()
+						+ "%' OR NAME LIKE '"
+						+ tfield.getText()
+						+ "%' OR AUTEUR LIKE '"
+						+ tfield.getText()
+						+ "%' OR ID LIKE '"
+						+ tfield.getText()
+						+ "%' OR DATECREATION LIKE '"
+						+ tfield.getText() + "%';";
+				ResultSet rs = stmt.executeQuery(requete);
+				while (rs.next()) {
+					listModel_gts.addElement((rs.getString("NAME")));
+
+				}
+				liste_gts.setEnabled(true);
+
+			} catch (Exception e1) {
+				System.err.println(e1.getClass().getName() + ": "
+						+ e1.getMessage());
+				System.exit(0);
+			} finally {
+				try {
+					stmt.close();
+					c.commit();
+					c.close();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
 
 			}
-			liste_gts.setEnabled(true);
+		} else {
+			try {
+				Class.forName("org.sqlite.JDBC");
+				c = DriverManager.getConnection("jdbc:sqlite:Database.db");
+				c.setAutoCommit(false);
+				stmt = c.createStatement();
+				String requete = "SELECT DISTINCT NAME FROM OBJETS3D;";
+				ResultSet rs = stmt.executeQuery(requete);
+				while (rs.next()) {
+					listModel_gts.addElement((rs.getString("NAME")));
 
-		} catch (Exception e1) {
-			System.err
-					.println(e1.getClass().getName() + ": " + e1.getMessage());
-			System.exit(0);
+				}
+				liste_gts.setEnabled(true);
+
+			} catch (Exception e1) {
+				System.err.println(e1.getClass().getName() + ": "
+						+ e1.getMessage());
+				System.exit(0);
+			} finally {
+				try {
+					stmt.close();
+					c.commit();
+					c.close();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+
+			}
 		}
+
 	}
 }
-
-// String ac = perso.getSelectedItem().toString()
-
-/*
- * bu.addActionListener(new ActionListener() { public void
- * actionPerformed(ActionEvent e) { if ((cbox1.isSelected() &&
- * tfield1.getText().isEmpty()) || tfield.getText().isEmpty()) {
- * JOptionPane.showMessageDialog(frame, "Un champ coche ne peut etre vide.",
- * "Attention", JOptionPane.WARNING_MESSAGE); } else { Connection c = null;
- * Statement stmt = null; try { Class.forName("org.sqlfalseite.JDBC"); c =
- * DriverManager .getConnection("jdbc:sqlite:Database.db");
- * c.setAutoCommit(false);
- * 
- * stmt = c.createStatement(); ResultSet rs = stmt
- * .executeQuery("SELECT * FROM OBJETS3D;"); String name = rs.getString("name");
- * String auteur = rs.getString("auteur");
- * 
- * while (!name.equals(tfield.getText()) && rs.next()) { name =
- * rs.getString("name"); } while (!auteur.equals(tfield1.getText()) &&
- * rs.next()) { auteur = rs.getString("auteur"); } if (
- * name.equals(tfield.getText())) { //
- * JOptionPane.showMessageDialog(frame,"L'objet existe."
- * ,"Attention",JOptionPane.WARNING_MESSAGE); a.nouvelOnglet(name);
- * //frame.dispose(); } else { JOptionPane.showMessageDialog(frame,
- * "L'auteur n'existe pas.", "Attention", JOptionPane.WARNING_MESSAGE);
- * 
- * } if (cbox1.isSelected() && auteur.equals(tfield1.getText())) {
- * JOptionPane.showMessageDialog(frame, "Clement est l'auteur des objets ...",
- * "Attention", JOptionPane.WARNING_MESSAGE); } else if (cbox1.isSelected()) {
- * JOptionPane.showMessageDialog(frame, "L'auteur n'existe pas.", "Attention",
- * JOptionPane.WARNING_MESSAGE); } rs.close(); stmt.close(); c.close(); } catch
- * (Exception e1) { System.err.println(e1.getClass().getName() + ": " +
- * e1.getMessage()); System.exit(0); } } }
- * 
- * });
- * 
- * bu.setPreferredSize(d); pa1.add(bu); this.add(pa1);
- * 
- * JPanel pa2 = new JPanel(); JButton e = new JButton("Annuler ");
- * e.setPreferredSize(d); pa2.add(e); this.add(pa2);
- */
-/*
- * e.addActionListener(new ActionListener() { public void
- * actionPerformed(ActionEvent arg0) { frame.dispose();
- * 
- * } });
- */
-
-// ancien panel
-/*
- * package menuetoptions;
- * 
- * import gestiondelaffichage3d.AffichageDuModele;
- * 
- * import java.awt.Dimension; import java.awt.GridLayout; import
- * java.awt.event.*; import java.sql.*; import java.util.ArrayList; import
- * java.util.List;
- * 
- * import javax.swing.*;
- * 
- * @SuppressWarnings("serial") public class Recherche extends JPanel {
- * AffichageDuModele frame; List<String> listeRecherche = new
- * ArrayList<String>();
- * 
- * public Recherche(final AffichageDuModele a) { this.frame = a; Dimension d =
- * new Dimension(100, 27); this.setLayout(new GridLayout(5, 1));
- * 
- * final JPanel contentPane = new JPanel();
- * 
- * final JTextField tfield = new JTextField(15); tfield.setEnabled(false);
- * 
- * final JCheckBox cbox = new JCheckBox("Nom de l'objet: ", false);
- * 
- * ItemListener itemListener = new ItemListener() { public void
- * itemStateChanged(ItemEvent ie) { tfield.setEnabled(ie.getStateChange() ==
- * ItemEvent.SELECTED); } }; cbox.addItemListener(itemListener);
- * 
- * contentPane.add(cbox); contentPane.add(tfield);
- * 
- * this.add(contentPane);
- * 
- * final JPanel contentPane1 = new JPanel();
- * 
- * final JTextField tfield1 = new JTextField(15);
- * 
- * tfield1.setEnabled(false);
- * 
- * final JCheckBox cbox1 = new JCheckBox("Auteur:    ", false);
- * 
- * ItemListener itemListener1 = new ItemListener() { public void
- * itemStateChanged(ItemEvent ie) { tfield1.setEnabled(ie.getStateChange() ==
- * ItemEvent.SELECTED);
- * 
- * } }; cbox1.addItemListener(itemListener1);
- * 
- * contentPane1.add(cbox1); contentPane1.add(tfield1); this.add(contentPane1);
- * 
- * final JPanel contentPane2 = new JPanel();
- * 
- * final JComboBox<String> perso = new JComboBox<String>();
- * perso.setEnabled(false); perso.setBounds(100, 120, 100, 25);
- * 
- * perso.addItem("1"); perso.addItem("3"); perso.addItem("3");
- * perso.addItem("4"); perso.addItem("5"); perso.addItem("6");
- * 
- * // String ac = perso.getSelectedItem().toString()
- * 
- * final JCheckBox cbox2 = new JCheckBox("Nombre de trinangles:    ", false);
- * 
- * ItemListener itemListener2 = new ItemListener() { public void
- * itemStateChanged(ItemEvent ie) { perso.setEnabled(ie.getStateChange() ==
- * ItemEvent.SELECTED); } }; cbox2.addItemListener(itemListener2);
- * 
- * contentPane2.add(cbox2); contentPane2.add(perso);
- * contentPane.setPreferredSize(d); contentPane1.setPreferredSize(d);
- * contentPane1.setPreferredSize(d); this.add(contentPane2); JPanel pa1 = new
- * JPanel(); JButton bu = new JButton("Valider "); bu.addActionListener(new
- * ActionListener() { public void actionPerformed(ActionEvent e) { if
- * ((cbox1.isSelected() && tfield1.getText().isEmpty()) || (cbox.isSelected() &&
- * tfield.getText().isEmpty())) { JOptionPane.showMessageDialog(frame,
- * "Un champ coche ne peut etre vide.", "Attention",
- * JOptionPane.WARNING_MESSAGE); } else { Connection c = null; Statement stmt =
- * null; try { Class.forName("org.sqlite.JDBC"); c = DriverManager
- * .getConnection("jdbc:sqlite:Database.db"); c.setAutoCommit(false);
- * 
- * stmt = c.createStatement(); ResultSet rs =
- * stmt.executeQuery("SELECT * FROM OBJETS3D;"); String name =
- * rs.getString("name"); String auteur = rs.getString("auteur");
- * 
- * while (rs.next()) { name = rs.getString("name"); if
- * (name.equals(tfield.getText())) { listeRecherche.add(name);
- * System.out.println(listeRecherche); } }
- * 
- * while (rs.next()) { auteur = rs.getString("auteur"); }
- * 
- * if (cbox.isSelected() && !listeRecherche.isEmpty()) { //
- * JOptionPane.showMessageDialog
- * (frame,"L'objet existe.","Attention",JOptionPane.WARNING_MESSAGE);
- * ListAfterSearch l = new ListAfterSearch(listeRecherche);
- * //a.nouvelOnglet(name); // frame.dispose(); } else if (cbox.isSelected()) {
- * // le cas auteur et le cas complexite devrait etre // gere
- * JOptionPane.showMessageDialog(frame, "L'objet n'existe pas.", "Attention",
- * JOptionPane.WARNING_MESSAGE);
- * 
- * } if (cbox1.isSelected() && auteur.equals(tfield1.getText())) {
- * JOptionPane.showMessageDialog(frame, "Clement est l'auteur des objets ...",
- * "Attention", JOptionPane.WARNING_MESSAGE); } else if (cbox1.isSelected()) {
- * JOptionPane.showMessageDialog(frame, "L'auteur n'existe pas.", "Attention",
- * JOptionPane.WARNING_MESSAGE); } rs.close(); stmt.close(); c.close(); } catch
- * (Exception e1) { System.err.println(e1.getClass().getName() + ": " +
- * e1.getMessage()); System.exit(0); } } }
- * 
- * });
- * 
- * bu.setPreferredSize(d); pa1.add(bu); this.add(pa1);
- * 
- * JPanel pa2 = new JPanel(); JButton e = new JButton("Annuler ");
- * e.setPreferredSize(d); pa2.add(e); this.add(pa2);
- * 
- * /*e.addActionListener(new ActionListener() { public void
- * actionPerformed(ActionEvent arg0) { frame.dispose();
- * 
- * } });
- * 
- * this.setSize(640, 480); this.setVisible(true);
- * 
- * } public void ListeRecherche(List<String>l){ new ListAfterSearch(l); } }
- */
