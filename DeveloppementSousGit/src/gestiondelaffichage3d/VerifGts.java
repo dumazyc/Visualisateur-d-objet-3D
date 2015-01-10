@@ -20,10 +20,10 @@ public class VerifGts {
 	private int nbSegments;
 	private int nbFaces;
 
-	public VerifGts(String name) {
+	public VerifGts(String chemin) {
 		Scanner s = null;
 		try {
-			s = new Scanner(new File("./ressources/modeles/" + name + ".gts"));
+			s = new Scanner(new File(chemin));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
