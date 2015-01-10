@@ -2,7 +2,10 @@ package sqlite;
 
 import java.sql.*;
 
-/*Classe pour insérer un objet et/ou un mot clé dans la base */
+/**
+ * Classe pour insérer un objet et/ou un mot clé dans la base
+ *
+ */
 
 public class Insert {
 	public static void main(String args[]) {
@@ -20,9 +23,9 @@ public class Insert {
 			 * "VALUES ('HarryPotter', 'Damien', 0, 'En attente' );";
 			 */
 			String sql2 = "INSERT INTO MOTSCLES (ID_M,MOTCLE) "
-					+ "VALUES (21, 'jeux' );";
+					+ "VALUES (28, 'cuisine' );";
 			String sql3 = "INSERT INTO MOTSCLES (ID_M,MOTCLE) "
-					+ "VALUES (21, 'personnage' );";
+					+ "VALUES (28, 'verre' );";
 			// stmt.executeUpdate(sql);
 			stmt.executeUpdate(sql2);
 			stmt.executeUpdate(sql3);

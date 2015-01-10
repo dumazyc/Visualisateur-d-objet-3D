@@ -34,7 +34,7 @@ import menuetoptions.Recherche;
 import java.awt.Toolkit;
 
 /**
- * Fenetre principale du programme
+ * FenÃªtre principale du programme
  * 
  */
 @SuppressWarnings("serial")
@@ -347,7 +347,7 @@ public class AffichageDuModele extends JFrame {
 	}
 
 	/**
-	 * Permet de mettre à jour la liste d'objets de la classe recherche
+	 * Permet de mettre ï¿½ jour la liste d'objets de la classe recherche
 	 */
 	public void mettreAJourRecherche() {
 		r.mettreAJourListeObjet();

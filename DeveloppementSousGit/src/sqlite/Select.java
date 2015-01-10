@@ -2,7 +2,10 @@ package sqlite;
 
 import java.sql.*;
 
-/*Classe pour afficher les objets de la base*/
+/**
+ * Classe pour afficher les objets de la base
+ *
+ */
 
 public class Select {
 	public static void main(String args[]) {
@@ -16,8 +19,7 @@ public class Select {
 
 			stmt = c.createStatement();
 			// ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D;" );
-			rs = stmt
-					.executeQuery("SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M ORDER BY ID_M;");
+			rs = stmt.executeQuery("SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M ORDER BY ID_M;");
 			while (rs.next()) {
 				int id = rs.getInt("id");
 				String name = rs.getString("name");

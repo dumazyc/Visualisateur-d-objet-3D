@@ -2,7 +2,11 @@ package sqlite;
 
 import java.sql.*;
 
-/*Classe pour mettre à jour une table*/
+
+/**
+ * Classe pour mettre à jour une table
+ *
+ */
 
 public class Update {
 	public static void main(String args[]) {
@@ -18,7 +22,7 @@ public class Update {
 			// String modif = "tie";
 			// String sql =
 			// "UPDATE OBJETS3D set COMPLEXITE = 0 where NAME='"+modif+"';";
-			String sql = "UPDATE OBJETS3D SET name='MarioAndBowser' WHERE id=21;";
+			String sql = "UPDATE OBJETS3D SET complexite=3480 WHERE id=27;";
 
 			stmt.executeUpdate(sql);
 			c.commit();

@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-/*Classe pour creer des tables*/
+/**
+ * Classe pour créer des tables
+ *
+ */
 
 public class SQLite {
 	public static void main(String args[]) {
