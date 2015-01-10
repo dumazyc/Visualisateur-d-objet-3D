@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,7 +20,6 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
-
 import menuetoptions.Ajout;
 import menuetoptions.Description;
 import menuetoptions.Enregistrer;
@@ -40,7 +38,7 @@ public class AffichageDuModele extends JFrame {
 	private JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
 	private JMenuBar jmenubar;
-	private JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+	public JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 	public static JMenuItem modifierInfos = new JMenuItem("Modifier les infos");
 
 	private boolean recherche = false;
@@ -93,7 +91,7 @@ public class AffichageDuModele extends JFrame {
 		fermer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4,
 				KeyEvent.ALT_DOWN_MASK));
 		aide.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
-
+		
 		j1.add(ajout);
 		j1.add(recherche);
 		j1.add(enregistre);
@@ -113,6 +111,7 @@ public class AffichageDuModele extends JFrame {
 		this.setJMenuBar(jmenubar);
 
 		this.add(tabbedPane, BorderLayout.CENTER);
+		
 
 		sp.add(tabbedPane, JSplitPane.RIGHT);
 		sp.setVisible(true);
@@ -220,16 +219,16 @@ public class AffichageDuModele extends JFrame {
 						.getSelectedIndex()));
 			}
 		});
+		nouvelOnglet("space_station");
 
 		// Gestion des couleurs
-		nouvelOnglet("space_station");
 		
 		color.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				new OptionCouleur((PanelAffichage) tabbedPane.getComponentAt(tabbedPane
-								.getSelectedIndex()));
+						.getSelectedIndex()));
 			}
 		});
 
@@ -243,7 +242,7 @@ public class AffichageDuModele extends JFrame {
 	 * @param name
 	 *            nom de l'objet .gts a afficher (sans l'extension)
 	 */
-	public void nouvelOnglet(String name) {
+	public void nouvelOnglet(final String name) {
 		final PanelAffichage p = new PanelAffichage(this, name, musiqueActive);
 		JPanel tab = new JPanel();
 		tab.setOpaque(false);
@@ -258,13 +257,15 @@ public class AffichageDuModele extends JFrame {
 				tabbedPane.removeTabAt(closeTabNumber);
 			}
 		});
+		
 
 		tab.add(tabLabel, BorderLayout.WEST);
-		tab.add(tabCloseButton, BorderLayout.EAST);
-
+		tab.add(tabCloseButton, BorderLayout.EAST);	
 		tabbedPane.addTab(name, p);
 		tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, tab);
-		tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
+		tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);	
+		add(new Description(tabbedPane.getTitleAt(tabbedPane
+						.getSelectedIndex())),BorderLayout.SOUTH);
 	}
 
 	/**
