@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -94,7 +95,7 @@ public class AffichageDuModele extends JFrame {
 		fermer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4,
 				KeyEvent.ALT_DOWN_MASK));
 		aide.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
-		
+
 		j1.add(ajout);
 		j1.add(recherche);
 		j1.add(enregistre);
@@ -113,14 +114,13 @@ public class AffichageDuModele extends JFrame {
 		this.setJMenuBar(jmenubar);
 
 		this.add(tabbedPane, BorderLayout.CENTER);
-		
 
 		sp.add(tabbedPane, JSplitPane.RIGHT);
 		sp.setVisible(true);
 		this.add(sp);
 
 		// ouvre l'ajout d'objet
-		ajout.addActionListener(new ActionListenerMaison(this));
+		ajout.addActionListener(new ActionListenerAjout(this));
 
 		// ferme l'application
 		fermer.addActionListener(new ActionListener() {
@@ -194,7 +194,7 @@ public class AffichageDuModele extends JFrame {
 					PanelAffichage p = (PanelAffichage) tabbedPane
 							.getComponentAt(i);
 					p.desactiverMusique();
-					
+
 				}
 				if (musiqueActive) {
 					musiqueActive = false;
@@ -205,43 +205,29 @@ public class AffichageDuModele extends JFrame {
 		});
 
 		// pour modifier les informations associees a l'objet courant
-		modifierInfos.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				new ModificationAjout(tabbedPane.getTitleAt(tabbedPane
-						.getSelectedIndex()));
-			}
-		});
+		modifierInfos.addActionListener(new ActionListenerModification(this));
 		nouvelOnglet("space_station");
 
 		// Gestion des couleurs
-		
+
 		color.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				new OptionCouleur((PanelAffichage) tabbedPane.getComponentAt(tabbedPane
-						.getSelectedIndex()));
+				new OptionCouleur((PanelAffichage) tabbedPane
+						.getComponentAt(tabbedPane.getSelectedIndex()));
 			}
 		});
 		description = new Description(tabbedPane.getTitleAt(tabbedPane
 				.getSelectedIndex()));
-		add(description,BorderLayout.SOUTH); 
+		add(description, BorderLayout.SOUTH);
 		tabbedPane.addChangeListener(new ChangeListener() {
-			
+
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				if (description!=null) {
-					remove(description);
-				}	
-				description = new Description(tabbedPane.getTitleAt(tabbedPane
+				mettreAJourDescription(tabbedPane.getTitleAt(tabbedPane
 						.getSelectedIndex()));
-				add(description,BorderLayout.SOUTH);
-				invalidate();
-				validate();
-				repaint();
-				
+
 			}
 		});
 		this.setVisible(true);
@@ -269,21 +255,13 @@ public class AffichageDuModele extends JFrame {
 				tabbedPane.removeTabAt(closeTabNumber);
 			}
 		});
-		
 
 		tab.add(tabLabel, BorderLayout.WEST);
-		tab.add(tabCloseButton, BorderLayout.EAST);	
+		tab.add(tabCloseButton, BorderLayout.EAST);
 		tabbedPane.addTab(name, p);
 		tabbedPane.setTabComponentAt(tabbedPane.getTabCount() - 1, tab);
 		tabbedPane.setSelectedIndex(tabbedPane.getTabCount() - 1);
-		if (description!=null) {
-			this.remove(description);
-		}	
-		description = new Description(name);
-		add(description,BorderLayout.SOUTH);
-		this.invalidate();
-		this.validate();
-		this.repaint();
+		mettreAJourDescription(name);
 	}
 
 	/**
@@ -309,7 +287,6 @@ public class AffichageDuModele extends JFrame {
 		}
 	}
 
-
 	/**
 	 * Permet de connaitre la hauteur de de l'onglet courant.
 	 * 
@@ -332,11 +309,11 @@ public class AffichageDuModele extends JFrame {
 	 * Listener qui permet de faire appel a la fenetre d'ajout
 	 * 
 	 */
-	public class ActionListenerMaison implements ActionListener {
+	public class ActionListenerAjout implements ActionListener {
 
 		private AffichageDuModele a;
 
-		public ActionListenerMaison(AffichageDuModele a) {
+		public ActionListenerAjout(AffichageDuModele a) {
 			this.a = a;
 		}
 
@@ -347,11 +324,44 @@ public class AffichageDuModele extends JFrame {
 	}
 
 	/**
+	 * Listener qui permet de faire appel a la fenetre de modification
+	 * 
+	 */
+	public class ActionListenerModification implements ActionListener {
+
+		private AffichageDuModele a;
+		
+
+		public ActionListenerModification(AffichageDuModele a) {
+			this.a = a;
+			
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			new ModificationAjout(tabbedPane.getTitleAt(tabbedPane
+					.getSelectedIndex()), a);
+		}
+
+	}
+
+	/**
 	 * Permet de mettre à jour la liste d'objets de la classe recherche
 	 */
-	public void mettreAJourRecherche(){
+	public void mettreAJourRecherche() {
 		r.mettreAJourListeObjet();
 	}
+
+	public void mettreAJourDescription(String name) {
+		if (description != null) {
+			this.remove(description);
+		}
+		description = new Description(name);
+		add(description, BorderLayout.SOUTH);
+		this.invalidate();
+		this.validate();
+		this.repaint();
+	}
+
 	public static void main(String[] args) {
 		new AffichageDuModele();
 	}

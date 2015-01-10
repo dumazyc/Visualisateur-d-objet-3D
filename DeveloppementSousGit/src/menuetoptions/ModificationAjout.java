@@ -1,5 +1,7 @@
 package menuetoptions;
 
+import gestiondelaffichage3d.AffichageDuModele;
+
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -29,13 +31,14 @@ import javax.swing.JTextField;
 //Classe pour modifier les informations relatives a un objet ajoute
 
 public class ModificationAjout {
-
+	AffichageDuModele a;
 	// objet a modifier et fenetre
 	String nomObjet;
 	final JFrame frame = new JFrame();
 
 	// constructeur
-	public ModificationAjout(final String nomObjet) {
+	public ModificationAjout(final String nomObjet, final AffichageDuModele a) {
+		this.a = a;
 		this.nomObjet = nomObjet;
 		Connection con = null;
 		Statement stmt = null;
@@ -216,7 +219,8 @@ public class ModificationAjout {
 							MyFile.delete();
 
 						}
-
+						a.mettreAJourRecherche();
+						a.mettreAJourDescription(name);
 						// pour confirmer
 						// custom title, no icon
 						JOptionPane.showMessageDialog(frame,
@@ -240,6 +244,7 @@ public class ModificationAjout {
 						}
 
 					}
+
 				}
 			}
 
