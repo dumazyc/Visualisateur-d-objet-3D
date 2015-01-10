@@ -221,6 +221,7 @@ public class ModificationAjout {
 						}
 						a.mettreAJourRecherche();
 						a.mettreAJourDescription(name);
+						a.changerNomOngletCourant(name);
 						// pour confirmer
 						// custom title, no icon
 						JOptionPane.showMessageDialog(frame,

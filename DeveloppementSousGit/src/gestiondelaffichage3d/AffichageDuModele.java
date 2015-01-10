@@ -361,7 +361,10 @@ public class AffichageDuModele extends JFrame {
 		this.validate();
 		this.repaint();
 	}
-
+	public void changerNomOngletCourant(String name){
+		tabbedPane.removeTabAt(tabbedPane.getSelectedIndex());
+		nouvelOnglet(name);
+	}
 	public static void main(String[] args) {
 		new AffichageDuModele();
 	}
