@@ -194,13 +194,13 @@ public class AffichageDuModele extends JFrame {
 					PanelAffichage p = (PanelAffichage) tabbedPane
 							.getComponentAt(i);
 					p.desactiverMusique();
-					if (musiqueActive) {
-						musiqueActive = false;
-					} else {
-						musiqueActive = true;
-					}
+					
 				}
-
+				if (musiqueActive) {
+					musiqueActive = false;
+				} else {
+					musiqueActive = true;
+				}
 			}
 		});
 
