@@ -1,12 +1,21 @@
-package modeleVueControleur;
+package menuetoptions;
+
+import gestiondelaffichage3d.AffichageDuModele;
+import gestiondelaffichage3d.VerifGts;
 
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.*;
+import java.io.BufferedReader;
 import java.io.File;
-import java.util.Observable;
-import java.util.Observer;
+import java.io.FileReader;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -17,7 +26,7 @@ import javax.swing.filechooser.FileFilter;
  * les differentes informations associees
  *
  */
-public class Ajout extends JFrame implements Observer{
+public class Ajout extends JFrame {
 	private static final long serialVersionUID = 1L;
 	AffichageDuModele aff;
 	final JTextField fichier;
@@ -26,9 +35,6 @@ public class Ajout extends JFrame implements Observer{
 	final JTextField tfield;
 	final JTextField tfield1;
 	final JFileChooser fc;
-	private Controleur controler;
-	protected ModelInsertion model;
-	protected boolean sourceOfchange;
 
 
 	/**
@@ -37,14 +43,11 @@ public class Ajout extends JFrame implements Observer{
 	 * Une instance de la fentre principale pour visualiser le fichier apres Ajout
 	 */
 
-	public Ajout(AffichageDuModele a,ModelInsertion model) {
-		this.model=model;
-		
-		model.addObserver(this);
+	public Ajout(AffichageDuModele a) {
 
 		// pour communiquer avec la fenetre principale
 		this.aff = a;
-this.controler = new Controleur(a,model);
+
 		//dimension utilisee le plus souvent
 		Dimension d = new Dimension(100, 27);
 
@@ -199,7 +202,6 @@ this.controler = new Controleur(a,model);
 
 		public void actionPerformed(ActionEvent e) {
 
-//Pour les utilisateurs malins
 			if (tfield.getText().isEmpty() || tfield1.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(a,
 						"Tous les champs sont obligatoire", "Attention",
@@ -207,6 +209,7 @@ this.controler = new Controleur(a,model);
 
 			}
 
+			// sinon insertion dans la base
 
 			else {
 				if (fichier.getText().equals("Veuiller choisir un fichier")) {
@@ -214,23 +217,136 @@ this.controler = new Controleur(a,model);
 							"Veuillez choisir un fichier", "Attention",
 							JOptionPane.WARNING_MESSAGE);
 				} else {
-					// on appelle le controleur
-					controler.envoieGts(a,fc.getSelectedFile(),tfield.getText() , tfield1.getText(), fichier.getText());
-					//si le conroleur ne dectetecte pas de doublons dans la base 
-					if(!controler.alerteDoublon)
-					a.dispose();
+					// si verification gts valide sinon popup d'erreur
+
+					VerifGts v = new VerifGts(fichier.getText());
+					if (!v.GtsEstCorrect()) {
+						JOptionPane.showMessageDialog(a, "Fichier Non valide",
+								"Attention", JOptionPane.WARNING_MESSAGE);
+
+					} else {
+						//sinon on lit dans le fichier
+
+						String ligne;
+						int cpt = 0;
+						FileReader flux;
+						BufferedReader entree = null;
+						PrintWriter sortie = null;
+						ArrayList<String> liste = new ArrayList<String>();
+						try {
+
+							flux = new FileReader(fc.getSelectedFile());
+							System.out.println(fc.getSelectedFile());
+							entree = new BufferedReader(flux);
+							sortie = new PrintWriter("./ressources/modeles/"
+									+ tfield.getText() + ".gts");
+
+							while ((ligne = entree.readLine()) != null) {
+
+								liste.add(ligne);
+								sortie.println(liste.get(cpt++));
+
+							}
+						} catch (Exception e1) {
+							System.err.println(e1.toString());
+						} finally {
+							try {
+								entree.close();
+								sortie.close();
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+
+						}
+
+						String complexite = "";
+						FileReader flux1;
+						BufferedReader entree1 = null;
+						try {
+							//On recupere la complexite
+							flux1 = new FileReader("./ressources/modeles/"
+									+ tfield.getText() + ".gts");
+							entree1 = new BufferedReader(flux1);
+							String tmp = entree1.readLine();
+							int space = 0;
+
+							for (int i = 0; i < tmp.length(); ++i) {
+								if (space == 2) {
+									complexite += tmp.charAt(i);
+								} else {
+									if (Character.isWhitespace(tmp.charAt(i)))
+										space++;
+								}
+
+							}
+
+							entree1.close();
+
+						} catch (Exception e1) {
+							System.err.println(e.toString());
+						} finally {
+							try {
+								entree1.close();
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+
+						}
+
+						Connection c = null;
+						Statement stmt = null;
+						try {
+							//insertion des informations dans la base
+							Class.forName("org.sqlite.JDBC");
+							c = DriverManager
+									.getConnection("jdbc:sqlite:Database.db");
+							c.setAutoCommit(false);
+							stmt = c.createStatement();
+							String sql;
+							String name;
+							String auteur;
+							//Pour gerer les oublis des utilisateurs
+							if (!tfield.getText().equals(null)
+									&& !tfield1.getText().equals(null)) {
+
+								name = tfield.getText();
+								auteur = tfield1.getText();
+								sql = "INSERT INTO OBJETS3D (NAME,AUTEUR,COMPLEXITE,LIEN) "
+										+ "VALUES ('"
+										+ name
+										+ "', '"
+										+ auteur
+										+ "', '"
+										+ Integer.parseInt(complexite)
+										+ "', '" + fichier.getText() + "' );";
+								stmt.executeUpdate(sql);
+								a.setEnabled(false);
+								aff.nouvelOnglet(tfield.getText());
+								a.dispose();
+							}
+							//en cas d'erreur
+						} catch (Exception e1) {
+							System.err.println(e1.getClass().getName() + ": "
+									+ e1.getMessage());
+							System.exit(0);
+
+						} finally {
+
+							//fermeture de connection
+							try {
+								stmt.close();
+								c.commit();
+								c.close();
+							} catch (SQLException e1) {
+								e1.printStackTrace();
+							}
+
+						}
+
+					}
 				}
 			}
 		}
-
-
 	}
-	//methode heritee de Obsrever
-	@Override
-	public void update(Observable o, Object arg) {
-		System.out.println("ajout");
-		
-	}
-
 
 }

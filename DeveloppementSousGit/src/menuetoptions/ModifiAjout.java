@@ -1,6 +1,6 @@
 package menuetoptions;
 
-
+import gestiondelaffichage3d.AffichageDuModele;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -19,8 +19,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -34,9 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
-import modeleVueControleur.AffichageDuModele;
-
-public class ModifiAjout implements Observer {
+public class ModifiAjout {
 	String nomObjet;
 	final JFrame frame = new JFrame();
 	private int id = 0;
@@ -410,11 +406,6 @@ public class ModifiAjout implements Observer {
 		frame.setResizable(false);
 		frame.setVisible(true);
 
-	}
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
 	}
 
 
