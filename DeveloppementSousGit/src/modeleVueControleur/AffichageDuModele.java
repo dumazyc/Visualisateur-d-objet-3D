@@ -1,4 +1,7 @@
-package gestiondelaffichage3d;
+package modeleVueControleur;
+
+
+import gestiondelaffichage3d.PanelAffichage;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -24,25 +27,20 @@ import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import menuetoptions.Ajout;
 import menuetoptions.Description;
 import menuetoptions.Enregistrer;
-import menuetoptions.ModifiAjout;
 import menuetoptions.OptionCouleur;
-import menuetoptions.Recherche;
 
 import java.awt.Toolkit;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Fenetre principale du programme
  * 
  */
 @SuppressWarnings("serial")
-public class AffichageDuModele extends JFrame {
+public class AffichageDuModele extends JFrame implements Observer{
 	private JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
 	private JMenuBar jmenubar;
@@ -50,18 +48,25 @@ public class AffichageDuModele extends JFrame {
 	public static JMenuItem modifierInfos = new JMenuItem("Modifier les infos");
 
 	private boolean recherche = false;
-	private Recherche r = new Recherche(this);
+	
 	private ImageIcon closeXIcon = new ImageIcon(
 			"./ressources/imageMenu/close.gif");
 	private Dimension closeButtonSize = new Dimension(
 			closeXIcon.getIconWidth() + 2, closeXIcon.getIconHeight() + 2);
 	private boolean musiqueActive = true;
 	Description description;
-
+	protected Controleur controler;
+	private ModelInsertion model;
+	protected boolean sourceOfchange;
+	private Recherche r ;
 	/**
 	 * Constructeur de AffichageDuModele
 	 */
 	public AffichageDuModele() {
+		model=new ModelInsertion();
+		controler = new Controleur(this,model);
+		model.addObserver(this);
+		r = new Recherche(this,this.model);
 		jmenubar = new JMenuBar();
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		int X = 900;
@@ -74,13 +79,12 @@ public class AffichageDuModele extends JFrame {
 		this.setTitle("ballin-octo-computing-machine");
 		JMenu j1 = new JMenu("Fichier");
 		JMenu j2 = new JMenu("Options");
-		JMenu j3 = new JMenu("?");
+		JMenu j3 = new JMenu("Aide");
 		JMenuItem ajout = new JMenuItem("Ajouter un objet");
 		JMenuItem recherche = new JMenuItem("Rechercher un objet");
 		JMenuItem enregistre = new JMenuItem("Enregistrer sous..");
 		JMenuItem fermer = new JMenuItem("Fermer");
-		JMenuItem aide = new JMenuItem("Aide");
-		JMenuItem aPropos = new JMenuItem("A Propos");
+		JMenuItem aide = new JMenuItem("?");
 		JMenuItem Zoom = new JMenuItem("Zoom par Default");
 		JMenuItem color = new JMenuItem("Modifier les couleurs");
 		JMenu resolution = new JMenu("Resolution");
@@ -97,13 +101,9 @@ public class AffichageDuModele extends JFrame {
 				KeyEvent.CTRL_MASK));
 		recherche.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,
 				KeyEvent.CTRL_MASK));
-		enregistre.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
-				KeyEvent.CTRL_MASK));
 		fermer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4,
 				KeyEvent.ALT_DOWN_MASK));
 		aide.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
-		music.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
-				KeyEvent.CTRL_MASK));
 
 		j1.add(ajout);
 		j1.add(recherche);
@@ -115,7 +115,6 @@ public class AffichageDuModele extends JFrame {
 		j2.add(modifierInfos);
 		j2.add(color);
 		j3.add(aide);
-		j3.add(aPropos);
 		resolution.add(full);
 		resolution.add(full2);
 		jmenubar.add(j1);
@@ -144,35 +143,12 @@ public class AffichageDuModele extends JFrame {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane jop = new JOptionPane();
-				String mess = "Vous pouvez ajouter un objet de format \".gts\" ainsi que rechercher\n";
-				mess += "un objet deja present dans la base de donnee du logiciel.\n";
-				mess += "Vous pouvez affiner votre recherche en rentrant des mots cles\n";
-				mess += "et vous avez la possibilite d'en ajouter ou d'en supprimer.";
-				mess += "\n___________________________________________________\n\n";
-				mess += "Clique Gauche -> Bouge la figure\n";
-				mess += "Clique droit -> Tourne la figure\n";
-				mess += "Molette -> Zoom \n";
-				jop.showMessageDialog(null, mess, "Aide",
-						JOptionPane.INFORMATION_MESSAGE);
-			}
-		});
-		
-		// A Propos
-		aPropos.addActionListener(new ActionListener() {
-			@SuppressWarnings("static-access")
-			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane jop = new JOptionPane();
-				String mess = "Ce logiciel a ete concu pour permettre d'afficher un objet 3D\n";
-				mess += "de facon a pouvoir le voir sous tous ces angles ainsi que\n";
-				mess += "de pouvoir l'agrandir ou le diminuer.\n";
-				mess += "________________________________________________\n\n";
-				mess += "Realise par Clement Dumazy, Karen Migan, Camille Regnier,\n";
-				mess += "Ludovic Lorthios et Damien Lepeltier";
+				String mess = "Clique Gauche -> Bouge la figure \n";
+				mess += "Clique droit -> Tourne la figure";
 				jop.showMessageDialog(null, mess, "A propos",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		
 		// Option enregistrer
 		enregistre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -239,8 +215,8 @@ public class AffichageDuModele extends JFrame {
 
 		// pour modifier les informations associees a l'objet courant
 		modifierInfos.addActionListener(new ActionListenerModification(this));
-		nouvelOnglet(obtenirLeNomDuPremierObjet());
-
+		nouvelOnglet("space_station");
+		
 		// Gestion des couleurs
 
 		color.addActionListener(new ActionListener() {
@@ -258,7 +234,7 @@ public class AffichageDuModele extends JFrame {
 
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				if(tabbedPane.getSelectedIndex()>=0){
+				if(tabbedPane.getSelectedIndex()>0){
 					mettreAJourDescription(tabbedPane.getTitleAt(tabbedPane
 							.getSelectedIndex()));
 				}
@@ -310,7 +286,6 @@ public class AffichageDuModele extends JFrame {
 			this.a = a;
 		}
 
-		@SuppressWarnings("static-access")
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			if (recherche) {
@@ -354,7 +329,7 @@ public class AffichageDuModele extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			new Ajout(a);
+			new Ajout(a,a.model);
 		}
 
 	}
@@ -401,40 +376,14 @@ public class AffichageDuModele extends JFrame {
 		tabbedPane.removeTabAt(tabbedPane.getSelectedIndex());
 		nouvelOnglet(name);
 	}
-	public String obtenirLeNomDuPremierObjet(){
-		Connection con = null;
-		String name = "null";
-		Statement stmt = null;
-		ResultSet rs = null;
-		try {
-			Class.forName("org.sqlite.JDBC");
-			con = DriverManager.getConnection("jdbc:sqlite:Database.db");
-			con.setAutoCommit(false);
-
-			stmt = con.createStatement();
-			// ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D;" );
-			rs = stmt
-					.executeQuery("SELECT * FROM OBJETS3D;");
-			rs.next();
-			name = rs.getString("name");
-			
-		} catch (Exception e) {
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-			System.exit(0);
-		} finally {
-			try {
-				rs.close();
-				stmt.close();
-				con.close();
-
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-
-		}
-		return name;
-	}
 	public static void main(String[] args) {
 		new AffichageDuModele();
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		System.out.println("aff");
+		nouvelOnglet((String) arg1);
+
 	}
 }
