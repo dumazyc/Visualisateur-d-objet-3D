@@ -32,6 +32,10 @@ import menuetoptions.OptionCouleur;
 import menuetoptions.Recherche;
 
 import java.awt.Toolkit;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 /**
  * Fenetre principale du programme
@@ -206,7 +210,7 @@ public class AffichageDuModele extends JFrame {
 
 		// pour modifier les informations associees a l'objet courant
 		modifierInfos.addActionListener(new ActionListenerModification(this));
-		nouvelOnglet("space_station");
+		nouvelOnglet(obtenirLeNomDuPremierObjet());
 
 		// Gestion des couleurs
 
@@ -366,6 +370,39 @@ public class AffichageDuModele extends JFrame {
 	public void changerNomOngletCourant(String name){
 		tabbedPane.removeTabAt(tabbedPane.getSelectedIndex());
 		nouvelOnglet(name);
+	}
+	public String obtenirLeNomDuPremierObjet(){
+		Connection con = null;
+		String name = "null";
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			Class.forName("org.sqlite.JDBC");
+			con = DriverManager.getConnection("jdbc:sqlite:Database.db");
+			con.setAutoCommit(false);
+
+			stmt = con.createStatement();
+			// ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D;" );
+			rs = stmt
+					.executeQuery("SELECT * FROM OBJETS3D;");
+			rs.next();
+			name = rs.getString("name");
+			
+		} catch (Exception e) {
+			System.err.println(e.getClass().getName() + ": " + e.getMessage());
+			System.exit(0);
+		} finally {
+			try {
+				rs.close();
+				stmt.close();
+				con.close();
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+
+		}
+		return name;
 	}
 	public static void main(String[] args) {
 		new AffichageDuModele();
