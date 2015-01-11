@@ -1,0 +1,32 @@
+Liste des fonctionnalités : 
+
+Au cours de ce projet, nous avons pu implémenter les fonctionnalités mathématiques de base suivantes : 
+
+- Importation et affichage d'un fichier GTS
+- Contrôler l'orientation de l'objet à l'écran via un clic sur le bouton droit de la souris
+- Ajuster le zoom avec la molette de la souris
+- Récupération des points et segments dans les fichiers GTS pour l'affichage
+- Vérification de l'intégrité des fichiers GTS
+- Affichage du modèle selon un angle défini en paramètre
+- Implémentation d'une lumière pour avoir un effet de perspective
+- Translation de l'objet dans la fenêtre d'affichage via un clic gauche de la souris
+
+Les fonctionnalités relatives à la base de données : 
+
+- Création d'une base de données contenant le nom des objets, l'auteur, la complexité, la date de création de l'objet.
+- Visualiser l'objet à partir de la recherche
+- Ajout d'une fonction recherche via des mots clés à partir de la base de données
+- Ajout d'une fonction ajout qui permet d'ajouter des objets 3D à la base
+- Affichage des informations de l'objet 3D en bas de la fenêtre
+-Fonctionnalité permettant de modifier les informations d'un objet dans la base de données
+- Fonctionnalité permettant de modifier / supprimer les mots clés pour chaque objet
+
+Les fonctionnalités supplémentaires : 
+
+- Ajout de la lecture d'un fichier son lors de la rotation de l'objet
+- Modification de la couleur du fond d'écran 
+- Modification de la couleur de l'objet
+- Possibilité d'afficher plusieurs objets en parallèle sur différents onglets 
+- Utilisation de raccourcis clavier : CTRL-F (Recherche), CTRL-A (Ajout), ALT + F4 	(quitter le logiciel)
+- Affichage d'une fenêtre d'aide (F1) 
+-Ajout d'une fonctionnalité permettant de modifier la résolution de la fenêtre principale
