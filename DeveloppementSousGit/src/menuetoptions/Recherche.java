@@ -38,8 +38,7 @@ public class Recherche extends JPanel {
 
 		// 2eme contentPane resultat.
 		final JPanel contentPane2 = new JPanel();
-		contentPane2.setPreferredSize((new Dimension(50, 100)));
-		JLabel resultat = new JLabel("Resultat : ");
+		contentPane2.setPreferredSize((new Dimension(60, 130)));
 		// final JList liste_gts = new JList(fichier_gts.toArray());
 		listModel_gts = new DefaultListModel<String>();
 		liste_gts = new JList<String>(listModel_gts);
@@ -47,10 +46,9 @@ public class Recherche extends JPanel {
 		// liste_gts.setEnabled(false);
 		// liste_gts.setPreferredSize(new Dimension(120,150));
 		JScrollPane jsp = new JScrollPane(liste_gts);
-		jsp.setPreferredSize(new Dimension(120, 150));
+		jsp.setPreferredSize(new Dimension(200, 150));
 		contentPane2.setBorder(BorderFactory.createMatteBorder(0, 2, 3, 2,
 				Color.black));
-		contentPane2.add(resultat);
 		contentPane2.add(jsp);
 		this.add(contentPane2);
 

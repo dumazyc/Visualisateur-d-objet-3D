@@ -74,12 +74,13 @@ public class AffichageDuModele extends JFrame {
 		this.setTitle("ballin-octo-computing-machine");
 		JMenu j1 = new JMenu("Fichier");
 		JMenu j2 = new JMenu("Options");
-		JMenu j3 = new JMenu("Aide");
+		JMenu j3 = new JMenu("?");
 		JMenuItem ajout = new JMenuItem("Ajouter un objet");
 		JMenuItem recherche = new JMenuItem("Rechercher un objet");
 		JMenuItem enregistre = new JMenuItem("Enregistrer sous..");
 		JMenuItem fermer = new JMenuItem("Fermer");
-		JMenuItem aide = new JMenuItem("?");
+		JMenuItem aide = new JMenuItem("Aide");
+		JMenuItem aPropos = new JMenuItem("A Propos");
 		JMenuItem Zoom = new JMenuItem("Zoom par Default");
 		JMenuItem color = new JMenuItem("Modifier les couleurs");
 		JMenu resolution = new JMenu("Resolution");
@@ -96,9 +97,13 @@ public class AffichageDuModele extends JFrame {
 				KeyEvent.CTRL_MASK));
 		recherche.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F,
 				KeyEvent.CTRL_MASK));
+		enregistre.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+				KeyEvent.CTRL_MASK));
 		fermer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4,
 				KeyEvent.ALT_DOWN_MASK));
 		aide.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+		music.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M,
+				KeyEvent.CTRL_MASK));
 
 		j1.add(ajout);
 		j1.add(recherche);
@@ -110,6 +115,7 @@ public class AffichageDuModele extends JFrame {
 		j2.add(modifierInfos);
 		j2.add(color);
 		j3.add(aide);
+		j3.add(aPropos);
 		resolution.add(full);
 		resolution.add(full2);
 		jmenubar.add(j1);
@@ -138,12 +144,35 @@ public class AffichageDuModele extends JFrame {
 			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane jop = new JOptionPane();
-				String mess = "Clique Gauche -> Bouge la figure \n";
-				mess += "Clique droit -> Tourne la figure";
+				String mess = "Vous pouvez ajouter un objet de format \".gts\" ainsi que rechercher\n";
+				mess += "un objet deja present dans la base de donnee du logiciel.\n";
+				mess += "Vous pouvez affiner votre recherche en rentrant des mots cles\n";
+				mess += "et vous avez la possibilite d'en ajouter ou d'en supprimer.";
+				mess += "\n___________________________________________________\n\n";
+				mess += "Clique Gauche -> Bouge la figure\n";
+				mess += "Clique droit -> Tourne la figure\n";
+				mess += "Molette -> Zoom \n";
+				jop.showMessageDialog(null, mess, "Aide",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		
+		// A Propos
+		aPropos.addActionListener(new ActionListener() {
+			@SuppressWarnings("static-access")
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane jop = new JOptionPane();
+				String mess = "Ce logiciel a ete concu pour permettre d'afficher un objet 3D\n";
+				mess += "de facon a pouvoir le voir sous tous ces angles ainsi que\n";
+				mess += "la possiblite de l'agrandir ou de le diminuer.\n";
+				mess += "________________________________________________\n\n";
+				mess += "Realise par Dumazy Clement, Migan Karen, Regnier Camille,\n";
+				mess += "Lorthios Ludovic et Lepeltier Damien";
 				jop.showMessageDialog(null, mess, "A propos",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
+		
 		// Option enregistrer
 		enregistre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -281,6 +310,7 @@ public class AffichageDuModele extends JFrame {
 			this.a = a;
 		}
 
+		@SuppressWarnings("static-access")
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			if (recherche) {
