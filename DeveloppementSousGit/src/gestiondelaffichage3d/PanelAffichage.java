@@ -10,12 +10,9 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.Collections;
-
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
 import menuetoptions.MusicPlayer;
-import modeleVueControleur.AffichageDuModele;
 
 /**
  * Classe qui cree un JPanel dans lequel est dessine l'objet 3D.
