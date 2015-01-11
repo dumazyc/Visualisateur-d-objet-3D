@@ -10,7 +10,7 @@ public class PointTest {
 	gestiondelaffichage3d.Point p = new gestiondelaffichage3d.Point(1.1,2.2,3.3,4);
 	final double PRECISION = 1e-15;
 	
-
+ 
 	@Test
 	public void testToString() {
 		assertEquals(p.toString(),"1.1 2.2 3.3");
