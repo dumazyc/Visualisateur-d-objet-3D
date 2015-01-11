@@ -26,4 +26,3 @@ Liste des mots clés :
 24 PortalTurret : "portal","robot"
 25 SpaceInvader : "robot","espace"
 26 Verre : "verre","cuisine"
-27 zelda : "zelda","personnage"

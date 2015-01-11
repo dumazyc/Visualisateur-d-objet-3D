@@ -23,9 +23,9 @@ public class Insert {
 			 * "VALUES ('HarryPotter', 'Damien', 0);";
 			 */
 			String sql2 = "INSERT INTO MOTSCLES (ID_M,MOTCLE) "
-					+ "VALUES (28, 'cuisine' );";
+					+ "VALUES (27, 'cuisine' );";
 			String sql3 = "INSERT INTO MOTSCLES (ID_M,MOTCLE) "
-					+ "VALUES (28, 'verre' );";
+					+ "VALUES (27, 'verre' );";
 			// stmt.executeUpdate(sql);
 			stmt.executeUpdate(sql2);
 			stmt.executeUpdate(sql3);
