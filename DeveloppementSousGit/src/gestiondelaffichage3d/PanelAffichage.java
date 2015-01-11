@@ -49,9 +49,11 @@ public class PanelAffichage extends JPanel {
 	 *            fenetre principale du programme
 	 * @param name
 	 *            nom du fichier .gts sans l'extension
-	 * @param musiqueActive booleen qui permet de savoir si la musique est active ou non
+	 * @param musiqueActive
+	 *            booleen qui permet de savoir si la musique est active ou non
 	 */
-	public PanelAffichage(AffichageDuModele fenetrePrincipale, String name, boolean musiqueActive) {
+	public PanelAffichage(AffichageDuModele fenetrePrincipale, String name,
+			boolean musiqueActive) {
 		this.fenetrePrincipale = fenetrePrincipale;
 		this.musiqueActive = musiqueActive;
 		RecupDonneesFichier(name);
@@ -342,18 +344,40 @@ public class PanelAffichage extends JPanel {
 
 	}
 
+	/**
+	 * Permet de recuperer la couleur du fond
+	 * 
+	 * @return la couleur du fond
+	 */
 	public Color getCouleurDeFond() {
 		return couleurDeFond;
 	}
 
+	/**
+	 * Permet de modifier la couleur du fond
+	 * 
+	 * @param couleurDeFond
+	 *            couleur du fond a modifie
+	 */
 	public void setCouleurDeFond(Color couleurDeFond) {
 		this.couleurDeFond = couleurDeFond;
 	}
 
+	/**
+	 * Permet de recuperer la couleur de l'objet
+	 * 
+	 * @return la couleur de l'objet
+	 */
 	public Color getCouleurObjet() {
 		return couleurObjet;
 	}
 
+	/**
+	 * Permet de modifier la couleur de l'objet
+	 * 
+	 * @param couleurDeFond
+	 *            couleur de l'objet a modifie
+	 */
 	public void setCouleurObjet(Color couleurObjet) {
 		this.couleurObjet = couleurObjet;
 	}

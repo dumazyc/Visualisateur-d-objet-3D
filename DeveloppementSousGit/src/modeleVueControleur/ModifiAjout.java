@@ -32,12 +32,25 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 
+/**
+ * Classe qui permet de modifier les inforamtions d'un objet
+ *
+ */
 public class ModifiAjout implements Observer {
 	String nomObjet;
 	final JFrame frame = new JFrame();
 	private int id = 0;
+
+	/**
+	 * Constructeur de la classe ModifiAjout
+	 * 
+	 * @param nomObjet
+	 *            nom de l'objet a modifier
+	 * @param a
+	 *            fenetre principale du programme
+	 */
 	public ModifiAjout(final String nomObjet, final AffichageDuModele a) {
-		
+
 		Dimension d = new Dimension(100, 27);
 		JPanel boxf = new JPanel();
 		boxf.setLayout(new GridLayout(8, 1, 9, 9));
@@ -99,7 +112,7 @@ public class ModifiAjout implements Observer {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String name="";
+				String name = "";
 				if (!listModel_motscles.isEmpty()) {
 					name = listModel_motscles.get(list.getSelectedIndex());
 					int index = list.getSelectedIndex();
@@ -115,7 +128,7 @@ public class ModifiAjout implements Observer {
 				}
 				Connection con = null;
 				Statement stmt = null;
-				
+
 				try {
 					Class.forName("org.sqlite.JDBC");
 					con = DriverManager
@@ -123,7 +136,8 @@ public class ModifiAjout implements Observer {
 					con.setAutoCommit(false);
 
 					stmt = con.createStatement();
-					stmt.executeUpdate("DELETE FROM MOTSCLES WHERE ID_M = "+id+" AND MOTCLE = '"+name+"';");
+					stmt.executeUpdate("DELETE FROM MOTSCLES WHERE ID_M = "
+							+ id + " AND MOTCLE = '" + name + "';");
 					con.commit();
 				} catch (Exception ea) {
 					System.err.println(ea.getClass().getName() + ": "
@@ -175,7 +189,7 @@ public class ModifiAjout implements Observer {
 
 					stmt = con.createStatement();
 					stmt.executeUpdate("INSERT INTO MOTSCLES (ID_M,MOTCLE) "
-									+ "VALUES ("+id+", '"+name+"' );");
+							+ "VALUES (" + id + ", '" + name + "' );");
 					con.commit();
 				} catch (Exception ea) {
 					System.err.println(ea.getClass().getName() + ": "
@@ -407,12 +421,11 @@ public class ModifiAjout implements Observer {
 		frame.setVisible(true);
 
 	}
+
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
-		
+
 	}
-
-
 
 }

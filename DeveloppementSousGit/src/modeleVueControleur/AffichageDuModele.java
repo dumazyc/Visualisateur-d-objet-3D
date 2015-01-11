@@ -1,8 +1,6 @@
-
 package modeleVueControleur;
+
 import gestiondelaffichage3d.PanelAffichage;
-
-
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -63,16 +61,16 @@ public class AffichageDuModele extends JFrame implements Observer {
 	Description description;
 	protected Controleur controler;
 	private ModelInsertion model;
-	private Recherche r ;
+	private Recherche r;
 
 	/**
 	 * Constructeur de AffichageDuModele
 	 */
 	public AffichageDuModele() {
-		model=new ModelInsertion();
-		controler = new Controleur(this,model);
+		model = new ModelInsertion();
+		controler = new Controleur(this, model);
 		model.addObserver(this);
-		r = new Recherche(this,this.model);
+		r = new Recherche(this, this.model);
 		jmenubar = new JMenuBar();
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		int X = 900;
@@ -269,7 +267,7 @@ public class AffichageDuModele extends JFrame implements Observer {
 
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				if(tabbedPane.getSelectedIndex()>=0){
+				if (tabbedPane.getSelectedIndex() >= 0) {
 					mettreAJourDescription(tabbedPane.getTitleAt(tabbedPane
 							.getSelectedIndex()));
 				}
@@ -321,7 +319,6 @@ public class AffichageDuModele extends JFrame implements Observer {
 			this.a = a;
 		}
 
-		
 		public void actionPerformed(ActionEvent arg0) {
 			if (recherche) {
 				sp.remove(r);
@@ -364,7 +361,7 @@ public class AffichageDuModele extends JFrame implements Observer {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			new Ajout(a,a.model);
+			new Ajout(a, a.model);
 		}
 
 	}
@@ -377,15 +374,14 @@ public class AffichageDuModele extends JFrame implements Observer {
 
 		private AffichageDuModele a;
 
-
 		public ActionListenerModification(AffichageDuModele a) {
 			this.a = a;
 
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			new ModifiAjout(tabbedPane.getTitleAt(tabbedPane
-					.getSelectedIndex()), a);
+			new ModifiAjout(
+					tabbedPane.getTitleAt(tabbedPane.getSelectedIndex()), a);
 		}
 
 	}
@@ -397,6 +393,13 @@ public class AffichageDuModele extends JFrame implements Observer {
 		r.mettreAJourListeObjet();
 	}
 
+	/**
+	 * Permet de mettre a jour la description pour qu'elle s'affiche pour
+	 * l'objet de nom name
+	 * 
+	 * @param name
+	 *            nom de l'objet dont on doit afficher la description
+	 */
 	public void mettreAJourDescription(String name) {
 		if (description != null) {
 			this.remove(description);
@@ -407,11 +410,24 @@ public class AffichageDuModele extends JFrame implements Observer {
 		this.validate();
 		this.repaint();
 	}
-	public void changerNomOngletCourant(String name){
+
+	/**
+	 * Permet de changer le nom de l'onglet cournt
+	 * 
+	 * @param name
+	 *            nouveau nom
+	 */
+	public void changerNomOngletCourant(String name) {
 		tabbedPane.removeTabAt(tabbedPane.getSelectedIndex());
 		nouvelOnglet(name);
 	}
-	public String obtenirLeNomDuPremierObjet(){
+
+	/**
+	 * Permet de recuperer le nom du premier objet de la base de donnee
+	 * 
+	 * @return le nom du premier objet de la base de donnee
+	 */
+	public String obtenirLeNomDuPremierObjet() {
 		Connection con = null;
 		String name = "null";
 		Statement stmt = null;
@@ -423,8 +439,7 @@ public class AffichageDuModele extends JFrame implements Observer {
 
 			stmt = con.createStatement();
 			// ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D;" );
-			rs = stmt
-					.executeQuery("SELECT * FROM OBJETS3D;");
+			rs = stmt.executeQuery("SELECT * FROM OBJETS3D;");
 			rs.next();
 			name = rs.getString("name");
 
@@ -444,6 +459,7 @@ public class AffichageDuModele extends JFrame implements Observer {
 		}
 		return name;
 	}
+
 	public static void main(String[] args) {
 		new AffichageDuModele();
 	}
