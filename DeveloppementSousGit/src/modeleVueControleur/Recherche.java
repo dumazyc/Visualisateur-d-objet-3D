@@ -1,11 +1,11 @@
-package menuetoptions;
-
-import gestiondelaffichage3d.AffichageDuModele;
+package modeleVueControleur;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.*;
 import java.sql.*;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -13,15 +13,21 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class Recherche extends JPanel {
+public class Recherche extends JPanel implements Observer {
 
 	private static final long serialVersionUID = 1L;
 	AffichageDuModele frame;
 	DefaultListModel<String> listModel_gts;
 	JList<String> liste_gts;
 	private JTextField tfield;
+	private Controleur controler;
+	protected ModelInsertion model;
 
-	public Recherche(final AffichageDuModele a) {
+
+	public Recherche(final AffichageDuModele a,ModelInsertion model) {
+		this.model=model;
+		this.controler = new Controleur(a,model);
+		model.addObserver(this);
 		this.frame = a;
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
@@ -127,9 +133,10 @@ public class Recherche extends JPanel {
 					return;
 				}
 				liste_gts.getSelectedValue();
-				if ((String) liste_gts.getSelectedValue() != null) {
-					a.nouvelOnglet((String) liste_gts.getSelectedValue());
-				}
+				controler.RechercheAppelle=true;
+				controler.verificationListeRecherche((String) liste_gts.getSelectedValue());
+				controler.RechercheAppelle=false;
+
 				Connection c = null;
 				Statement stmt = null;
 				try {
@@ -213,7 +220,7 @@ public class Recherche extends JPanel {
 
 				} else {
 					System.out
-							.println("vous n'avez pas entrer de nouveau mots cles");
+					.println("vous n'avez pas entrer de nouveau mots cles");
 				}
 
 			}
@@ -297,6 +304,12 @@ public class Recherche extends JPanel {
 
 			}
 		}
+
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
 
 	}
 }

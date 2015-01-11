@@ -1,7 +1,5 @@
 package menuetoptions;
 
-import gestiondelaffichage3d.AffichageDuModele;
-
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -31,6 +29,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+
+import modeleVueControleur.AffichageDuModele;
 
 public class ModifiAjout {
 	String nomObjet;

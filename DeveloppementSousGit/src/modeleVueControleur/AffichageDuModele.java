@@ -1,4 +1,8 @@
-package gestiondelaffichage3d;
+
+package modeleVueControleur;
+import gestiondelaffichage3d.PanelAffichage;
+
+
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -24,25 +28,25 @@ import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import menuetoptions.Ajout;
 import menuetoptions.Description;
 import menuetoptions.Enregistrer;
 import menuetoptions.ModifiAjout;
 import menuetoptions.OptionCouleur;
-import menuetoptions.Recherche;
 
 import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Fenetre principale du programme
  * 
  */
 @SuppressWarnings("serial")
-public class AffichageDuModele extends JFrame {
+public class AffichageDuModele extends JFrame implements Observer {
 	private JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
 	private JMenuBar jmenubar;
@@ -50,18 +54,25 @@ public class AffichageDuModele extends JFrame {
 	public static JMenuItem modifierInfos = new JMenuItem("Modifier les infos");
 
 	private boolean recherche = false;
-	private Recherche r = new Recherche(this);
+
 	private ImageIcon closeXIcon = new ImageIcon(
 			"./ressources/imageMenu/close.gif");
 	private Dimension closeButtonSize = new Dimension(
 			closeXIcon.getIconWidth() + 2, closeXIcon.getIconHeight() + 2);
 	private boolean musiqueActive = true;
 	Description description;
+	protected Controleur controler;
+	private ModelInsertion model;
+	private Recherche r ;
 
 	/**
 	 * Constructeur de AffichageDuModele
 	 */
 	public AffichageDuModele() {
+		model=new ModelInsertion();
+		controler = new Controleur(this,model);
+		model.addObserver(this);
+		r = new Recherche(this,this.model);
 		jmenubar = new JMenuBar();
 		tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		int X = 900;
@@ -156,7 +167,7 @@ public class AffichageDuModele extends JFrame {
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		
+
 		// A Propos
 		aPropos.addActionListener(new ActionListener() {
 			@SuppressWarnings("static-access")
@@ -172,7 +183,7 @@ public class AffichageDuModele extends JFrame {
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		
+
 		// Option enregistrer
 		enregistre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -310,8 +321,7 @@ public class AffichageDuModele extends JFrame {
 			this.a = a;
 		}
 
-		@SuppressWarnings("static-access")
-		@Override
+		
 		public void actionPerformed(ActionEvent arg0) {
 			if (recherche) {
 				sp.remove(r);
@@ -354,7 +364,7 @@ public class AffichageDuModele extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			new Ajout(a);
+			new Ajout(a,a.model);
 		}
 
 	}
@@ -417,7 +427,7 @@ public class AffichageDuModele extends JFrame {
 					.executeQuery("SELECT * FROM OBJETS3D;");
 			rs.next();
 			name = rs.getString("name");
-			
+
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
@@ -436,5 +446,11 @@ public class AffichageDuModele extends JFrame {
 	}
 	public static void main(String[] args) {
 		new AffichageDuModele();
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		nouvelOnglet((String) arg);
+
 	}
 }
