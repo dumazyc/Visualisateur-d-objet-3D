@@ -164,10 +164,10 @@ public class AffichageDuModele extends JFrame {
 				JOptionPane jop = new JOptionPane();
 				String mess = "Ce logiciel a ete concu pour permettre d'afficher un objet 3D\n";
 				mess += "de facon a pouvoir le voir sous tous ces angles ainsi que\n";
-				mess += "la possiblite de l'agrandir ou de le diminuer.\n";
+				mess += "de pouvoir l'agrandir ou le diminuer.\n";
 				mess += "________________________________________________\n\n";
-				mess += "Realise par Dumazy Clement, Migan Karen, Regnier Camille,\n";
-				mess += "Lorthios Ludovic et Lepeltier Damien";
+				mess += "Realise par Clement Dumazy, Karen Migan, Camille Regnier,\n";
+				mess += "Ludovic Lorthios et Damien Lepeltier";
 				jop.showMessageDialog(null, mess, "A propos",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
