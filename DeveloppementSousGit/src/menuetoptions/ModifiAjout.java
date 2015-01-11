@@ -17,6 +17,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -32,12 +34,15 @@ import javax.swing.ListSelectionModel;
 
 import modeleVueControleur.AffichageDuModele;
 
-public class ModifiAjout {
+public class ModifiAjout implements Observer {
 	String nomObjet;
 	final JFrame frame = new JFrame();
 	private int id = 0;
 	public ModifiAjout(final String nomObjet, final AffichageDuModele a) {
-		
+		final JTextField tfield = new JTextField(15);
+		final JTextField tfield1 = new JTextField(15);
+		tfield.setEnabled(false);
+		tfield1.setEnabled(false);
 		Dimension d = new Dimension(100, 27);
 		JPanel boxf = new JPanel();
 		boxf.setLayout(new GridLayout(8, 1, 9, 9));
@@ -199,7 +204,7 @@ public class ModifiAjout {
 			}
 		});
 		Connection con = null;
-		String name = "null";
+		String name = nomObjet;
 		String auteur = "null";
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -214,6 +219,7 @@ public class ModifiAjout {
 			while (rs.next()) {
 				name = rs.getString("name");
 				auteur = rs.getString("auteur");
+				System.out.println(auteur);
 				id = rs.getInt("id");
 			}
 		} catch (Exception e) {
@@ -230,10 +236,11 @@ public class ModifiAjout {
 			}
 
 		}
-		final JTextField tfield = new JTextField(15);
+		
 		tfield.setText(name);
-		tfield.setEnabled(false);
-
+		
+		tfield1.setText(auteur);
+		tfield1.setEnabled(false);
 		final JCheckBox cbox = new JCheckBox("Nom de l'objet: ", false);
 
 		ItemListener itemListener = new ItemListener() {
@@ -247,9 +254,8 @@ public class ModifiAjout {
 		boxf.add(tfield);
 		jp.add(boxf);
 
-		final JTextField tfield1 = new JTextField(15);
-		tfield1.setText(auteur);
-		tfield1.setEnabled(false);
+		
+		
 
 		final JCheckBox cbox1 = new JCheckBox("Auteur:    ", false);
 
@@ -316,7 +322,11 @@ public class ModifiAjout {
 
 						c.commit();
 
-						if (cbox.isSelected() && !tfield.getText().equals(null)) {
+						if (cbox.isSelected() && !tfield.getText().equals(null)) { // changer
+																					// le
+																					// nom
+																					// physiquement
+																					// parlan
 							String ligne;
 							int cpt = 0;
 							FileReader flux;
@@ -338,11 +348,7 @@ public class ModifiAjout {
 							} finally {
 								try {
 									entree.close();
-									entree=null;
-									sortie.flush();
 									sortie.close();
-									sortie=null;
-									System.gc();
 								} catch (Exception e1) {
 									e1.printStackTrace();
 								}
@@ -406,6 +412,11 @@ public class ModifiAjout {
 		frame.setResizable(false);
 		frame.setVisible(true);
 
+	}
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
