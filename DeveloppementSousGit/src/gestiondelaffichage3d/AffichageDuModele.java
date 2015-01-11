@@ -258,7 +258,7 @@ public class AffichageDuModele extends JFrame {
 
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				if(tabbedPane.getSelectedIndex()>0){
+				if(tabbedPane.getSelectedIndex()>=0){
 					mettreAJourDescription(tabbedPane.getTitleAt(tabbedPane
 							.getSelectedIndex()));
 				}
