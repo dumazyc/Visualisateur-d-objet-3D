@@ -375,7 +375,7 @@ public class PanelAffichage extends JPanel {
 	/**
 	 * Permet de modifier la couleur de l'objet
 	 * 
-	 * @param couleurDeFond
+	 * @param couleurObjet
 	 *            couleur de l'objet a modifie
 	 */
 	public void setCouleurObjet(Color couleurObjet) {
