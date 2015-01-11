@@ -175,8 +175,8 @@ public class AffichageDuModele extends JFrame implements Observer {
 				mess += "de facon a pouvoir le voir sous tous ces angles ainsi que\n";
 				mess += "de pouvoir l'agrandir ou le diminuer.\n";
 				mess += "________________________________________________\n\n";
-				mess += "Realise par Clement Dumazy, Karen Migan, Camille Regnier,\n";
-				mess += "Ludovic Lorthios et Damien Lepeltier";
+				mess += "Realise par Clement Dumazy, Karen Migan, Damien Lepeltier,\n";
+				mess += "Camille Regnier et Ludovic Lorthios";
 				jop.showMessageDialog(null, mess, "A propos",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
