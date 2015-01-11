@@ -27,7 +27,7 @@ import javax.swing.event.ChangeListener;
 import menuetoptions.Ajout;
 import menuetoptions.Description;
 import menuetoptions.Enregistrer;
-import menuetoptions.ModificationAjout;
+import menuetoptions.ModifiAjout;
 import menuetoptions.OptionCouleur;
 import menuetoptions.Recherche;
 
@@ -340,14 +340,14 @@ public class AffichageDuModele extends JFrame {
 		}
 
 		public void actionPerformed(ActionEvent e) {
-			new ModificationAjout(tabbedPane.getTitleAt(tabbedPane
+			new ModifiAjout(tabbedPane.getTitleAt(tabbedPane
 					.getSelectedIndex()), a);
 		}
 
 	}
 
 	/**
-	 * Permet de mettre � jour la liste d'objets de la classe recherche
+	 * Permet de mettre a jour la liste d'objets de la classe recherche
 	 */
 	public void mettreAJourRecherche() {
 		r.mettreAJourListeObjet();

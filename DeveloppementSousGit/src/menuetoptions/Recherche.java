@@ -17,13 +17,12 @@ public class Recherche extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	AffichageDuModele frame;
-	DefaultListModel listModel_gts;
-	JList liste_gts;
+	DefaultListModel<String> listModel_gts;
+	JList<String> liste_gts;
 	private JTextField tfield;
 
 	public Recherche(final AffichageDuModele a) {
 		this.frame = a;
-		Dimension d = new Dimension(100, 27);
 		this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 		// premier contentPane recherche.
@@ -42,8 +41,8 @@ public class Recherche extends JPanel {
 		contentPane2.setPreferredSize((new Dimension(50, 100)));
 		JLabel resultat = new JLabel("Resultat : ");
 		// final JList liste_gts = new JList(fichier_gts.toArray());
-		listModel_gts = new DefaultListModel();
-		liste_gts = new JList(listModel_gts);
+		listModel_gts = new DefaultListModel<String>();
+		liste_gts = new JList<String>(listModel_gts);
 		// liste_gts.setVisibleRowCount(10);
 		// liste_gts.setEnabled(false);
 		// liste_gts.setPreferredSize(new Dimension(120,150));
@@ -68,8 +67,8 @@ public class Recherche extends JPanel {
 		// 3eme contentpane liste des mots cles.
 		JPanel contentPane3 = new JPanel();
 		JLabel label_motscles = new JLabel("Mots Cles : ");
-		final DefaultListModel listModel_motscles = new DefaultListModel();
-		final JList liste_mots_clef = new JList(listModel_motscles);
+		final DefaultListModel<String> listModel_motscles = new DefaultListModel<String>();
+		final JList<String> liste_mots_clef = new JList<String>(listModel_motscles);
 		// liste_mots_clef.setVisibleRowCount(10);
 		// liste_mots_clef.setPreferredSize(new Dimension(120,150));
 		JScrollPane jsp2 = new JScrollPane(liste_mots_clef);

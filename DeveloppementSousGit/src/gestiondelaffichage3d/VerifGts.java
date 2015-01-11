@@ -5,9 +5,6 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.concurrent.Semaphore;
-
-import org.ibex.nestedvm.UnixRuntime.ForkedProcess;
 
 // classe qui permet de verifier si un point gts est corecte.
 // pour savoir si il est correct, il faut utiliser la methode public GtsEstCorrect() qui return true si il est correct
