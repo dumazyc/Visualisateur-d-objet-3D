@@ -6,12 +6,17 @@ import java.awt.event.*;
 import java.sql.*;
 import java.util.Observable;
 import java.util.Observer;
-
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+/**
+ * Permet de rechercher rapidement un objet, de l'afficher, et d'ajouter, modifier, supprimer
+ * des mots cles.
+ *
+ */
 
 public class Recherche extends JPanel implements Observer {
 

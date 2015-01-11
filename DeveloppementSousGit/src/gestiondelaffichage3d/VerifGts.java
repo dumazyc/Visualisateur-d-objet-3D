@@ -6,8 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-// classe qui permet de verifier si un point gts est corecte.
-// pour savoir si il est correct, il faut utiliser la methode public GtsEstCorrect() qui return true si il est correct
+/**
+ * Classe qui permet de verifier si un .gts peux etre modeliser corectement,
+ * verifier qu'il ne contient pas d'erreur.
+ * 
+ * C'est la methode public GtsEstCorrect() qui retourne si le .gts est correct.
+ */
+
 public class VerifGts {
 
 	private List<Point> list_points = new ArrayList<Point>();
@@ -22,7 +27,6 @@ public class VerifGts {
 		try {
 			s = new Scanner(new File(chemin));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -49,7 +53,11 @@ public class VerifGts {
 
 	}
 
-	// verifie que pour chaques segments a bien des points qui existe
+	/**
+	 * Permet de verifier que chaque segment a bien des points qui existent.
+	 * 
+	 * @return true si tous les points existent
+	 */
 	private boolean segment_pointOK() {
 
 		Point segmentP1;
@@ -76,7 +84,12 @@ public class VerifGts {
 		return true;
 	}
 
-	// verifie que pour chaques faces que les segments existe
+	/**
+	 * Permet de verifier que chaque face a bien des segments qui existent.
+	 * 
+	 * @return true si tous les segments existent
+	 */
+	
 	private boolean face_segmentOk() {
 
 		Segment faceS1;
@@ -109,15 +122,16 @@ public class VerifGts {
 		return true;
 	}
 
-	// verifie que pour chaques faces les trois segment ne sont pas identique
+	/**
+	 * permet de verifie que pour chaque face, les trois segment ne sont pas identique
+	 * 
+	 * @return true si aucune face est identique.
+	 */
 	private boolean facePasMemeSegmentok() {
 
 		Segment faceS1;
 		Segment faceS2;
 		Segment faceS3;
-		int nb = 0;
-		int nb2 = 0;
-		int nb3 = 0;
 
 		for (int i = 0; i < nbFaces - 1; i++) {
 			faceS1 = list_faces.get(i).getS1();
@@ -132,12 +146,16 @@ public class VerifGts {
 		return true;
 	}
 
-	// verifie que pour chaques segments les deux points ne sont pas identique
+	
+	/**
+	 * Permet de verifie que pour chaque segment, les deux points ne sont pas identique
+	 * 
+	 * @return true si les points sont pas identique
+	 */
 	private boolean segmentPasMemePoint() {
 
 		Point segmentP1;
 		Point segmentP2;
-		int nb = 0;
 
 		for (int i = 0; i < nbSegments - 1; i++) {
 			segmentP1 = list_segments.get(i).getP1();
@@ -151,7 +169,13 @@ public class VerifGts {
 		return true;
 	}
 
-	// return true si le point gts est correct sinon false.
+
+	/**
+	 * Permet de savoir si le .GTS est modelisable
+	 * 
+	 * @return true si le .GTS est correct 
+	 */
+	
 	public boolean GtsEstCorrect() {
 		if (segment_pointOK() && segmentPasMemePoint() && face_segmentOk()
 				&& facePasMemeSegmentok()) {
