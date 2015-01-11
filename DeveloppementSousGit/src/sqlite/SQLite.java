@@ -25,7 +25,7 @@ public class SQLite {
 			 * " NAME           TEXT    NOT NULL, " +
 			 * " AUTEUR         TEXT    NOT NULL, " +
 			 * " DATECREATION   DATE    DEFAULT CURRENT_DATE, " +
-			 * " COMPLEXITE     INT    	NOT NULL," + " LIEN 			TEXT 	NOT NULL)";
+			 * " COMPLEXITE     INT    	NOT NULL)";
 			 */
 			String sql = "CREATE TABLE MOTSCLES " + "(ID_M INTEGER   NOT NULL,"
 					+ " MOTCLE 		TEXT 	NOT NULL)";

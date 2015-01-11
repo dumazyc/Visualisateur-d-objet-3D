@@ -19,8 +19,8 @@ public class Insert {
 			stmt = c.createStatement();
 			/*
 			 * String sql =
-			 * "INSERT INTO OBJETS3D (NAME,AUTEUR,COMPLEXITE,LIEN) " +
-			 * "VALUES ('HarryPotter', 'Damien', 0, 'En attente' );";
+			 * "INSERT INTO OBJETS3D (NAME,AUTEUR,COMPLEXITE) " +
+			 * "VALUES ('HarryPotter', 'Damien', 0);";
 			 */
 			String sql2 = "INSERT INTO MOTSCLES (ID_M,MOTCLE) "
 					+ "VALUES (28, 'cuisine' );";

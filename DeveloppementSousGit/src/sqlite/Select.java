@@ -26,7 +26,6 @@ public class Select {
 				String auteur = rs.getString("auteur");
 				String datecreation = rs.getString("datecreation");
 				String complexite = rs.getString("complexite");
-				String lien = rs.getString("lien");
 				String motcle = rs.getString("motcle");
 				System.out.println("MOTCLE = " + motcle);
 				System.out.println("ID = " + id);
@@ -34,7 +33,6 @@ public class Select {
 				System.out.println("AUTEUR = " + auteur);
 				System.out.println("DATECREATION = " + datecreation);
 				System.out.println("COMPLEXITE = " + complexite);
-				System.out.println("LIEN = " + lien);
 
 				System.out.println();
 			}
