@@ -316,11 +316,7 @@ public class ModifiAjout {
 
 						c.commit();
 
-						if (cbox.isSelected() && !tfield.getText().equals(null)) { // changer
-																					// le
-																					// nom
-																					// physiquement
-																					// parlan
+						if (cbox.isSelected() && !tfield.getText().equals(null)) {
 							String ligne;
 							int cpt = 0;
 							FileReader flux;
@@ -342,7 +338,11 @@ public class ModifiAjout {
 							} finally {
 								try {
 									entree.close();
+									entree=null;
+									sortie.flush();
 									sortie.close();
+									sortie=null;
+									System.gc();
 								} catch (Exception e1) {
 									e1.printStackTrace();
 								}
