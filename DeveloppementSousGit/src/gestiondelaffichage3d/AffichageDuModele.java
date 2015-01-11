@@ -34,7 +34,7 @@ import menuetoptions.Recherche;
 import java.awt.Toolkit;
 
 /**
- * Fenêtre principale du programme
+ * Fenetre principale du programme
  * 
  */
 @SuppressWarnings("serial")

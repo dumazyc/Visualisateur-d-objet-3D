@@ -3,7 +3,7 @@ package sqlite;
 import java.sql.*;
 
 /**
- * Classe pour insérer un objet et/ou un mot clé dans la base
+ * Classe pour inserer un objet et/ou un mot cle dans la base
  *
  */
 

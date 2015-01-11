@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 
 /**
- * Classe pour créer des tables
+ * Classe pour creer des tables
  *
  */
 

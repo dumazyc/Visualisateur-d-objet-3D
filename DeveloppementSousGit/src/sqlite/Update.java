@@ -34,15 +34,11 @@ public class Update {
 				String auteur = rs.getString("auteur");
 				String datecreation = rs.getString("datecreation");
 				String complexite = rs.getString("complexite");
-				String lien = rs.getString("lien");
-				// if (modif.equals(name)) {
 				System.out.println("NAME = " + name);
 				System.out.println("AUTEUR = " + auteur);
 				System.out.println("DATECREATION = " + datecreation);
 				System.out.println("COMPLEXITE = " + complexite);
-				System.out.println("LIEN = " + lien);
 				System.out.println();
-				// }
 			}
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
