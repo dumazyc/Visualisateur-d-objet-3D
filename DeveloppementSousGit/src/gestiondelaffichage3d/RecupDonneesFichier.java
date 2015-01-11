@@ -30,39 +30,6 @@ public class RecupDonneesFichier {
 	 */
 	public RecupDonneesFichier(String name, Component component) {
 		this.name = name;
-		/*if (this.name == null) {
-
-			List<String> fichier = new ArrayList<String>();
-			JFileChooser fc = new JFileChooser("ressources/modeles/");
-			fc.setAcceptAllFileFilterUsed(false);
-			fc.addChoosableFileFilter(new FileFilter() {
-
-				@Override
-				public boolean accept(File f) {
-					return f.getName().endsWith(".gts");
-				}
-
-				@Override
-				public String getDescription() {
-					return "Fichier GNU Triangulated Surface Library (.gts)";
-				}
-			});
-			fc.showOpenDialog(component);
-			try {
-				String ligne;
-				FileReader flux;
-				BufferedReader entree;
-				flux = new FileReader(fc.getSelectedFile().getAbsolutePath());
-				entree = new BufferedReader(flux);
-				while ((ligne = entree.readLine()) != null) {
-					fichier.add(ligne);
-				}
-				entree.close();
-			} catch (Exception e) {
-				System.err.println(e.toString());
-			}
-			this.name = fc.getSelectedFile().getName();
-		}*/
 		Scanner s = null;
 		try {
 			s = new Scanner(new File("./ressources/modeles/" + this.name
