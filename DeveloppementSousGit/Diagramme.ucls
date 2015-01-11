@@ -605,6 +605,7 @@
     <end type="TARGET" refId="4"/>  
   </nesting>  
   <association id="141">    
+    <bendpoint x="2602" y="484"/>    
     <end type="SOURCE" refId="32" navigable="false">      
       <attribute id="142" name="a"/>      
       <multiplicity id="143" minimum="0" maximum="1"/>    
@@ -642,6 +643,7 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="154">    
+    <bendpoint x="2638" y="416"/>    
     <end type="SOURCE" refId="25" navigable="false">      
       <attribute id="155" name="controler"/>      
       <multiplicity id="156" minimum="0" maximum="1"/>    
