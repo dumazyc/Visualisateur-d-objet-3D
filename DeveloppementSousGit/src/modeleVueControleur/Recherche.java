@@ -2,6 +2,7 @@ package modeleVueControleur;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.*;
 import java.sql.*;
 import java.util.Observable;
@@ -13,7 +14,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 /**
- * Permet de rechercher rapidement un objet, de l'afficher, et d'ajouter, modifier, supprimer
+ * Permet de rechercher rapidement un objet, de l'afficher, d'ajouter, modifier et supprimer
  * des mots cles.
  *
  */
@@ -27,6 +28,7 @@ public class Recherche extends JPanel implements Observer {
 	private JTextField tfield;
 	private Controleur controler;
 	protected ModelInsertion model;
+	private int id = 0;
 
 
 	public Recherche(final AffichageDuModele a,ModelInsertion model) {
@@ -50,23 +52,19 @@ public class Recherche extends JPanel implements Observer {
 		// 2eme contentPane resultat.
 		final JPanel contentPane2 = new JPanel();
 		contentPane2.setPreferredSize((new Dimension(60, 130)));
-		// final JList liste_gts = new JList(fichier_gts.toArray());
+		JLabel res = new JLabel("Liste des Objets : ");
 		listModel_gts = new DefaultListModel<String>();
 		liste_gts = new JList<String>(listModel_gts);
-		// liste_gts.setVisibleRowCount(10);
-		// liste_gts.setEnabled(false);
-		// liste_gts.setPreferredSize(new Dimension(120,150));
-		JScrollPane jsp = new JScrollPane(liste_gts);
-		jsp.setPreferredSize(new Dimension(200, 150));
-		contentPane2.setBorder(BorderFactory.createMatteBorder(0, 2, 3, 2,
-				Color.black));
-		contentPane2.add(jsp);
+		JScrollPane scroll = new JScrollPane(liste_gts);
+		scroll.setPreferredSize(new Dimension(200, 150));
+		contentPane2.setBorder(BorderFactory.createMatteBorder(0, 2, 3, 2,Color.black));
+		contentPane2.add(res);
+		contentPane2.add(scroll);
 		this.add(contentPane2);
 
 		// panel text
 		JPanel contentPane5 = new JPanel();
-		JLabel label_modifier = new JLabel(
-				"<html><b><font size=4>Modifier les mots cles : </font></b></html>");
+		JLabel label_modifier = new JLabel("<html><b><font size=4>Modifier les mots cles : </font></b></html>");
 		contentPane5.add(label_modifier);
 		contentPane5.setBorder(BorderFactory.createMatteBorder(0, 2, 0, 2,
 				Color.black));
@@ -74,16 +72,15 @@ public class Recherche extends JPanel implements Observer {
 		this.add(contentPane5);
 
 		// 3eme contentpane liste des mots cles.
+		
 		JPanel contentPane3 = new JPanel();
 		JLabel label_motscles = new JLabel("Mots Cles : ");
 		final DefaultListModel<String> listModel_motscles = new DefaultListModel<String>();
 		final JList<String> liste_mots_clef = new JList<String>(listModel_motscles);
-		// liste_mots_clef.setVisibleRowCount(10);
-		// liste_mots_clef.setPreferredSize(new Dimension(120,150));
-		JScrollPane jsp2 = new JScrollPane(liste_mots_clef);
-		jsp2.setPreferredSize(new Dimension(120, 150));
+		JScrollPane scrol2 = new JScrollPane(liste_mots_clef);
+		scrol2.setPreferredSize(new Dimension(120, 150));
 		contentPane3.add(label_motscles);
-		contentPane3.add(jsp2);
+		contentPane3.add(scrol2);
 		final JButton supprimer = new JButton("Supprimer");
 		supprimer.setEnabled(false);
 		liste_mots_clef.setEnabled(false);
@@ -114,6 +111,7 @@ public class Recherche extends JPanel implements Observer {
 		// Permet le traitement automatique des la saisie d'un nouveau
 		// caractere
 		// dans le textfield.
+		
 		tfield.getDocument().addDocumentListener(new DocumentListener() {
 			public void changedUpdate(DocumentEvent e) {
 				mettreAJourListeObjet();
@@ -140,6 +138,7 @@ public class Recherche extends JPanel implements Observer {
 				liste_gts.getSelectedValue();
 				if ((String) liste_gts.getSelectedValue() != null) {
 					controler.affichageObjet((String) liste_gts.getSelectedValue());
+					
 					 
 					 }
 				
@@ -152,13 +151,14 @@ public class Recherche extends JPanel implements Observer {
 					c.setAutoCommit(false);
 
 					stmt = c.createStatement();
-					String requete = "SELECT MOTCLE FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE NAME = '"
+					String requete = "SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE NAME = '"
 							+ ((String) liste_gts.getSelectedValue()) + "'";
 
 					ResultSet rs = stmt.executeQuery(requete);
 					listModel_motscles.removeAllElements();
 					while (rs.next()) {
 						listModel_motscles.addElement((rs.getString("MOTCLE")));
+						id = rs.getInt("id");
 					}
 					liste_mots_clef.setEnabled(true);
 
@@ -181,6 +181,7 @@ public class Recherche extends JPanel implements Observer {
 		});
 
 		// Action quand on selectionne un element de la liste des mots clef.
+		
 		liste_mots_clef.addListSelectionListener(new ListSelectionListener() {
 
 			public void valueChanged(ListSelectionEvent arg0) {
@@ -192,15 +193,105 @@ public class Recherche extends JPanel implements Observer {
 			}
 		});
 
-		// Action du bouton Suprrime.
+		// Action du bouton Supprime.
 
 		supprimer.addActionListener(new ActionListener() {
+			
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				listModel_motscles.removeElement(liste_mots_clef
-						.getSelectedValue());
+			public void actionPerformed(ActionEvent e) {
+				String name = "";
+				if (!listModel_motscles.isEmpty()) {
+					name = listModel_motscles.get(liste_mots_clef.getSelectedIndex());
+					int index = liste_mots_clef.getSelectedIndex();
+					listModel_motscles.remove(index);
+
+					if (index == listModel_motscles.getSize()) {
+						// removed item in last position
+						index--;
+
+						liste_mots_clef.setSelectedIndex(index);
+						liste_mots_clef.ensureIndexIsVisible(index);
+					}
+				}
+				Connection con = null;
+				Statement stmt = null;
+
+				try {
+					Class.forName("org.sqlite.JDBC");
+					con = DriverManager.getConnection("jdbc:sqlite:Database.db");
+					con.setAutoCommit(false);
+
+					stmt = con.createStatement();
+					stmt.executeUpdate("DELETE FROM MOTSCLES WHERE ID_M = "
+							+ id + " AND MOTCLE = '" + name + "';");
+					con.commit();
+				} catch (Exception ea) {
+					System.err.println(ea.getClass().getName() + ": "
+							+ ea.getMessage());
+					System.exit(0);
+				} finally {
+					try {
+						stmt.close();
+						con.close();
+
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+
+				}
 			}
 		});
+			
+			
+			/*
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				listModel_motscles.removeElement(liste_mots_clef.getSelectedValue());
+				
+				
+				String name = "";
+				if (!listModel_motscles.isEmpty()) {
+					name = listModel_motscles.get(liste_mots_clef.getSelectedIndex());
+					int index = liste_mots_clef.getSelectedIndex();
+					listModel_motscles.remove(index);
+
+					if (index == listModel_motscles.getSize()) {
+						// removed item in last position
+						index--;
+
+						liste_mots_clef.setSelectedIndex(index);
+						liste_mots_clef.ensureIndexIsVisible(index);
+					}
+				}
+							
+				Connection con = null;
+				Statement stmt = null;
+
+				try {
+					Class.forName("org.sqlite.JDBC");
+					con = DriverManager.getConnection("jdbc:sqlite:Database.db");
+					con.setAutoCommit(false);
+
+					stmt = con.createStatement();
+					stmt.executeUpdate("DELETE FROM MOTSCLES WHERE ID_M = "
+							+ id + " AND MOTCLE = '" + name + "';");
+					con.commit();
+				} catch (Exception ea) {
+					System.err.println(ea.getClass().getName() + ": "
+							+ ea.getMessage());
+					System.exit(0);
+				} finally {
+					try {
+						stmt.close();
+						con.close();
+
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+
+				}
+			}
+		});*/
 
 		// Action du bouton Modifier.
 
@@ -220,17 +311,97 @@ public class Recherche extends JPanel implements Observer {
 		// Action du bouton Ajouter.
 		ajouter.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!tfield2.getText().equals("New mots cles")) {
-					listModel_motscles.addElement(tfield2.getText());
 
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String name = tfield2.getText();
+
+					// User did not type in a unique name...
+					if (name.equals("") || alreadyInList(name)) {
+						Toolkit.getDefaultToolkit().beep();
+						tfield2.requestFocusInWindow();
+						tfield2.selectAll();
+						return;
+					}
+
+					int index = liste_mots_clef.getSelectedIndex(); // get selected index
+					if (index == -1) { // no selection, so insert at beginning
+						index = 0;
+					} else { // add after the selected item
+						index++;
+
+					}
+
+					listModel_motscles.addElement(tfield2.getText());
+					Connection con = null;
+					Statement stmt = null;
+					try {
+						Class.forName("org.sqlite.JDBC");
+						con = DriverManager
+								.getConnection("jdbc:sqlite:Database.db");
+						con.setAutoCommit(false);
+
+						stmt = con.createStatement();
+						stmt.executeUpdate("INSERT INTO MOTSCLES (ID_M,MOTCLE) "
+								+ "VALUES (" + id + ", '" + name + "' );");
+						con.commit();
+					} catch (Exception ea) {
+						System.err.println(ea.getClass().getName() + ": "
+								+ ea.getMessage());
+						System.exit(0);
+					} finally {
+						try {
+							stmt.close();
+							con.close();
+
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+
+					}
+				}
+
+				private boolean alreadyInList(String name) {
+					return listModel_motscles.contains(name);
+
+				}
+				
+				
+				
+				
+				/*if (!tfield2.getText().equals("New mots cles")) {
+					listModel_motscles.addElement(tfield2.getText());	
+					Connection con = null;
+					Statement stmt = null;
+					try {
+						Class.forName("org.sqlite.JDBC");
+						con = DriverManager
+								.getConnection("jdbc:sqlite:Database.db");
+						con.setAutoCommit(false);
+
+						stmt = con.createStatement();
+						stmt.executeUpdate("INSERT INTO MOTSCLES (MOTCLE) "
+								+ "VALUES (" '" + name + "' );");
+						con.commit();
+					} catch (Exception ea) {
+						System.err.println(ea.getClass().getName() + ": "
+								+ ea.getMessage());
+						System.exit(0);
+					} finally {
+						try {
+							stmt.close();
+							con.close();
+
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
 				} else {
 					System.out
 					.println("vous n'avez pas entrer de nouveau mots cles");
-				}
+				}*/
 
-			}
+			
 		});
 	}
 
@@ -317,6 +488,11 @@ public class Recherche extends JPanel implements Observer {
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		// TODO Auto-generated method stub
+
+	}
+	
+	private boolean alreadyInList(String name) {
+		return listModel_gts.contains(name);
 
 	}
 }
