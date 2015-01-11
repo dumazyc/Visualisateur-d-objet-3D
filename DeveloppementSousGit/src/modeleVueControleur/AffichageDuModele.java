@@ -154,7 +154,7 @@ public class AffichageDuModele extends JFrame implements Observer {
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane jop = new JOptionPane();
 				String mess = "Vous pouvez ajouter un objet de format \".gts\" ainsi que rechercher\n";
-				mess += "un objet deja present dans la base de donnee du logiciel.\n";
+				mess += "un objet deja present dans la base de donnees du logiciel.\n";
 				mess += "Vous pouvez affiner votre recherche en rentrant des mots cles\n";
 				mess += "et vous avez la possibilite d'en ajouter ou d'en supprimer.";
 				mess += "\n___________________________________________________\n\n";
@@ -172,9 +172,9 @@ public class AffichageDuModele extends JFrame implements Observer {
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane jop = new JOptionPane();
 				String mess = "Ce logiciel a ete concu pour permettre d'afficher un objet 3D\n";
-				mess += "de facon a pouvoir le voir sous tous ces angles ainsi que\n";
+				mess += "de facon a pouvoir le voir sous tous ses angles ainsi que\n";
 				mess += "de pouvoir l'agrandir ou le diminuer.\n";
-				mess += "________________________________________________\n\n";
+				mess += "_____________________________________________________________________\n\n";
 				mess += "Realise par Clement Dumazy, Karen Migan, Damien Lepeltier,\n";
 				mess += "Camille Regnier et Ludovic Lorthios";
 				jop.showMessageDialog(null, mess, "A propos",
@@ -438,7 +438,6 @@ public class AffichageDuModele extends JFrame implements Observer {
 			con.setAutoCommit(false);
 
 			stmt = con.createStatement();
-			// ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D;" );
 			rs = stmt.executeQuery("SELECT * FROM OBJETS3D;");
 			rs.next();
 			name = rs.getString("name");
