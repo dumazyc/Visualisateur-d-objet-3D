@@ -70,10 +70,7 @@ public class Controleur {
 		}
 		
 		
-	public void verificationListeRecherche(String s){
-		if(s!=null);
-			model.appelFenetrePrincipale(s);
-	}
+	
 	public void affichageObjet(String nomObjet){
 		model.appelFenetrePrincipale(nomObjet);
 		

@@ -133,9 +133,11 @@ public class Recherche extends JPanel implements Observer {
 					return;
 				}
 				liste_gts.getSelectedValue();
-				controler.RechercheAppelle=true;
-				controler.verificationListeRecherche((String) liste_gts.getSelectedValue());
-				controler.RechercheAppelle=false;
+				if ((String) liste_gts.getSelectedValue() != null) {
+					controler.affichageObjet((String) liste_gts.getSelectedValue());
+					 
+					 }
+				
 
 				Connection c = null;
 				Statement stmt = null;
