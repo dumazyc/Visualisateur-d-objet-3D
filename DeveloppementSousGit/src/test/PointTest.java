@@ -2,38 +2,41 @@ package test;
 
 import static org.junit.Assert.*;
 
+import java.awt.Point;
+
 import org.junit.Test;
 
 public class PointTest {
-
-	@Test
-	public void testPoint() {
-		fail("Not yet implemented");
-	}
+	gestiondelaffichage3d.Point p = new gestiondelaffichage3d.Point(1.1,2.2,3.3,4);
+	final double PRECISION = 1e-15;
+	
 
 	@Test
 	public void testToString() {
-		fail("Not yet implemented");
+		assertEquals(p.toString(),"1.1 2.2 3.3");
+		
 	}
 
 	@Test
 	public void testGetX() {
-		fail("Not yet implemented");
+
+		 assertEquals(1.1, p.getX(),PRECISION);
 	}
 
 	@Test
 	public void testGetY() {
-		fail("Not yet implemented");
-	}
+
+		 assertEquals(2.2, p.getY(),PRECISION);	
+		 }
 
 	@Test
 	public void testGetZ() {
-		fail("Not yet implemented");
+		 assertEquals(3.3, p.getZ(),PRECISION);
 	}
 
 	@Test
 	public void testGetNumero() {
-		fail("Not yet implemented");
+		 assertEquals(4, p.getNumero());
 	}
 
 }
