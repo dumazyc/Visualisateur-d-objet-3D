@@ -213,7 +213,6 @@ public class ModifiAjout  {
 			}
 		});
 		Connection con = null;
-		String name = "null";
 		String auteur = "null";
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -226,8 +225,9 @@ public class ModifiAjout  {
 					.executeQuery("SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE NAME = '"
 							+ nomObjet + "' ORDER BY ID_M ;");
 			while (rs.next()) {
-				name = rs.getString("name");
+				System.out.println(auteur);
 				auteur = rs.getString("auteur");
+				
 				id = rs.getInt("id");
 			}
 		} catch (Exception e) {
@@ -245,7 +245,7 @@ public class ModifiAjout  {
 
 		}
 		final JTextField tfield = new JTextField(15);
-		tfield.setText(name);
+		tfield.setText(this.nomObjet);
 		tfield.setEnabled(false);
 
 		final JCheckBox cbox = new JCheckBox("Nom de l'objet: ", false);
@@ -374,8 +374,8 @@ public class ModifiAjout  {
 
 							}
 							a.mettreAJourRecherche();
-							a.mettreAJourDescription(name);
-							a.changerNomOngletCourant(name);
+							a.mettreAJourDescription(ModifiAjout.this.nomObjet);
+							a.changerNomOngletCourant(ModifiAjout.this.nomObjet);
 							// pour confirmer
 							// custom title, no icon
 							JOptionPane.showMessageDialog(frame,
