@@ -61,7 +61,7 @@ public class Matrice {
 	 * 
 	 * @param m
 	 *            deuxieme matrice du produit
-	 * @return le matrice resultat de la multiplication
+	 * @return la matrice resultat de la multiplication
 	 */
 	public Matrice multiplicate(Matrice m) {
 		double[] m1 = new double[] {

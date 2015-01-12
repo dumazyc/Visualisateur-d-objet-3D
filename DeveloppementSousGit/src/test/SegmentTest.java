@@ -3,7 +3,10 @@ package test;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
+/**
+ * Classe destinee a tester la Segment
+ *
+ */
 public class SegmentTest {
 		gestiondelaffichage3d.Point p1 = new gestiondelaffichage3d.Point(1.1,2.2,3.3,4);
 		gestiondelaffichage3d.Point p2 = new gestiondelaffichage3d.Point(1.1,2.2,3.3,4);

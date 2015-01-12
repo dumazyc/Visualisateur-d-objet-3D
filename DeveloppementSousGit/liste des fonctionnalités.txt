@@ -70,7 +70,7 @@ Les fonctionnalités supplémentaires :
 A l'attention de profs de COO:
 
  - Un système d'implementation du design pattern MVC(il aurait pû associer encore la fenêtre modification en tant que vue mais hélas 
- on nous l'a enseigner à la dernière minute. Cependant nous avons tenu à l'implémenter à cause de notre curiosité, pour simplifier les verifications de gts, le chargement d'un nouvel onglet, l'ajout à la base et aux ressources tous en évitant les doublons de noms)
+ on nous l'a enseigner à la dernière minute. Cependant nous avons tenu à l'implémenter à cause de notre curiosité, pour simplifier les verifications de gts, le chargement d'un nouvel onglet, l'ajout à la base et aux ressources tous en évitant les doublons de noms dans la base)
 
 Détails sur le mvc:
 

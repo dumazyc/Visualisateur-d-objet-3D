@@ -4,7 +4,10 @@ import static org.junit.Assert.*;
 import gestiondelaffichage3d.Face;
 
 import org.junit.Test;
-
+/**
+ * Classe destinee a tester la classe face
+ *
+ */
 public class FaceTest {
 	
 	gestiondelaffichage3d.Point p1 = new gestiondelaffichage3d.Point(1.1,2.2,3.3,4);

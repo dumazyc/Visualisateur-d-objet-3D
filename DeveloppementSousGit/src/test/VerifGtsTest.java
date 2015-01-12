@@ -5,10 +5,14 @@ import gestiondelaffichage3d.VerifGts;
 
 import org.junit.Before;
 import org.junit.Test;
-
+/**
+ * Classe destinee a tester la classe verifGts
+ *
+ */
 public class VerifGtsTest {
 	VerifGts verifiacteur;
 	@Before
+	@Test
 	public void intitialisation(){
 		verifiacteur=new VerifGts("./ressources/modeles/" + "cone.gts");
 

@@ -11,16 +11,35 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Observable;
 
+/**
+
+ * Classe serveant de modele aux vues de recherhce de fenetre principale et d'ajout
+ *
+ */
 public class ModelInsertion extends Observable {
 	
 	Connection c = null;
 	Statement stmt = null;
 
+	/**
+	 * Constructeur de la classe
+	 */
 	public ModelInsertion(){
 		super();
 	
 	}
 
+	/**
+	 * pour inserer l'objet dans la base
+	 * @param fichier
+	 *  pour recuperer le fichier
+	 *  
+	 * @param nomObjet
+	 *  nom de l'objet
+	 *  
+	 * @param auteur
+	 *  auteur de l'objet
+	 */
 	public void insertion(File fichier,String nomObjet, String auteur){
 		String ligne;
 		int nombreTriangles = 0 ;

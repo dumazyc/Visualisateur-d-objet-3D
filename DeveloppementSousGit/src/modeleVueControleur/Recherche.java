@@ -15,7 +15,7 @@ import javax.swing.event.ListSelectionListener;
 
 /**
  * Permet de rechercher rapidement un objet, de l'afficher, d'ajouter, modifier et supprimer
- * des mots cles.
+ * des mots cles : est une vue du ModelInsertion.
  *
  */
 

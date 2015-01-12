@@ -40,7 +40,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Fenetre principale du programme
+ * Fenetre principale du programme : est une vue du ModelInsertion.
  * 
  */
 @SuppressWarnings("serial")
@@ -185,8 +185,10 @@ public class AffichageDuModele extends JFrame implements Observer {
 		// Option enregistrer
 		enregistre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if(tabbedPane.getTabCount()>0){
 				new Enregistrer(tabbedPane.getTitleAt(tabbedPane
 						.getSelectedIndex()));
+				}
 			}
 		});
 

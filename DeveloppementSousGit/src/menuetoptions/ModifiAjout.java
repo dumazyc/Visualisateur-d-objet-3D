@@ -17,8 +17,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -34,15 +32,25 @@ import javax.swing.ListSelectionModel;
 
 import modeleVueControleur.AffichageDuModele;
 
-public class ModifiAjout implements Observer {
+/**
+ * Classe qui permet de modifier les inforamtions d'un objet
+ *
+ */
+public class ModifiAjout  {
 	String nomObjet;
 	final JFrame frame = new JFrame();
 	private int id = 0;
+
+	/**
+	 * Constructeur de la classe ModifiAjout
+	 * 
+	 * @param nomObjet
+	 *            nom de l'objet a modifier
+	 * @param a
+	 *            fenetre principale du programme
+	 */
 	public ModifiAjout(final String nomObjet, final AffichageDuModele a) {
-		final JTextField tfield = new JTextField(15);
-		final JTextField tfield1 = new JTextField(15);
-		tfield.setEnabled(false);
-		tfield1.setEnabled(false);
+
 		Dimension d = new Dimension(100, 27);
 		JPanel boxf = new JPanel();
 		boxf.setLayout(new GridLayout(8, 1, 9, 9));
@@ -104,7 +112,7 @@ public class ModifiAjout implements Observer {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String name="";
+				String name = "";
 				if (!listModel_motscles.isEmpty()) {
 					name = listModel_motscles.get(list.getSelectedIndex());
 					int index = list.getSelectedIndex();
@@ -120,7 +128,7 @@ public class ModifiAjout implements Observer {
 				}
 				Connection con = null;
 				Statement stmt = null;
-				
+
 				try {
 					Class.forName("org.sqlite.JDBC");
 					con = DriverManager
@@ -128,7 +136,8 @@ public class ModifiAjout implements Observer {
 					con.setAutoCommit(false);
 
 					stmt = con.createStatement();
-					stmt.executeUpdate("DELETE FROM MOTSCLES WHERE ID_M = "+id+" AND MOTCLE = '"+name+"';");
+					stmt.executeUpdate("DELETE FROM MOTSCLES WHERE ID_M = "
+							+ id + " AND MOTCLE = '" + name + "';");
 					con.commit();
 				} catch (Exception ea) {
 					System.err.println(ea.getClass().getName() + ": "
@@ -180,7 +189,7 @@ public class ModifiAjout implements Observer {
 
 					stmt = con.createStatement();
 					stmt.executeUpdate("INSERT INTO MOTSCLES (ID_M,MOTCLE) "
-									+ "VALUES ("+id+", '"+name+"' );");
+							+ "VALUES (" + id + ", '" + name + "' );");
 					con.commit();
 				} catch (Exception ea) {
 					System.err.println(ea.getClass().getName() + ": "
@@ -204,7 +213,7 @@ public class ModifiAjout implements Observer {
 			}
 		});
 		Connection con = null;
-		String name = nomObjet;
+		String name = "null";
 		String auteur = "null";
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -212,14 +221,13 @@ public class ModifiAjout implements Observer {
 			con.setAutoCommit(false);
 
 			stmt = con.createStatement();
-			// ResultSet rs = stmt.executeQuery( "SELECT * FROM OBJETS3D;" );
+			
 			rs = stmt
 					.executeQuery("SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE NAME = '"
 							+ nomObjet + "' ORDER BY ID_M ;");
 			while (rs.next()) {
 				name = rs.getString("name");
 				auteur = rs.getString("auteur");
-				System.out.println(auteur);
 				id = rs.getInt("id");
 			}
 		} catch (Exception e) {
@@ -236,11 +244,10 @@ public class ModifiAjout implements Observer {
 			}
 
 		}
-		
+		final JTextField tfield = new JTextField(15);
 		tfield.setText(name);
-		
-		tfield1.setText(auteur);
-		tfield1.setEnabled(false);
+		tfield.setEnabled(false);
+
 		final JCheckBox cbox = new JCheckBox("Nom de l'objet: ", false);
 
 		ItemListener itemListener = new ItemListener() {
@@ -254,8 +261,9 @@ public class ModifiAjout implements Observer {
 		boxf.add(tfield);
 		jp.add(boxf);
 
-		
-		
+		final JTextField tfield1 = new JTextField(15);
+		tfield1.setText(auteur);
+		tfield1.setEnabled(false);
 
 		final JCheckBox cbox1 = new JCheckBox("Auteur:    ", false);
 
@@ -413,12 +421,7 @@ public class ModifiAjout implements Observer {
 		frame.setVisible(true);
 
 	}
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
-	}
 
-
+	
 
 }

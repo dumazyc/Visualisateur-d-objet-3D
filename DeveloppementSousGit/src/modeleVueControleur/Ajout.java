@@ -14,7 +14,7 @@ import javax.swing.filechooser.FileFilter;
 
 /**
  * Classe permettant a l'utilsateur d'ajouter un objet et de completer 
- * les differentes informations associees
+ * les differentes informations associees: est une vue du ModelInsertion.
  *
  */
 public class Ajout extends JFrame implements Observer{
