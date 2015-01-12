@@ -12,7 +12,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- * La classe Modifieur permet de generer une fenetre avec des JSlider et un
+ * Cette classe permet de generer une fenetre avec des JSlider et un
  * CarreDeCouleur pour permettre une modification de la couleur selectionnee
  * 
  */
