@@ -56,3 +56,36 @@ Les fonctionnalités supplémentaires :
 - Affichage d'une fenêtre d'aide (F1) 
 
 - Ajout d'une fonctionnalité permettant de modifier la résolution de la fenêtre principale
+
+- Fonctionnalité permettant de modifier / supprimer les mots clés pour chaque objet dans la partie recherche.
+
+-Fonctionnalité permettant de modifier / supprimer les mots clés pour chaque objet en chosisisant de modifiant dans les options.
+
+- Ajout de la lecture d'un fichier son lors de la rotation de l'objet qu'on peut arrêter si on le souhaite.
+
+-Des propositons par défaut pour faciliter la tâche à l'utilisateur et un système de recherche assez dynamique.
+
+- Des popups pour guider l'utilsateur.
+
+A l'attention de profs de COO:
+
+ - Un système d'implementation du design pattern MVC(il aurait pû associer encore la fenêtre modification en tant que vue mais hélas 
+ on nous l'a enseigner à la dernière minute. Cependant nous avons tenu à l'implémenter à cause de notre curiosité, pour simplifier les verifications de gts, le chargement d'un nouvel onglet, l'ajout à la base et aux ressources tous en évitant les doublons de noms)
+
+Détails sur le mvc:
+
+-trois vues: La classe recherche , La classe de la fenêtre principale du projet, La classe de l'ajout.
+-un controleur : qui verifie la validité du gts et qui s'assure que le nom du nouvel objet n'existe pas encore.
+-un modèle qui fait l'insertion dans la base.
+
+Un simple cas de mise en oeuvre de notre mvc:
+ 
+-On actionne le bouton ajouter de la fenêtre ajout le controleur est informé.
+ -Il verifie le gts et le nom choisi pour éviter les duplications .
+-Il informe le modèle qui fait l'insertion 
+ -La JList de la recherhce se rafraîchit et 
+ -La fenêtre principale sait qu'elle doit ouvrir un nouvel onglet. 
+ 
+ 
+ 
+ 																					La DreamTeam.

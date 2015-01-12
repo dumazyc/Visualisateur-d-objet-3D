@@ -2,10 +2,6 @@ package test;
 
 import static org.junit.Assert.*;
 
-import java.awt.Point;
-
-import javax.swing.text.Segment;
-
 import org.junit.Test;
 
 public class SegmentTest {

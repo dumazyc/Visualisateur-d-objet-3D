@@ -490,9 +490,4 @@ public class Recherche extends JPanel implements Observer {
 		// TODO Auto-generated method stub
 
 	}
-	
-	private boolean alreadyInList(String name) {
-		return listModel_gts.contains(name);
-
-	}
 }

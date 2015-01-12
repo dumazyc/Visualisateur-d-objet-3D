@@ -1,34 +1,22 @@
 package test;
 
 import static org.junit.Assert.*;
-
+import gestiondelaffichage3d.RecupDonneesFichier;
+import org.junit.Before;
 import org.junit.Test;
 
 public class RecupDonneesFichierTest {
-
-	@Test
-	public void testRecupDonneesFichier() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetList_points() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetList_segments() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetList_faces() {
-		fail("Not yet implemented");
+	RecupDonneesFichier test;
+	
+	@Before
+	public void intitialisation(){
+		test=new RecupDonneesFichier("cone", null);
 	}
 
 	@Test
 	public void testGetName() {
-		fail("Not yet implemented");
-	}
+		assertEquals("cone", test.getName());
+		assertNotEquals("faux", test.getName());
+			}
 
 }
