@@ -112,8 +112,7 @@ public class ModelInsertion extends Observable {
 		try {
 			//insertion des informations dans la base
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager
-					.getConnection("jdbc:sqlite:Database.db");
+			c = DriverManager.getConnection("jdbc:sqlite:Database.db");
 			c.setAutoCommit(false);
 			stmt = c.createStatement();
 

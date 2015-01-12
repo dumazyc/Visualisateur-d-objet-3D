@@ -215,6 +215,7 @@ this.controler = new Controleur(a,model);
 							JOptionPane.WARNING_MESSAGE);
 				} else {
 					// on appelle le controleur
+					System.out.println(tfield1.getText());
 					controler.envoieGts(a,fc.getSelectedFile(),tfield.getText() , tfield1.getText(), fichier.getText());
 					//si le conroleur ne dectetecte pas de doublons dans la base 
 					if(!controler.alerteDoublon)
@@ -228,7 +229,6 @@ this.controler = new Controleur(a,model);
 	//methode heritee de Obsrever
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("ajout");
 		
 	}
 

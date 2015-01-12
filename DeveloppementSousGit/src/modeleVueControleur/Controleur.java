@@ -31,7 +31,6 @@ public class Controleur {
 	 */
 	public Controleur(AffichageDuModele a,ModelInsertion model){
 		
-		super();
 		this.model = model;
 		this.a=a;
 	}
@@ -77,16 +76,29 @@ public class Controleur {
 			    
 			    if(!rs.next()) 
 					{
-						if(verifieGts(chemin))
+						if(verifieGts(chemin)) {
+							rs.close();
+							stmt.close();
+							c.commit();
+							c.close();
 					model.insertion(fichier, nomObjet, auteur);
+						}
 						else{
 							JOptionPane.showMessageDialog(f, "fichier non valide",
-									"Attention", JOptionPane.WARNING_MESSAGE);	
+									"Attention", JOptionPane.WARNING_MESSAGE);
+							rs.close();
+							stmt.close();
+							c.commit();
+							c.close();
 						}
 					}else{
 						alerteDoublon=true;
 						JOptionPane.showMessageDialog(f, "Ce nom existe deja",
 								"Attention", JOptionPane.WARNING_MESSAGE);
+						rs.close();
+						stmt.close();
+						c.commit();
+						c.close();
 					}
 				
 			
@@ -95,6 +107,7 @@ public class Controleur {
 			System.exit(0);
 		} finally {
 			try {
+
 				rs.close();
 				stmt.close();
 				c.close();
