@@ -95,7 +95,7 @@ public class ModifiAjout  {
 			list.setEnabled(true);
 		} catch (Exception e1) {
 			System.err
-					.println(e1.getClass().getName() + ": " + e1.getMessage());
+			.println(e1.getClass().getName() + ": " + e1.getMessage());
 			System.exit(0);
 		} finally {
 			try {
@@ -221,7 +221,7 @@ public class ModifiAjout  {
 			con.setAutoCommit(false);
 
 			stmt = con.createStatement();
-			
+
 			rs = stmt
 					.executeQuery("SELECT * FROM OBJETS3D INNER JOIN MOTSCLES ON OBJETS3D.ID = MOTSCLES.ID_M WHERE NAME = '"
 							+ nomObjet + "' ORDER BY ID_M ;");
@@ -283,117 +283,124 @@ public class ModifiAjout  {
 
 		// quand on valide
 		valider.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
+				
+					// tester ce qui a ete coche
 
-				// tester ce qui a ete coche
+					if ((cbox1.isSelected() && tfield1.getText().isEmpty())
+							|| (cbox.isSelected() && tfield.getText().isEmpty())) {
+						if(!(tfield.getText().equals(ModifiAjout.this.nomObjet))){
+							valider.setEnabled(false);
+						}else{
+						JOptionPane.showMessageDialog(frame,
+								"Un champ coche ne peut etre vide.", "Attention",
+								JOptionPane.WARNING_MESSAGE);
+							}
+					} else {
+						
+						String sql = "";
+						String name;
+						String auteur;
+						name = tfield.getText();
+						auteur = tfield1.getText();
 
-				if ((cbox1.isSelected() && tfield1.getText().isEmpty())
-						|| (cbox.isSelected() && tfield.getText().isEmpty())) {
-					JOptionPane.showMessageDialog(frame,
-							"Un champ coche ne peut etre vide.", "Attention",
-							JOptionPane.WARNING_MESSAGE);
-				} else {
-					String sql = "";
-					String name;
-					String auteur;
-					name = tfield.getText();
-					auteur = tfield1.getText();
+						// on interroge la base de donnees
+						if (cbox.isSelected() && !tfield.getText().equals(null))
+							sql = "UPDATE OBJETS3D  SET NAME =" + "'" + name + "'"
+									+ "WHERE NAME =" + "'" + nomObjet + "';";
 
-					// on interroge la base de donnees
-					if (cbox.isSelected() && !tfield.getText().equals(null))
-						sql = "UPDATE OBJETS3D  SET NAME =" + "'" + name + "'"
-								+ "WHERE NAME =" + "'" + nomObjet + "';";
+						if (cbox1.isSelected() && !tfield1.getText().equals(null))
+							sql = "UPDATE OBJETS3D  SET AUTEUR =" + "'" + auteur
+							+ "'" + "WHERE NAME =" + "'" + nomObjet + "';";
 
-					if (cbox1.isSelected() && !tfield1.getText().equals(null))
-						sql = "UPDATE OBJETS3D  SET AUTEUR =" + "'" + auteur
-								+ "'" + "WHERE NAME =" + "'" + nomObjet + "';";
+						if (cbox1.isSelected() && !tfield1.getText().equals(null)
+								&& cbox.isSelected()
+								&& !tfield.getText().equals(null)) {
 
-					if (cbox1.isSelected() && !tfield1.getText().equals(null)
-							&& cbox.isSelected()
-							&& !tfield.getText().equals(null)) {
+							sql = "UPDATE OBJETS3D  SET NAME =" + "'" + name + "'"
+									+ ", AUTEUR =" + "'" + auteur + "'"
+									+ "WHERE NAME =" + "'" + nomObjet + "';";
 
-						sql = "UPDATE OBJETS3D  SET NAME =" + "'" + name + "'"
-								+ ", AUTEUR =" + "'" + auteur + "'"
-								+ "WHERE NAME =" + "'" + nomObjet + "';";
+						}
 
-					}
+						Connection c = null;
+						Statement stmt = null;
+						try {
+							Class.forName("org.sqlite.JDBC");
+							c = DriverManager
+									.getConnection("jdbc:sqlite:Database.db");
+							c.setAutoCommit(false);
+							stmt = c.createStatement();
+							stmt.executeUpdate(sql);
 
-					Connection c = null;
-					Statement stmt = null;
-					try {
-						Class.forName("org.sqlite.JDBC");
-						c = DriverManager
-								.getConnection("jdbc:sqlite:Database.db");
-						c.setAutoCommit(false);
-						stmt = c.createStatement();
-						stmt.executeUpdate(sql);
+							c.commit();
 
-						c.commit();
-
-						if (cbox.isSelected() && !tfield.getText().equals(null)) { // changer
-																					// le
-																					// nom
-																					// physiquement
-																					// parlan
-							String ligne;
-							int cpt = 0;
-							FileReader flux;
-							BufferedReader entree = null;
-							PrintWriter sortie = null;
-							ArrayList<String> liste = new ArrayList<String>();
-							try {
-								flux = new FileReader("./ressources/modeles/"
-										+ nomObjet + ".gts");
-								entree = new BufferedReader(flux);
-								sortie = new PrintWriter(
-										"./ressources/modeles/" + name + ".gts");
-								while ((ligne = entree.readLine()) != null) {
-									liste.add(ligne);
-									sortie.println(liste.get(cpt++));
-								}
-							} catch (Exception exception) {
-								System.err.println(exception.toString());
-							} finally {
+							if (cbox.isSelected() && !tfield.getText().equals(null)) { // changer
+								// le
+								// nom
+								// physiquement
+								// parlan
+								String ligne;
+								int cpt = 0;
+								FileReader flux;
+								BufferedReader entree = null;
+								PrintWriter sortie = null;
+								ArrayList<String> liste = new ArrayList<String>();
 								try {
-									entree.close();
-									sortie.close();
-								} catch (Exception e1) {
-									e1.printStackTrace();
+									flux = new FileReader("./ressources/modeles/"
+											+ nomObjet + ".gts");
+									entree = new BufferedReader(flux);
+									sortie = new PrintWriter(
+											"./ressources/modeles/" + name + ".gts");
+									while ((ligne = entree.readLine()) != null) {
+										liste.add(ligne);
+										sortie.println(liste.get(cpt++));
+									}
+								} catch (Exception exception) {
+									System.err.println(exception.toString());
+								} finally {
+									try {
+										entree.close();
+										sortie.close();
+									} catch (Exception e1) {
+										e1.printStackTrace();
+									}
+
 								}
+								File MyFile = new File("./ressources/modeles/"
+										+ nomObjet + ".gts");
+								MyFile.delete();
 
 							}
-							File MyFile = new File("./ressources/modeles/"
-									+ nomObjet + ".gts");
-							MyFile.delete();
+							a.mettreAJourRecherche();
+							a.mettreAJourDescription(name);
+							a.changerNomOngletCourant(name);
+							// pour confirmer
+							// custom title, no icon
+							JOptionPane.showMessageDialog(frame,
+									"Modification bien prise en compte",
+									"Modification", JOptionPane.PLAIN_MESSAGE);
+							frame.dispose();
+							// en cas d'erreur
+						} catch (Exception e1) {
+							System.err.println(e1.getClass().getName() + ": "
+									+ e1.getMessage());
+							System.exit(0);
+
+						} finally {
+							try {
+								stmt.close();
+								c.commit();
+								c.close();
+							} catch (SQLException e1) {
+								e1.printStackTrace();
+							}
 
 						}
-						a.mettreAJourRecherche();
-						a.mettreAJourDescription(name);
-						a.changerNomOngletCourant(name);
-						// pour confirmer
-						// custom title, no icon
-						JOptionPane.showMessageDialog(frame,
-								"Modification bien prise en compte",
-								"Modification", JOptionPane.PLAIN_MESSAGE);
-						frame.dispose();
-						// en cas d'erreur
-					} catch (Exception e1) {
-						System.err.println(e1.getClass().getName() + ": "
-								+ e1.getMessage());
-						System.exit(0);
-
-					} finally {
-						try {
-							stmt.close();
-							c.commit();
-							c.close();
-						} catch (SQLException e1) {
-							e1.printStackTrace();
-						}
-
 					}
 				}
-			}
+			
 
 		});
 
@@ -422,6 +429,6 @@ public class ModifiAjout  {
 
 	}
 
-	
+
 
 }
