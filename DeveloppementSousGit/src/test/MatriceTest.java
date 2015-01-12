@@ -73,7 +73,7 @@ public class MatriceTest {
 		assertEquals(y1,matrice2.getTabY());
 		assertNotEquals(y, matrice2.getTabY());
 		assertNotEquals(3, matrice2.getTabY());
-		assertNotEquals("gt§ç", matrice2.getTabY());
+		assertNotEquals("gt", matrice2.getTabY());
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class MatriceTest {
 		assertEquals(z,matrice1.getTabZ());
 		assertNotEquals(y, matrice1.getTabZ());
 		assertNotEquals(5, matrice1.getTabZ());
-		assertNotEquals("gtmoç", matrice1.getTabZ());
+		assertNotEquals("gtmo", matrice1.getTabZ());
 	}
 
 	@Test
